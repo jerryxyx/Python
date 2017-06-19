@@ -32,9 +32,9 @@ weights2 = [0.2 for i in range(20)]+[0.3 for i in range(20)] + [np.log(1+i/10) f
 weights3 = [1-weights1[i]-weights2[i] for i in range(100)]
 
 #weights123 redefinition
-weights1 = [0.2 for i in range(100)]
-weights2 = [0.3 for i in range(100)]
-weights3 = [0.5 for i in range(100)]
+# weights1 = [0.2 for i in range(100)]
+# weights2 = [0.3 for i in range(100)]
+# weights3 = [0.5 for i in range(100)]
 
 index = index_fun(weights)
 plt.subplot(331)
