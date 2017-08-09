@@ -1,8 +1,0 @@
-0000000000000000000000000000000000000000 c04f49c90d2f5085c8d230a6a0afa28831ff03c5 wentao <wentao@yiqixie.com> 1490811992 -0400	commit (initial): first
-c04f49c90d2f5085c8d230a6a0afa28831ff03c5 2e22c6c6126b1f447aa3f88c798803f7d932dd3e wentao <wentao@yiqixie.com> 1491881157 -0400	commit: add proxiesCrawler and optimize nsdq guru
-2e22c6c6126b1f447aa3f88c798803f7d932dd3e 83f59c51cd3ec12a83993228c3a2e5cf9d0a1d46 wentao <wentao@yiqixie.com> 1491882686 -0400	commit: modify
-83f59c51cd3ec12a83993228c3a2e5cf9d0a1d46 948ed7ef652ce15d654433658881c68084e33b24 wentao <wentao@yiqixie.com> 1491932034 -0400	pull origin master: Fast-forward
-948ed7ef652ce15d654433658881c68084e33b24 09457cb92e089539ff72000eec7dc53ffc532d96 wentao <wentao@yiqixie.com> 1492979002 -0400	commit: clean redundant file
-09457cb92e089539ff72000eec7dc53ffc532d96 7c501f4ccfe41e3c069da6bec3d3e3a3adff7b91 wentao <wentao@yiqixie.com> 1492980652 -0400	commit: change item name
-7c501f4ccfe41e3c069da6bec3d3e3a3adff7b91 d921d601958ced8ed687ae6ee3ea1f72c54967cf wentao <wentao@yiqixie.com> 1494641590 -0400	commit: rewise
-d921d601958ced8ed687ae6ee3ea1f72c54967cf 82dd82d06f849b743301bf6b30766437af319a99 wentao <wentao@yiqixie.com> 1497368985 -0400	commit: modified readme.txt

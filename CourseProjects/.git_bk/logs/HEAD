@@ -1,7 +1,0 @@
-0000000000000000000000000000000000000000 6dc332410c76a8bb65048d0f7b84d853873a377b wentao <wentao@yiqixie.com> 1490752895 -0400	commit (initial): first commit
-6dc332410c76a8bb65048d0f7b84d853873a377b 7882cd4277a35e5d78cca78a3ca5f46351c42704 wentao <wentao@yiqixie.com> 1490809242 -0400	commit: add readme.md
-7882cd4277a35e5d78cca78a3ca5f46351c42704 7882cd4277a35e5d78cca78a3ca5f46351c42704 wentao <wentao@yiqixie.com> 1490809390 -0400	checkout: moving from master to my-new-branch
-7882cd4277a35e5d78cca78a3ca5f46351c42704 7882cd4277a35e5d78cca78a3ca5f46351c42704 wentao <wentao@yiqixie.com> 1490809717 -0400	checkout: moving from my-new-branch to master
-7882cd4277a35e5d78cca78a3ca5f46351c42704 ebe07f7259da1c2885e32320cc691a62aa4078b9 wentao <wentao@yiqixie.com> 1497368416 -0400	commit: Committing in a submodule
-ebe07f7259da1c2885e32320cc691a62aa4078b9 661b603ef3727c58edf27a5bd4e0c9e61ba3c4d0 wentao <wentao@yiqixie.com> 1502255218 -0400	commit: stage
-661b603ef3727c58edf27a5bd4e0c9e61ba3c4d0 d22e27d6fd6f0cdc79c6cf0e28c2d104801e9557 wentao <wentao@yiqixie.com> 1502256139 -0400	commit (merge): ok
