@@ -8,6 +8,7 @@ def get_google_data(symbol, period, window, exch = 'NYSE'):
                 + 'd&f=d,o,h,l,c,v&df=cpct'
                 # + '&x=' + exch.upper()
                 + '&q=' + symbol.upper())
+    # url_root = "https://www.google.com/finance/getprices?i=300&p=50d&f=d,o,h,l,c,v&df=cpct&q=SPY"
     response = urllib.request.urlopen(url_root)
     data=response.read().decode().split('\n')       #decode() required for Python 3
     data = [data[i].split(',') for i in range(len(data)-1)]
