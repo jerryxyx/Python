@@ -23,6 +23,9 @@ spy_close_series = spy_close_series.fillna(method='bfill')
 spy_rv_series = spy.pivot_table(index='time', values='rolling_std', columns='date')
 spy_rv_series = spy_rv_series.ix[:,1:-1] #pattern2
 spy_rv_mean = spy_rv_series.mean(axis=1) #pic2
+fig1 = plt.subplot(3,1,1)
+fig1.plot(spy_rv_mean)
+
 spy_rv_corr = spy_rv_series.T.corr()
 eig_vals,eig_vecs = np.linalg.eig(spy_rv_corr)
 var_exp = eig_vals.cumsum()/eig_vals.sum()
@@ -38,6 +41,10 @@ vxx_close_series = vxx_close_series.fillna(method='bfill')
 spy_volumn_series = spy.pivot_table(index='time', values='v', columns='date')
 spy_volumn_series = spy_volumn_series.fillna(method='bfill')#pattern1
 spy_volumn_mean = spy_volumn_series.mean(axis=1) #pic1
+
+fig1 = plt.subplot(3,1,2)
+fig1.plot(spy_volumn_mean)
+
 spy_pct_change = spy_close_series.pct_change()
 spy_log_return = np.log(1+spy_pct_change)
 spy_log_return = spy_log_return.drop(spy_log_return.index[0],axis=0)
@@ -47,10 +54,16 @@ vxx_log_return = vxx_log_return.drop(vxx_log_return.index[0],axis=0)
 vxx_cum_log_return = vxx_log_return.cumsum(axis=0) #pattern3
 vxx_cum_log_return_mean = vxx_cum_log_return.mean(axis=1) #pic3
 
+fig1 = plt.subplot(3,1,3)
+fig1.plot(vxx_cum_log_return_mean)
+
 spy_corr = spy_close_series.T.corr()
 eig_vals,eig_vecs = np.linalg.eig(spy_corr)
 eig_vals = eig_vals.real
 eig_vecs = eig_vecs.real
+
+plt.show()
+
 
 
 
