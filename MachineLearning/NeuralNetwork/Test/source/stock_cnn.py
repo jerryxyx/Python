@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
+# from tensorflow.examples.tutorials.mnist import input_data
 # import quandl
 import numpy as np
 from intraday import get_google_data
@@ -11,31 +11,11 @@ import pandas as pd
 # n_input = 78
 n_output = 2
 threshold = 0.2
-
-# aapl = quandl.Dataset('WIKI/AAPL').data(
-#     params={'start_date': '2001-01-01', 'end_date': '2010-01-01', 'transformation': 'rdiff'}).to_pandas()
-# aapl_close = np.asarray(aapl['Adj. Close'])
-# aapl_close_series = np.asarray([aapl_close[i:i + n_input] for i in range(0, aapl_close.shape[0] - n_input, n_input)])
-# aapl_close_mean = np.asarray([aapl_close_series[i].mean() for i in range(aapl_close_series.shape[0])])
-# aapl_close_mean_return = np.asarray([(i - j) / j for i, j in zip(aapl_close_mean[1:], aapl_close_mean[:-1])])
-# aapl_close_mean_return_bool = aapl_close_mean_return > threshold
-# print(aapl_close_mean_return_bool.shape[0])
-# goog_intraday = get_google_finance_intraday('GOOG',60,40)
 ibm = get_google_data('IBM', 300, 600)
 ibm['date'] = [df.date() for df in ibm.index]
 ibm['time'] = [df.time() for df in ibm.index]
 ibm_time_series = ibm.pivot_table(index='time', values='CLOSE', columns='date')
 ibm_time_series = ibm_time_series.fillna(method='bfill')
-# ibm_close = ibm['CLOSE']
-# ibm_close_group = ibm_close.groupby(pd.TimeGrouper('d'))
-# ibm_close_mean = ibm_close_group.mean()
-#
-# valid = ibm_close_group.sum().notnull()
-# ibm_close_series = ibm_close_group.apply(list).loc[valid]
-
-# ibm_close_mean_dropna = ibm_close_mean.dropna(axis=0,how='any')
-# ibm_close_mean_return = (ibm_close_mean_dropna[1:].values/ibm_close_mean_dropna[:-1] -1)*100
-# ibm_close_mean_return_bool = ibm_close_mean_return>threshold
 ibm_daily = ibm_time_series.mean()
 ibm_daily_returns = 100 * (ibm_daily.values[1:] / ibm_daily[:-1] - 1)
 ibm_daily_returns_bool = ibm_daily_returns > threshold
