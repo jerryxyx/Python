@@ -57,7 +57,7 @@ else:
     sample_close.index.name = 'Date'
     # sample_close = sample_close.fillna(method='bfill')
     sample_close.to_csv(str(num_sample) + "_samples_close.csv")
-print(sample_close.head(7))
+# print(sample_close.head(7))
 
 if (os.path.isfile("vix_close.csv")):
     vix_close = pd.read_csv("vix_close.csv")
@@ -70,6 +70,6 @@ else:
     # vix_close = vix_close.fillna(method='bfill')
     vix_close = vix_close.to_frame()
     vix_close.to_csv("vix_close.csv")
-print(vix_close.head(7))
+# print(vix_close.head(7))
 
-y = (vix_close.pct_change()>pct_threshold).shift(-1)*1
+vix_y = (vix_close.pct_change() > pct_threshold).shift(-1) * 1
