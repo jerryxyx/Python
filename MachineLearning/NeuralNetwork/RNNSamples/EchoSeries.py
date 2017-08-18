@@ -37,9 +37,9 @@ W2 = tf.Variable(np.random.rand(state_size, num_classes),dtype=tf.float32)
 b2 = tf.Variable(np.zeros((1,num_classes)), dtype=tf.float32)
 
 # ##########################################################################################
-# offset_out = tf.Variable(np.random.randn(1),dtype=tf.float32)
-# scale_out = tf.Variable(1,dtype=tf.float32)
-# variance_epsilon_out = tf.constant(0.00001,dtype=tf.float32)
+offset_out = tf.Variable(np.random.randn(1),dtype=tf.float32)
+scale_out = tf.Variable(0.25,dtype=tf.float32)
+variance_epsilon_out = tf.constant(0.00001,dtype=tf.float32)
 # offset_input = tf.Variable(np.random.randn(1),dtype=tf.float32)
 # scale_input = tf.Variable(1,dtype=tf.float32)
 # variance_epsilon_input = tf.constant(0.00001,dtype=tf.float32)
@@ -77,15 +77,15 @@ for current_input in inputs_series:
 
 logits_series = [tf.matmul(state, W2) + b2 for state in states_series] #Broadcasted addition
 
-# ##########################################################################################
+##########################################################################################
 # batch norm of activated tensor start
-# logits_series_norm = []
-# for logits in logits_series:
-#     (mean,var) = tf.nn.moments(logits,axes=[0])
-#     logits_series_norm.append(tf.nn.batch_normalization(logits, mean, var,
-#         offset=offset_out,scale=scale_out,variance_epsilon=variance_epsilon_out))
-# # batch norm end
-# ##########################################################################################
+logits_series_norm = []
+for logits in logits_series:
+    (mean,var) = tf.nn.moments(logits,axes=[0])
+    logits_series_norm.append(tf.nn.batch_normalization(logits, mean, var,
+        offset=offset_out,scale=scale_out,variance_epsilon=variance_epsilon_out))
+# batch norm end
+##########################################################################################
 
 # ##########################################################################################
 # # batch norm of Z(input tensor) start
@@ -98,8 +98,8 @@ logits_series = [tf.matmul(state, W2) + b2 for state in states_series] #Broadcas
 # # batch norm end
 # ##########################################################################################
 
-predictions_series = [tf.nn.softmax(logits) for logits in logits_series]
-# predictions_series = [tf.nn.softmax(logits) for logits in logits_series_norm]
+# predictions_series = [tf.nn.softmax(logits) for logits in logits_series]
+predictions_series = [tf.nn.softmax(logits) for logits in logits_series_norm]
 
 losses = [tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=labels) for logits, labels in zip(logits_series,labels_series)]
 total_loss = tf.reduce_mean(losses)
