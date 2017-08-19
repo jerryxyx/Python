@@ -25,7 +25,16 @@ df.beta = beta_array
 df.omega = omega_array
 df.b = b_array
 print(df)
+def compute_expected_alpha(h,alpha):
+    return np.dot(h,alpha)
 
+def compute_expected_return(h,alpha,beta,muM):
+    return np.dot(h,alpha+beta*muM)
+
+def compute_standard_deviation(h,cov):
+    var = np.dot(np.dot(h.T, cov), h)
+    std = np.sqrt(var)
+    return std
 
 def compute_covariance(beta,omega,sigmaM):
     n_features = len(omega)
@@ -48,9 +57,9 @@ cons = ({'type':'eq',
          'jac' : lambda h: eta})
 
 varP = lambda h: compute_portfolio_variance(h,Q=cov)
-negativeAdjReturn = lambda h,tau: (-np.dot(h,alpha_array) - np.dot(h,beta_array)*muM)*tau + 1/2 * varP(h)
+negativeAdjReturn = lambda h,tau: -((np.dot(h,alpha_array) + np.dot(h,beta_array)*muM)*tau - 1/2 * varP(h))
 
-
+########################################################################################################
 # 5.1
 print("Q5.1, minium variance portfolio:")
 res = sp.optimize.minimize(negativeAdjReturn, np.zeros(n_features), args=(0,),constraints=cons, options={'disp': True})
@@ -62,6 +71,7 @@ print("expected return:"+str(np.sum(h_op*(alpha_array+beta_array*muM))))
 var1_1 = compute_portfolio_variance(h_op,cov)
 print("var:"+str(var1_1))
 print("std:"+str(np.sqrt(var1_1)))
+plt.scatter(np.sqrt(var1_1),np.sum(h_op*(alpha_array+beta_array*muM)),marker='o',c='g')
 
 # h_class = np.array([0.1135,0.3628,0.5237])
 # print(compute_portfolio_variance(h_class,cov))
@@ -84,7 +94,7 @@ print("std:"+str(np.sqrt(var1_2)))
 
 ########################################################################################################
 # 5.2
-print("Q5.1, EGP with Sharpe's single index model, long-only:")
+print("Q5.2, EGP with Sharpe's single index model, long-only:")
 def compute_traynor_ratio(mu,beta,rf):
     return (mu-rf)/beta
 
@@ -118,7 +128,7 @@ print("expected return: "+str(r2))
 var2 = compute_portfolio_variance(df.x,compute_covariance(df.beta,df.omega,sigmaM))
 print("variance:" + str(var2))
 print("std:"+str(np.sqrt(var2)))
-
+plt.scatter(np.sqrt(var2),r2,marker='^',c='r')
 ########################################################################################################
 # 5.3
 cstarN = compute_cumulative_threshold(alpha_array,beta_array,omega_array,sigmaM,rf)
@@ -131,7 +141,7 @@ print("expected return: "+str(r3))
 var3 = compute_portfolio_variance(df2.x,compute_covariance(df2.beta,df2.omega,sigmaM))
 print("variance:" + str(var3))
 print("std:"+str(np.sqrt(var3)))
-
+plt.scatter(np.sqrt(var3),r3,marker='s',c='b')
 ########################################################################################################
 # 5.4
 cov = compute_covariance(beta_array,omega_array,sigmaM)
@@ -185,7 +195,8 @@ std_list2 = []
 h_list2 = []
 for i in range(100):
     taui = 0.001+i*(1-0.001)/99
-    res = sp.optimize.minimize(negativeAdjReturn, np.zeros(n_features), args=(taui,),constraints=cons4, options={'disp': False})
+    res = sp.optimize.minimize(negativeAdjReturn, np.zeros(n_features),
+                               args=(taui,),constraints=cons4, options={'disp': False})
     h_i = res.x
     # print("h:"+str(h_i))
     re_i =np.sum(h_i * (alpha_array + beta_array * muM))
@@ -199,4 +210,111 @@ for i in range(100):
 
 print(np.array(h_list2)>0.2)
 plt.plot(std_list2,re_list2)
-plt.show()
+# plt.show()
+
+########################################################################################################
+# 6.1
+
+mub = compute_expected_return(b_array,alpha_array,beta_array,muM)   # expected return of benchmark
+cov = compute_covariance(beta_array,omega_array,sigmaM) # covariance of securities
+
+def compute_expected_active_return(h,b,alpha_array,beta_array,muM):
+    return compute_expected_return(h-b,alpha_array,beta_array,muM)
+    # return np.dot(h-b,alpha_array + beta_array * muM)
+
+def compute_tracking_error(h_array,b_array,cov):
+    active_weight_vector = h_array-b_array
+    tracking_var = np.dot(np.dot(active_weight_vector,cov),active_weight_vector)
+    tracking_error = np.sqrt(tracking_var)
+    return tracking_error
+
+def compute_tracking_var(h_array,b_array,cov):
+    active_weight_vector = h_array-b_array
+    tracking_var = np.dot(np.dot(active_weight_vector,cov),active_weight_vector)
+    return tracking_var
+
+def compute_expected_residual_return(h,b,alpha_array,beta_array,muM):   # I assume it as the expected alpha of the portfolio
+    mu_p = compute_expected_return(h,alpha_array,beta_array,muM)
+    mu_b = compute_expected_return(b,alpha_array,beta_array,muM)
+    beta_p = np.dot(h,beta_array)
+    residual_return = mu_p - beta_p * mu_b
+    return residual_return
+
+
+cons6_1 = ({'type': 'eq', # budget constraint
+          'fun': lambda h: np.dot(h, eta) - 1,
+          'jac' : lambda h: eta
+          },
+         {'type': 'eq', # tracking error constraint
+          'fun': lambda h: compute_tracking_error(h,b_array,cov) - 0.03, # tracking error = 3%
+          'jac' : lambda h:  np.dot(cov,h-b_array)/(compute_tracking_error(h,b_array,cov)+1e-10)
+            },
+         # {'type' : 'eq',
+         #  'fun' : lambda h: np.dot(h-b_array,beta_array)}
+         # {'type' : 'ineq',  # long-only constraint
+         #  'fun' : lambda h: h,
+         #  'jac' : lambda h: np.eye(n_features)},
+         # {'type': 'ineq',   # boundary constraint
+         #  'fun' : lambda h: eta-h,
+         #  'jac' : lambda h: -np.eye(n_features)}
+         )
+
+res6_1 = sp.optimize.minimize(lambda h: -compute_expected_active_return(h,b_array,alpha_array,beta_array,muM),
+                              x0=eta/n_features, constraints=cons6_1, tol=1e-8, options={'disp':False})
+h_6_1 = res6_1.x
+print("#######################################################################")
+print("portfolio that maximize the portfolio's expected active return under only budget constraint "
+      "and tracking error constraint:")
+print("portfolio h:" + str(h_6_1))
+print("portfolio total weight:" + str(np.dot(h_6_1,eta)))
+print("portfolio expected active return:" + str(compute_expected_active_return(h_6_1,b_array,alpha_array,beta_array,muM)))
+print("portfolio expected active alpha:" + str(compute_expected_alpha(h_6_1-b_array,alpha_array)))
+print("portfolio expected return:" + str(compute_expected_return(h_6_1,alpha_array,beta_array,muM)))
+print("benchmark expected return:" + str(mub))
+print("portfolio standard deviation:" + str(compute_standard_deviation(h_6_1,cov)))
+print("benchmark standard deviation:" + str(compute_standard_deviation(b_array,cov)))
+print("portfolio tracking error:" + str(compute_tracking_error(h_6_1,b_array,cov)))
+print("portfolio beta:" + str(np.dot(h_6_1,beta_array)))
+print("portfolio expected residual return:" +str(compute_expected_residual_return(h_6_1,b_array,alpha_array,beta_array,muM)))
+print("portfolio information ratio:"
+      + str(compute_expected_alpha(h_6_1-b_array,alpha_array)/compute_tracking_error(h_6_1,b_array,cov)))
+print("#######################################################################")
+
+
+cons6_2 = ({'type': 'eq', # budget constraint
+          'fun': lambda h: np.dot(h, eta) - 1,
+          'jac' : lambda h: eta
+          },
+         {'type': 'eq', # tracking error constraint
+          'fun': lambda h: compute_tracking_error(h,b_array,cov) - 0.03, # tracking error = 3%
+          'jac' : lambda h:  np.dot(cov,h-b_array)/(compute_tracking_error(h,b_array,cov)+1e-10)
+            },
+         {'type' : 'eq',
+          'fun' : lambda h: np.dot(h-b_array,beta_array)}
+         # {'type' : 'ineq',  # long-only constraint
+         #  'fun' : lambda h: h,
+         #  'jac' : lambda h: np.eye(n_features)},
+         # {'type': 'ineq',   # boundary constraint
+         #  'fun' : lambda h: eta-h,
+         #  'jac' : lambda h: -np.eye(n_features)}
+         )
+res6_2 = sp.optimize.minimize(lambda h: -compute_expected_alpha(h-b_array,alpha_array),
+                              x0=eta/n_features, constraints=cons6_2, options={'disp':False})
+h_6_2 = res6_2.x
+print("#######################################################################")
+print("portfolio that maximize the portfolio's expected market alpha under budget constraint, tracking error constraint "
+      "and active market beta constraint(active_weights * beta == 0)")
+print("portfolio h:" + str(h_6_2))
+print("portfolio total weight:" + str(np.dot(h_6_2,eta)))
+print("portfolio expected active return:" + str(compute_expected_active_return(h_6_2,b_array,alpha_array,beta_array,muM)))
+print("portfolio expected active alpha:" + str(compute_expected_alpha(h_6_2-b_array,alpha_array)))
+print("portfolio expected residual return:" +str(compute_expected_residual_return(h_6_2,b_array,alpha_array,beta_array,muM)))
+print("portfolio expected return:" + str(compute_expected_return(h_6_2,alpha_array,beta_array,muM)))
+print("benchmark expected return:" + str(mub))
+print("portfolio standard deviation:" + str(compute_standard_deviation(h_6_2,cov)))
+print("benchmark standard deviation:" + str(compute_standard_deviation(b_array,cov)))
+print("portfolio tracking error:" + str(compute_tracking_error(h_6_2,b_array,cov)))
+print("portfolio beta:" + str(np.dot(h_6_2,beta_array)))
+print("portfolio information ratio:"
+      + str(compute_expected_alpha(h_6_2-b_array,alpha_array)/compute_tracking_error(h_6_2,b_array,cov)))
+print("#######################################################################")
