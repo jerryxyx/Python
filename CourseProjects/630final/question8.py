@@ -41,13 +41,13 @@ print("###########################################################")
 print("cash flow matrix:")
 print(cash_flow_matrix)
 print("###########################################################")
-#######################################################################################
+##########################################################################
 # scheme 1
 cons_1 = ({'type': 'ineq',
            'fun': lambda n: np.dot(cash_flow_matrix, n) - liabilities,
            'jac': lambda n: cash_flow_matrix},
           {'type': 'ineq',
-           'fun': lambda n: n,
+           'fun': lambda n: n - 1e-6,
            'jac': lambda n: np.eye(n_bonds)})
 res_1 = sp.optimize.minimize(lambda n: np.dot(price_vector, n),
                              x0=np.ones(n_bonds) / n_bonds,
@@ -57,13 +57,18 @@ n_vector = res_1.x
 print("###########################################################")
 print("scheme 1: match with cash flow")
 print("n vector: " + str(n_vector))
+print("number of each bond to be bought: " + str((n_vector * 1000000).astype(int)))
 print("portfolio cash flow: " + str(np.dot(cash_flow_matrix, n_vector)))
-print("portfolio cost: " + "{:.4e}".format(np.dot(n_vector, price_vector)))
-print("portfolio profit: " + "{:.4e}".format(np.sum(np.dot(cash_flow_matrix, n_vector))))
+print("portfolio cost: " + "{:.4e} million dollars".format(
+    np.dot(n_vector, price_vector)))
+print("portfolio profit: " + "{:.4e} million dollars".format(
+    np.sum(np.dot(cash_flow_matrix, n_vector))))
+print("portfolio net earning: " + "{:.4e} million dollars".format(
+    np.sum(np.dot(cash_flow_matrix, n_vector)) - np.dot(n_vector, price_vector)))
 print("###########################################################")
 
 
-#######################################################################################
+##########################################################################
 # scheme 2
 def compute_gross_reinvestment_rates_matrix(n_dates, interest_rates_vector=None):
     if (interest_rates_vector):
@@ -94,7 +99,8 @@ constraint_matrix = np.hstack((cash_flow_matrix, Y_matrix))
 
 cons_2 = ({
               'type': 'eq',
-              'fun': lambda theta: np.dot(constraint_matrix, theta) - liabilities,
+              'fun': lambda theta:
+              np.dot(constraint_matrix, theta) - liabilities,
               'jac': lambda n: constraint_matrix
           },
           {
@@ -114,24 +120,36 @@ n_vector2 = theta_vector[:n_bonds]
 print("###########################################################")
 print("scheme 2: match with cash carry-forword")
 print("n vector: " + str(n_vector2))
+print("number of each bond to be bought: "
+      + str((n_vector2 * 1000000).astype(int)))
 print("portfolio cash flow: " + str(np.dot(cash_flow_matrix, n_vector2)))
-print("portfolio cost: " + "{:.4e}".format(np.dot(n_vector2, price_vector)))
-print("portfolio profit: " + "{:.4e}".format(np.sum(np.dot(cash_flow_matrix, n_vector2))))
+print("portfolio cost: " + "{:.4e} million dollars".format(
+    np.dot(n_vector2, price_vector)))
+print("portfolio profit: " + "{:.4e} million dollars".format(
+    np.sum(np.dot(cash_flow_matrix, n_vector2))))
+print("portfolio net earning: " + "{:.4e} million dollars".format(
+    np.sum(np.dot(cash_flow_matrix, n_vector2))
+    - np.dot(n_vector2, price_vector)))
 print("###########################################################")
 
 
 #############################################################################
 # 8.3
-def compute_bond_duration(bond_price, cash_flow_vector, n_coupons_per_year, annual_interest_rate=0):
+def compute_bond_duration(bond_price, cash_flow_vector, n_coupons_per_year,
+                          annual_interest_rate=0):
     bond_duration = 0
     for k in range(len(cash_flow_vector)):
-        bond_duration += k * cash_flow_vector[k] / (1 + annual_interest_rate / n_coupons_per_year) ** k
+        bond_duration += k * cash_flow_vector[k] \
+                         / (1 + annual_interest_rate / n_coupons_per_year) ** k
     bond_duration /= n_coupons_per_year * bond_price
     return bond_duration
 
 
-def compute_bond_portfolio_duration(n_vector, price_vector, duration_vector, portfolio_price):
-    return np.sum(n_vector * price_vector * duration_vector) / portfolio_price
+def compute_bond_portfolio_duration(n_vector, price_vector, duration_vector,
+                                    portfolio_price):
+    bond_portfolio_duration = \
+        np.sum(n_vector * price_vector * duration_vector) / portfolio_price
+    return bond_portfolio_duration
 
 
 annual_interest_rate = 0
@@ -140,7 +158,8 @@ bond_duration_vector = []
 for i in range(n_bonds):
     cash_flow_vector = cash_flow_matrix[:, i]
     bond_price = df.price[i]
-    duration = compute_bond_duration(bond_price, cash_flow_vector, 2, annual_interest_rate)
+    duration = compute_bond_duration(bond_price, cash_flow_vector,
+                                     2, annual_interest_rate)
     bond_duration_vector.append(duration)
 
 df.duration = bond_duration_vector
@@ -155,14 +174,24 @@ portfolio_cash_flow2 = np.dot(cash_flow_matrix, n_vector2)
 
 # scheme 1: using portfolio cash flow
 print("scheme 1")
-portfolio_duration1 = compute_bond_duration(portfolio_price1, portfolio_cash_flow1, 2, annual_interest_rate)
-portfolio_duration2 = compute_bond_duration(portfolio_price2, portfolio_cash_flow2, 2, annual_interest_rate)
+portfolio_duration1 = \
+    compute_bond_duration(portfolio_price1, portfolio_cash_flow1,
+                          2, annual_interest_rate)
+portfolio_duration2 = \
+    compute_bond_duration(portfolio_price2, portfolio_cash_flow2,
+                          2, annual_interest_rate)
 print("portfolio1's duration: " + str(portfolio_duration1))
 print("portfolio2's duration: " + str(portfolio_duration2))
 
 # scheme 2: using each bonds cash flows
 print("scheme 2")
-portfolio_duration11 = compute_bond_portfolio_duration(n_vector, price_vector, bond_duration_vector, portfolio_price1)
-portfolio_duration22 = compute_bond_portfolio_duration(n_vector2, price_vector, bond_duration_vector, portfolio_price2)
+portfolio_duration11 = \
+    compute_bond_portfolio_duration(n_vector, price_vector,
+                                    bond_duration_vector,
+                                    portfolio_price1)
+portfolio_duration22 = \
+    compute_bond_portfolio_duration(n_vector2, price_vector,
+                                    bond_duration_vector,
+                                    portfolio_price2)
 print("portfolio1's duration: " + str(portfolio_duration11))
 print("portfolio2's duration: " + str(portfolio_duration22))
