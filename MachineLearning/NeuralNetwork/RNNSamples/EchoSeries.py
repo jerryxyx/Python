@@ -27,8 +27,8 @@ batchY_placeholder = tf.placeholder(tf.int32, [batch_size, truncated_backprop_le
 
 init_state = tf.placeholder(tf.float32, [batch_size, state_size])
 # ##########################################################################################
-# Wa = tf.Variable(np.random.randn(1,state_size),dtype=tf.float32)
-# Wb = tf.Variable(np.random.randn(state_size,state_size),dtype=tf.float32)
+Wa = tf.Variable(np.random.randn(1,state_size),dtype=tf.float32)
+Wb = tf.Variable(np.random.randn(state_size,state_size),dtype=tf.float32)
 # ##########################################################################################
 W = tf.Variable(np.random.rand(state_size+1, state_size), dtype=tf.float32)
 b = tf.Variable(np.zeros((1,state_size)), dtype=tf.float32)
@@ -52,13 +52,13 @@ variance_epsilon_out = tf.constant(0.00001,dtype=tf.float32)
 inputs_series = tf.unstack(batchX_placeholder, axis=1)
 labels_series = tf.unstack(batchY_placeholder, axis=1)
 
+# ##########################################################################################
 # Forward pass
 current_state = init_state
 states_series = []
 for current_input in inputs_series:
     current_input = tf.reshape(current_input, [batch_size, 1])
     input_and_state_concatenated = tf.concat(values=[current_input, current_state], axis=1)  # Increasing number of columns
-
     ##########################################################################################
     # # batch norm start
     # (mean_input,var_input) = tf.nn.moments(current_input,axes=[0])
@@ -70,11 +70,13 @@ for current_input in inputs_series:
     # next_state = tf.tanh(tf.matmul(current_input_norm, Wa) + tf.matmul(current_state_norm, Wb))  # Split concatenation
     # # batch norm end
     ##########################################################################################
-    next_state = tf.tanh(tf.matmul(input_and_state_concatenated, W) + b)  # Broadcasted addition
+    # next_state = tf.tanh(tf.matmul(input_and_state_concatenated, W) + b)  # Broadcasted addition
+    next_state = tf.tanh(tf.matmul(current_input, Wa) + tf.matmul(current_state, Wb)+b)
     # next_state = tf.tanh(tf.matmul(Wa_with_memory, current_input) + b_with_memory)  # Split concatenation
     states_series.append(next_state)
     current_state = next_state
-
+# Forward pass end
+# ##########################################################################################
 logits_series = [tf.matmul(state, W2) + b2 for state in states_series] #Broadcasted addition
 
 ##########################################################################################
@@ -98,8 +100,8 @@ for logits in logits_series:
 # # batch norm end
 # ##########################################################################################
 
-# predictions_series = [tf.nn.softmax(logits) for logits in logits_series]
-predictions_series = [tf.nn.softmax(logits) for logits in logits_series_norm]
+predictions_series = [tf.nn.softmax(logits) for logits in logits_series]
+# predictions_series = [tf.nn.softmax(logits) for logits in logits_series_norm]
 
 losses = [tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=labels) for logits, labels in zip(logits_series,labels_series)]
 total_loss = tf.reduce_mean(losses)
