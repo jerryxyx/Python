@@ -11,10 +11,17 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesUsingRnnApi.coverage" NAME="EchoSeriesUsingRnnApi Coverage Results" MODIFIED="1503355441371" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
-    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesStackedLSTM2.coverage" NAME="EchoSeriesStackedLSTM2 Coverage Results" MODIFIED="1503372417116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
-    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesStackedLSTMDinamic.coverage" NAME="EchoSeriesStackedLSTMDinamic Coverage Results" MODIFIED="1503377041792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$StochasticSeriesDynamicRNN.coverage" NAME="StochasticSeriesDynamicRNN Coverage Results" MODIFIED="1503557546138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
     <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesUsingLSTMApi.coverage" NAME="EchoSeriesUsingLSTMApi Coverage Results" MODIFIED="1503356720490" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesRNN.coverage" NAME="EchoSeriesRNN Coverage Results" MODIFIED="1503557474117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$StochasticSeriesRNN.coverage" NAME="StochasticSeriesRNN Coverage Results" MODIFIED="1503557983368" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$StochasticSeriesLSTM.coverage" NAME="StochasticSeriesLSTM Coverage Results" MODIFIED="1503558149288" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$RandomSeriesLSTMDynamic.coverage" NAME="RandomSeriesLSTMDynamic Coverage Results" MODIFIED="1503553323740" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesStackedLSTM2.coverage" NAME="EchoSeriesStackedLSTM2 Coverage Results" MODIFIED="1503372417116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesDinamicRNN.coverage" NAME="EchoSeriesDinamicRNN Coverage Results" MODIFIED="1503520058885" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesStackedLSTMDinamic.coverage" NAME="EchoSeriesStackedLSTMDinamic Coverage Results" MODIFIED="1503453676668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
     <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesStackedLSTM__1_.coverage" NAME="EchoSeriesStackedLSTM (1) Coverage Results" MODIFIED="1503371710091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
+    <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesLSTM.coverage" NAME="EchoSeriesLSTM Coverage Results" MODIFIED="1503553259717" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
     <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesStackedLSTM.coverage" NAME="EchoSeriesStackedLSTM Coverage Results" MODIFIED="1503360312814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
     <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeries.coverage" NAME="EchoSeries Coverage Results" MODIFIED="1503335793028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
     <SUITE FILE_PATH="coverage/NeuralNetwork$EchoSeriesUsingLSTMApi2.coverage" NAME="EchoSeriesUsingLSTMApi2 Coverage Results" MODIFIED="1503359310297" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/RNNSamples" />
@@ -25,7 +32,7 @@
       <file leaf-file-name="EchoSeries.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
+            <state relative-caret-position="207">
               <caret line="12" column="72" lean-forward="false" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="72" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
@@ -37,8 +44,8 @@
       <file leaf-file-name="EchoSeriesRNN.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesRNN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1371">
-              <caret line="91" column="52" lean-forward="false" selection-start-line="91" selection-start-column="38" selection-end-line="91" selection-end-column="52" />
+            <state relative-caret-position="136">
+              <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="103" selection-end-column="68" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
               </folding>
@@ -49,8 +56,8 @@
       <file leaf-file-name="EchoSeriesStackedLSTM.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="108" column="10" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="108" selection-end-column="10" />
+            <state relative-caret-position="2392">
+              <caret line="108" column="10" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="108" selection-end-column="10" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
               </folding>
@@ -58,11 +65,35 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EchoSeriesStackedLSTMDinamic.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMDinamic.py">
+      <file leaf-file-name="EchoSeriesDinamicRNN.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesDinamicRNN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2139">
-              <caret line="96" column="22" lean-forward="false" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="22" />
+            <state relative-caret-position="941">
+              <caret line="92" column="22" lean-forward="true" selection-start-line="92" selection-start-column="22" selection-end-line="92" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StochasticSeriesLSTM.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/RNNSamples/StochasticSeriesLSTM.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="14" column="14" lean-forward="false" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StochasticSeriesRNN.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/RNNSamples/StochasticSeriesRNN.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="414">
+              <caret line="78" column="23" lean-forward="false" selection-start-line="78" selection-start-column="23" selection-end-line="78" selection-end-column="23" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -73,7 +104,7 @@
       <file leaf-file-name="EchoSeriesStackedLSTMP.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMP.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-147">
+            <state relative-caret-position="437">
               <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -85,8 +116,8 @@
       <file leaf-file-name="EchoSeriesLSTM.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+            <state relative-caret-position="-69">
+              <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
               <folding>
                 <element signature="e#0#47#0" expanded="true" />
               </folding>
@@ -103,6 +134,13 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>pyplot</find>
+      <find>tf.float</find>
+      <find>float</find>
+    </findStrings>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -110,10 +148,16 @@
         <option value="$PROJECT_DIR$/RNNSamples/EchoSeries.py" />
         <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesUsingLSTMApi2.py" />
         <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesUsingLSTMApi.py" />
-        <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py" />
         <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM.py" />
         <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM2.py" />
         <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMDinamic.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesDinamicRNN.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesRNN.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/RandomSeriesLSTMDynamic.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/StochasticSeriesDynamicRNN.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/StochasticSeriesRNN.py" />
+        <option value="$PROJECT_DIR$/RNNSamples/StochasticSeriesLSTM.py" />
       </list>
     </option>
   </component>
@@ -124,10 +168,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="260" />
-    <option name="y" value="11" />
-    <option name="width" value="1557" />
-    <option name="height" value="996" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -144,6 +188,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -172,7 +217,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -198,8 +242,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.EchoSeriesStackedLSTMDinamic">
-    <configuration default="false" name="EchoSeriesUsingLSTMApi2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.StochasticSeriesLSTM">
+    <configuration default="false" name="RandomSeriesLSTMDynamic" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -212,13 +256,13 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NeuralNetwork" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\Codes\Python\MachineLearning\NeuralNetwork\RNNSamples\EchoSeriesLSTM.py" />
+      <option name="SCRIPT_NAME" value="D:\Codes\Python\MachineLearning\NeuralNetwork\RNNSamples\StochasticSeriesLSTM.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="EchoSeriesStackedLSTM2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="EchoSeriesRNN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -231,13 +275,13 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NeuralNetwork" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\Codes\Python\MachineLearning\NeuralNetwork\RNNSamples\EchoSeriesStackedLSTMP.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RNNSamples/EchoSeriesRNN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="EchoSeriesStackedLSTM" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="StochasticSeriesDynamicRNN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -250,13 +294,13 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NeuralNetwork" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\Codes\Python\MachineLearning\NeuralNetwork\RNNSamples\EchoSeriesLSTM.py" />
+      <option name="SCRIPT_NAME" value="D:\Codes\Python\MachineLearning\NeuralNetwork\RNNSamples\StochasticSeriesRNN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="EchoSeriesStackedLSTM (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="StochasticSeriesLSTM" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -269,13 +313,13 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NeuralNetwork" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RNNSamples/StochasticSeriesLSTM.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="EchoSeriesStackedLSTMDinamic" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="StochasticSeriesRNN" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -288,7 +332,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NeuralNetwork" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMDinamic.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/RNNSamples/StochasticSeriesRNN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -443,19 +487,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.EchoSeriesUsingLSTMApi2" />
-      <item index="1" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTM2" />
-      <item index="2" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTM" />
-      <item index="3" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTM (1)" />
-      <item index="4" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTMDinamic" />
+      <item index="0" class="java.lang.String" itemvalue="Python.RandomSeriesLSTMDynamic" />
+      <item index="1" class="java.lang.String" itemvalue="Python.EchoSeriesRNN" />
+      <item index="2" class="java.lang.String" itemvalue="Python.StochasticSeriesDynamicRNN" />
+      <item index="3" class="java.lang.String" itemvalue="Python.StochasticSeriesLSTM" />
+      <item index="4" class="java.lang.String" itemvalue="Python.StochasticSeriesRNN" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTMDinamic" />
-        <item index="1" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTM2" />
-        <item index="2" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTM (1)" />
-        <item index="3" class="java.lang.String" itemvalue="Python.EchoSeriesStackedLSTM" />
-        <item index="4" class="java.lang.String" itemvalue="Python.EchoSeriesUsingLSTMApi2" />
+        <item index="0" class="java.lang.String" itemvalue="Python.StochasticSeriesLSTM" />
+        <item index="1" class="java.lang.String" itemvalue="Python.StochasticSeriesRNN" />
+        <item index="2" class="java.lang.String" itemvalue="Python.StochasticSeriesDynamicRNN" />
+        <item index="3" class="java.lang.String" itemvalue="Python.EchoSeriesRNN" />
+        <item index="4" class="java.lang.String" itemvalue="Python.RandomSeriesLSTMDynamic" />
       </list>
     </recent_temporary>
   </component>
@@ -473,18 +517,18 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="260" y="11" width="1557" height="996" extended-state="0" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25928426" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21374866" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32851985" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32842582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3997735" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -503,24 +547,16 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="207">
+          <caret line="12" column="72" lean-forward="false" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="72" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
           </folding>
@@ -529,7 +565,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesRNN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1371">
+        <state relative-caret-position="2001">
           <caret line="91" column="52" lean-forward="false" selection-start-line="91" selection-start-column="38" selection-end-line="91" selection-end-column="52" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
@@ -537,9 +573,59 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2392">
+          <caret line="108" column="10" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="108" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesDinamicRNN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2300">
+          <caret line="103" column="64" lean-forward="false" selection-start-line="103" selection-start-column="63" selection-end-line="103" selection-end-column="64" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2691">
+          <caret line="121" column="10" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="121" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/StochasticSeriesLSTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1219">
+          <caret line="56" column="0" lean-forward="true" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
+        <state relative-caret-position="207">
           <caret line="12" column="72" lean-forward="false" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="72" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
@@ -547,10 +633,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py">
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesRNN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+        <state relative-caret-position="2001">
+          <caret line="91" column="52" lean-forward="false" selection-start-line="91" selection-start-column="38" selection-end-line="91" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2392">
+          <caret line="108" column="10" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="108" selection-end-column="10" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
           </folding>
@@ -559,7 +655,67 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMP.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-147">
+        <state relative-caret-position="437">
+          <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1081">
+          <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesDinamicRNN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2139">
+          <caret line="96" column="22" lean-forward="false" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeries.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="12" column="72" lean-forward="false" selection-start-line="12" selection-start-column="72" selection-end-line="12" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
           <caret line="22" column="22" lean-forward="false" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -569,18 +725,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="108" column="10" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="108" selection-end-column="10" />
+        <state relative-caret-position="2392">
+          <caret line="108" column="10" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="108" selection-end-column="10" />
           <folding>
             <element signature="e#0#47#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesStackedLSTMDinamic.py">
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesLSTM.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2139">
-          <caret line="96" column="22" lean-forward="false" selection-start-line="96" selection-start-column="21" selection-end-line="96" selection-end-column="22" />
+        <state relative-caret-position="-69">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesDinamicRNN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="941">
+          <caret line="92" column="22" lean-forward="true" selection-start-line="92" selection-start-column="22" selection-end-line="92" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/EchoSeriesRNN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="71" column="0" lean-forward="false" selection-start-line="71" selection-start-column="0" selection-end-line="103" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/StochasticSeriesRNN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="78" column="23" lean-forward="false" selection-start-line="78" selection-start-column="23" selection-end-line="78" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/RNNSamples/StochasticSeriesLSTM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" column="14" lean-forward="false" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
