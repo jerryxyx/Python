@@ -10,7 +10,7 @@ total_series_length = 50000
 truncated_backprop_length = 15
 state_size = 4
 num_classes = 2
-echo_step = 3
+echo_step = 4
 batch_size = 5
 num_batches = total_series_length//batch_size//truncated_backprop_length
 
