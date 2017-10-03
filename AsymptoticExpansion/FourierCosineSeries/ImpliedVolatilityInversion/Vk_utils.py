@@ -1,0 +1,53 @@
+import numpy as np
+
+def calculateChi(a,b,c,d,numGrid):
+#   k can be an integer: k1 = 0
+#   k can be an array: k2 = np.float32([i for i in range(N)])
+#   k can be a matrix: k3 = np.tile(k2,(numStrikes,1)).T
+#   in this case, we restrict k to be an array
+    k = np.float32([i for i in range(numGrid)])
+    pi = np.pi
+    var1 = 1/(1+np.power(k*pi/(b-a),2))
+    var2 = np.cos(k*pi*(d-a)/b-a) * np.exp(d)
+    var3 = np.cos(k*pi*(c-a)/b-a) * np.exp(c)
+    var4 = k*pi/(b-a)*np.sin(k*pi*(d-a)/b-a) * np.exp(d)
+    var5 = k*pi/(b-a)*np.sin(k*pi*(c-a)/b-a) * np.exp(c)
+    chi = var1*(var2-var3+var4-var5)
+    return chi
+
+def calculatePsi(a,b,c,d,numGrid):
+    pi = np.pi
+    k = np.float32([i for i in range(numGrid)])[1:]
+    psi_0 = d - c
+    var1 = (b-a)/(k*pi)
+    var2 = np.sin(k*pi*(d-a)/(b-a))
+    var3 = np.sin(k*pi*(c-a)/(b-a))
+    psi_after = var1*(var2-var3)
+    psi = np.append(psi_0,psi_after)
+    return psi
+
+def calculateVkPut(strike,a,b,numGrid):
+    psi = calculatePsi(a,b,a,0,numGrid)
+    chi = calculateChi(a,b,a,0,numGrid)
+    VkPut = 2*strike/(b-a) * (psi-chi)
+    return VkPut
+
+def calculateVkCall(strike,a,b,numGrid):
+    psi = calculatePsi(a, b, 0, b, numGrid)
+    chi = calculateChi(a, b, 0, b, numGrid)
+    VkCall = 2 * strike / (b - a) * (chi - psi)
+    return VkCall
+
+# S0 = 50
+# strike = 50
+# a = -0.9508
+# b = 0.9466
+# c = 0
+# d = b
+# P = 6
+# N = 2**1
+# numStrikes = 10;
+# numGrid = 2**6;
+# print(calculateChi(a,b,c,d,numGrid))
+# print(calculatePsi(a,b,c,d,numGrid))
+# print(calculateVkPut(strike,a,b,numGrid))
