@@ -8,6 +8,7 @@ def chfBSM(x,S0,strike,r,q,T,sigmaBSM):
 
 def calculateRk(m,T,sigmaBSM,a,b,numGrid):
     ckList = np.array([k*np.pi/(b-a) for k in range(numGrid)])
+    # ckList = np.linspace(0,numGrid-1,numGrid)*np.pi/(b-a)
     Rk = np.exp(-ckList**2*T*sigmaBSM**2/2)*np.cos(ckList*(m-T*sigmaBSM**2/2))
     return Rk
 
