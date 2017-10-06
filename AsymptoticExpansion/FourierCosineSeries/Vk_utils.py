@@ -26,6 +26,7 @@ def calculatePsi(a,b,c,d,numGrid):
     psi = np.append(psi_0,psi_after)
     return psi
 
+# Todo: can be accelerated by using function specialize the case c=a, d=0
 def calculateVkPut(strike,a,b,numGrid):
     psi = calculatePsi(a,b,a,0,numGrid)
     chi = calculateChi(a,b,a,0,numGrid)
@@ -40,16 +41,19 @@ def calculateVkCall(strike,a,b,numGrid):
     VkCall[0] /= 2
     return VkCall
 
-# S0 = 50
-# strike = 55
-# # a = -0.9508
-# # b = 0.9466
-# a = -1.0461
-# b = 0.8512
-# c = a
-# d = 0
-# # numStrikes = 10;
-# numGrid = 2**6;
-# print(calculateChi(a,b,c,d,numGrid))
-# print(calculatePsi(a,b,c,d,numGrid))
+S0 = 50
+strike = 55
+# a = -0.9508
+# b = 0.9466
+a = -1.0461
+b = 0.8512
+c = a
+d = 0
+# numStrikes = 10;
+numGrid = 2**8;
+chi = calculateChi(a,b,c,d,numGrid)
+psi = calculatePsi(a,b,c,d,numGrid)
+print(chi)
+print(psi)
+print(psi-chi)
 # print(calculateVkPut(strike,a,b,numGrid))
