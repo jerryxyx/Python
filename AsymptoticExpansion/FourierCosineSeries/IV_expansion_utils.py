@@ -2,7 +2,10 @@ import numpy as np
 from scipy.misc import factorial
 from numpy.polynomial.polynomial import polyval
 from Vk_utils import calculateVkPut
-from preprocessing import generateTruncatedInterval, calculateConstantTerm
+from series_reversion import inverseSeries
+# from preprocessing import generateTruncatedInterval, calculateConstantTerm
+import preprocessing
+import BlackScholesOption
 import time
 
 def calculateTrigonometricSeries(ck,m,truncationOrder):
@@ -49,16 +52,31 @@ def calculateCoefficientList(strike,m,a,b,numGrid,truncationOrder=None):
     coefficientList = np.dot(Vk,Dkl)
     return coefficientList
 
-def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, numGrid,truncationOrder,showDuration=False):
+def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, quantile, numGrid,truncationOrder,showDuration=False):
     tick = time.time()
-    (a,b) = generateTruncatedInterval(S0,strike,T,r,q,sigmaBSM,model="BSM")
-    m = calculateConstantTerm(S0,strike,T,r,q,a)
+    (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
+    m = preprocessing.calculateConstantTerm(S0,strike,T,r,q,a)
     coeffs = calculateCoefficientList(strike, m, a, b, numGrid, truncationOrder)
     putPrice = np.exp(-r * T) * polyval(T * sigmaBSM ** 2, coeffs)
     tack = time.time()
     if (showDuration == True):
         print("consuming time for call option using BSM:", tack - tick)
     return putPrice
+
+
+def calculateImpliedVolatilityByPutOptionPrice(S0, strike, T, r, q, price, quantile, N1,N2,fixPoint=0.20,showDuration=False):
+    (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,fixPoint,quantile)
+    m = preprocessing.calculateConstantTerm(S0, strike, T, r, q, a)
+    tick = time.time()
+    coeffs = calculateCoefficientList(strike, m, a, b, numGrid=N1, truncationOrder=N2)
+    inverseCoeffs = inverseSeries(coeffs)
+    y = price * np.exp(r * T) - coeffs[0]
+    omega = polyval(y, inverseCoeffs)
+    volEstimation = np.sqrt(omega/T)
+    tack = time.time()
+    if(showDuration==True):
+        print("consuming time for calculating implied volatility:",tack-tick)
+    return volEstimation
 
 # print(calculateTrigonometricSeries(10,1,10))
 # print(calculateExponentialSeries(np.sqrt(2),10))
