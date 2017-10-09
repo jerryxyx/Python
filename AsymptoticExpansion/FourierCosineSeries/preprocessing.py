@@ -1,6 +1,7 @@
 import numpy as np
+from scipy.stats import norm
 
-def generateTruncatedInterval(S0,strike,T,r,q,sigmaBSM,model):
+def generateTruncatedInterval(S0,strike,T,r,q,sigmaBSM,model="BSM"):
     # S0 and strike can be a integer or an array.
     # Example:
     # print(generateTruncatedInterval(50, 50, 0.1, 0.01, 0, 0.25, "BSM"))
@@ -33,5 +34,34 @@ def generateTruncatedInterval(S0,strike,T,r,q,sigmaBSM,model):
 
     return (a,b)
 
+
+def calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile):
+    mean = np.log(S0/strike)+(r-q-.5*sigmaBSM**2)*T
+    variance = sigmaBSM**2*T
+    std = np.sqrt(variance)
+    a = mean - quantile*std
+    b = mean + quantile*std
+    return (a,b)
+
+def calculateNumGrid(T,sigmaBSM,quantile):
+    numGrid = int(10*quantile*sigmaBSM*np.sqrt(T))
+    return numGrid
+
 def calculateConstantTerm(S0,strike,T,r,q,a):
     return np.log(S0/strike) + (r-q)*T -a
+# todo: estimate
+def calculateErrorUpperBound(S0,strike,r,q,T,sigmaBSM,N,quantile):
+    mean = (r-q-sigmaBSM**2/2)*T + np.log(S0/strike)
+    (a,b) = calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
+    # error introduced by integral truncation
+    error1 = strike*max(1-np.exp(a),0)*norm.cdf(-quantile)
+
+    # error introduced by series truncation
+    C = 1
+    error2 = np.exp(-r*T)*(strike*0.5)*C/N**2
+
+    # error introduced by approximate Ak by Fk
+    error3 = N*np.exp(-r*T)/(quantile*sigmaBSM*np.sqrt(T)) * norm.cdf(-quantile)
+
+    errorBound = error1+error2+error3
+    return errorBound

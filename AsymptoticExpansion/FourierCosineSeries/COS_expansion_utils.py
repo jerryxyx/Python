@@ -1,6 +1,7 @@
 from Vk_utils import calculateVkPut
 import numpy as np
 from preprocessing import generateTruncatedInterval, calculateConstantTerm
+import time
 
 def chfBSM(x,S0,strike,r,q,T,sigmaBSM):
     chfBSM = np.exp( complex( -0.5 * x**2 * sigmaBSM**2 *T, x*(np.log(S0/strike)+(r-q)*T)) )
@@ -12,13 +13,26 @@ def calculateRk(m,T,sigmaBSM,a,b,numGrid):
     Rk = np.exp(-ckList**2*T*sigmaBSM**2/2)*np.cos(ckList*(m-T*sigmaBSM**2/2))
     return Rk
 
-def calculatePutOptionPriceBSM(S0,strike,T,r,q,sigmaBSM,numGrid):
+def putOptionPriceCOS(S0,strike,T,r,q,sigmaBSM,numGrid,showDuration=False):
+    tick = time.time()
     (a,b) = generateTruncatedInterval(S0,strike,T,r,q,sigmaBSM,model="BSM")
     m = calculateConstantTerm(S0,strike,T,r,q,a)
     Vk = calculateVkPut(strike,a,b,numGrid)
     Rk = calculateRk(m,T,sigmaBSM,a,b,numGrid)
     putPrice = np.exp(-r * T) * np.dot(Rk,Vk)
+    tack = time.time()
+    if (showDuration == True):
+        print("consuming time for put option using COS:", tack - tick)
     return putPrice
+
+def callOptionPriceCOS(S0,strike,T,r,q,sigmaBSM,numGrid,showDuration=False):
+    tick = time.time()
+    putPrice = putOptionPriceCOS(S0,strike,T,r,q,sigmaBSM,numGrid)
+    callPrice = putPrice + S0*np.exp(-q*T) - strike*np.exp(-r*T)
+    tack = time.time()
+    if (showDuration == True):
+        print("consuming time for call option using COS:", tack - tick)
+    return callPrice
 
 # S0 = 50
 # strike = 55
@@ -29,4 +43,4 @@ def calculatePutOptionPriceBSM(S0,strike,T,r,q,sigmaBSM,numGrid):
 # numGrid = 6
 #
 # print(chfBSM(np.pi/(b-a),S0,strike,0.01,0,0.1,0.25))
-# print(calculatePutOptionPriceBSM(50,55,0.1,0.01,0,0.25,7,a))
+# print(putOptionPriceCOS(50,55,0.1,0.01,0,0.25,7,a))

@@ -41,19 +41,19 @@ def calculateVkCall(strike,a,b,numGrid):
     VkCall[0] /= 2
     return VkCall
 
-S0 = 50
-strike = 55
-# a = -0.9508
-# b = 0.9466
-a = -1.0461
-b = 0.8512
-c = a
-d = 0
-# numStrikes = 10;
-numGrid = 2**8;
-chi = calculateChi(a,b,c,d,numGrid)
-psi = calculatePsi(a,b,c,d,numGrid)
-print(chi)
-print(psi)
-print(psi-chi)
-# print(calculateVkPut(strike,a,b,numGrid))
+# S0 = 50
+# strike = 55
+# # a = -0.9508
+# # b = 0.9466
+# a = -1.0461
+# b = 0.8512
+# c = a
+# d = 0
+# # numStrikes = 10;
+# numGrid = 2**8;
+# chi = calculateChi(a,b,c,d,numGrid)
+# psi = calculatePsi(a,b,c,d,numGrid)
+# print(chi)
+# print(psi)
+# print(psi-chi)
+# # print(calculateVkPut(strike,a,b,numGrid))

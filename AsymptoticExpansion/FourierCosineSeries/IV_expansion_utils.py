@@ -3,6 +3,7 @@ from scipy.misc import factorial
 from numpy.polynomial.polynomial import polyval
 from Vk_utils import calculateVkPut
 from preprocessing import generateTruncatedInterval, calculateConstantTerm
+import time
 
 def calculateTrigonometricSeries(ck,m,truncationOrder):
 
@@ -48,11 +49,15 @@ def calculateCoefficientList(strike,m,a,b,numGrid,truncationOrder=None):
     coefficientList = np.dot(Vk,Dkl)
     return coefficientList
 
-def calculatePutOptionPriceBSM(S0,strike,T,r,q,sigmaBSM, numGrid,truncationOrder):
+def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, numGrid,truncationOrder,showDuration=False):
+    tick = time.time()
     (a,b) = generateTruncatedInterval(S0,strike,T,r,q,sigmaBSM,model="BSM")
     m = calculateConstantTerm(S0,strike,T,r,q,a)
     coeffs = calculateCoefficientList(strike, m, a, b, numGrid, truncationOrder)
     putPrice = np.exp(-r * T) * polyval(T * sigmaBSM ** 2, coeffs)
+    tack = time.time()
+    if (showDuration == True):
+        print("consuming time for call option using BSM:", tack - tick)
     return putPrice
 
 # print(calculateTrigonometricSeries(10,1,10))
