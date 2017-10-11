@@ -13,6 +13,7 @@ def calculateChi(a,b,c,d,numGrid):
     var4 = k*pi/(b-a)*np.sin(k*pi*(d-a)/(b-a)) * np.exp(d)
     var5 = k*pi/(b-a)*np.sin(k*pi*(c-a)/(b-a)) * np.exp(c)
     chi = var1*(var2-var3+var4-var5)
+    # print("chi",chi)
     return chi
 
 def calculatePsi(a,b,c,d,numGrid):
@@ -24,8 +25,10 @@ def calculatePsi(a,b,c,d,numGrid):
     var3 = np.sin(k*pi*(c-a)/(b-a))
     psi_after = var1*(var2-var3)
     psi = np.append(psi_0,psi_after)
+    # print("psi",psi)
     return psi
 
+# Todo: can be accelerated by using function specialize the case c=a, d=0
 def calculateVkPut(strike,a,b,numGrid):
     psi = calculatePsi(a,b,a,0,numGrid)
     chi = calculateChi(a,b,a,0,numGrid)
@@ -49,7 +52,10 @@ def calculateVkCall(strike,a,b,numGrid):
 # c = a
 # d = 0
 # # numStrikes = 10;
-# numGrid = 2**6;
-# print(calculateChi(a,b,c,d,numGrid))
-# print(calculatePsi(a,b,c,d,numGrid))
-# print(calculateVkPut(strike,a,b,numGrid))
+# numGrid = 2**8;
+# chi = calculateChi(a,b,c,d,numGrid)
+# psi = calculatePsi(a,b,c,d,numGrid)
+# print(chi)
+# print(psi)
+# print(psi-chi)
+# # print(calculateVkPut(strike,a,b,numGrid))
