@@ -1,0 +1,27 @@
+***************************************************************************
+calculate put option price using Black-Scholes formula:
+consuming time for put option using BSM: 0.0
+put price: 2.27490206569
+calculate call option price using Black-Scholes formula:
+consuming time for call option using BSM: 0.0
+call price: 2.77365414642
+***************************************************************************
+calculate put option price using COS method:
+N1: 32
+error caused by integral truncation: 3.55937157829e-22
+error caused by series truncation: 0.0485845937106
+error caused by approximating Ak by Fk: 3.8361457979e-22
+priory error estimation: 0.0485845937106
+consuming time for put option using COS: 0.002986431121826172
+put price: 2.27490194892
+absolute error: 1.16771482706e-07
+consuming time for call option using COS: 0.0
+call price: 2.77365402965
+absolute error: 1.16771481373e-07
+***************************************************************************
+calculate put option price using CFS method:
+N1: 32
+consuming time for call option using CFS: 0.0
+put price: 2.27490206569
+absolute error: 1.7763568394e-15
+***************************************************************************
