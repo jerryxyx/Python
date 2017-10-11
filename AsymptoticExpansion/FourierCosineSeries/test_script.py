@@ -13,7 +13,7 @@ import CFS_expansion_utils
 # Hyperparameters:
 S0 = 100
 strike = 100
-T = 0.1
+T = 1
 r = 0.05
 q = 0
 sigmaBSM = 0.2
@@ -27,7 +27,7 @@ N2 = N1 #that is we want to obtain (convergent rapidly)
 #############################
 print("***************************************************************************")
 print("Hyperparameters:")
-print("S0:",S0,"r",r,"q",q,"sigmaBSM",sigmaBSM,"quantile",quantile)
+print("S0:",S0,"strike",strike,"T",T,"r",r,"q",q,"sigmaBSM",sigmaBSM,"quantile",quantile)
 print("N1:",N1)
 print("N2", N2)
 print("***************************************************************************")
@@ -71,7 +71,7 @@ print("calculate put option price using IV expansion method:")
 print("N1:",N1,"N2:",N2)
 putPriceIV=IV_expansion_utils.putOptionPriceIV(S0,strike,T,r,q,sigmaBSM,quantile,numGrid=N1,truncationOrder=N2,showDuration=True)
 print("put price:", putPriceIV)
-print("absolute error:", np.abs(putPriceIV-callPriceBSM))
+print("absolute error:", np.abs(putPriceIV-putPriceBSM))
 print("***************************************************************************")
 print("same volatility:")
 coeffs = IV_expansion_utils.calculateCoefficientList(strike,m,a,b,numGrid=N1,truncationOrder=N2)
