@@ -19,7 +19,7 @@ q = 0
 sigmaBSM = 0.2
 quantile = 10
 N1 = 16
-N2 = N1 #that is we want to obtain (convergent rapidly)
+N2 = 8 #that is we want to obtain (convergent rapidly)
 # numStrikes = 10
 #############################
 # Derivative parameters:
@@ -66,6 +66,12 @@ print("N1:",N1)
 putPriceCFS = CFS_expansion_utils.putOptionPriceCFS(S0,strike,T,r,q,sigmaBSM,quantile,numGrid=N1,showDuration=True)
 print("put price:", putPriceCFS)
 print("absolute error:", np.abs(putPriceCFS-putPriceBSM))
+coeffsCFS = CFS_expansion_utils.calculateIVCoefficientArray(S0,strike,T,r,q,sigmaBSM,N1,N2,quantile)
+print("coeff for CFS:",coeffsCFS)
+inverseCoeffsCFS = series_reversion.inverseSeries(coeffsCFS)
+yCFS = putPriceBSM*np.exp(r*T) - coeffsCFS[0]
+wCFS = polyval(yCFS,inverseCoeffsCFS)
+print("w",wCFS)
 print("***************************************************************************")
 print("calculate put option price using IV expansion method:")
 print("N1:",N1,"N2:",N2)
@@ -75,14 +81,14 @@ print("absolute error:", np.abs(putPriceIV-putPriceBSM))
 print("***************************************************************************")
 print("same volatility:")
 coeffs = IV_expansion_utils.calculateCoefficientList(strike,m,a,b,numGrid=N1,truncationOrder=N2)
-# print(coeffs)
+print("coeff for COS:",coeffs)
 inverseCoeffs = series_reversion.inverseSeries(coeffs)
 # print(inverseCoeffs)
 y = putPriceIV*np.exp(r*T) - coeffs[0]
 w = polyval(y,inverseCoeffs)
 print("w",w)
 print("T*sigmaBSM**2",sigmaBSM**2*T)
-print("absolute error:", (w-sigmaBSM**2*T)/(sigmaBSM**2*T))
+print("absolute error:", (w-sigmaBSM**2*T))
 print("***************************************************************************")
 print("different volatility:")
 targetVol = 0.3
