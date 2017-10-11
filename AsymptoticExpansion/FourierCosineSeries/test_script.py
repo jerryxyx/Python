@@ -7,6 +7,7 @@ import numpy as np
 import time
 from numpy.polynomial.polynomial import polyval
 import series_reversion
+import CFS_expansion_utils
 
 ############################
 # Hyperparameters:
@@ -59,6 +60,12 @@ print("absolute error:", np.abs(putPriceCOS-putPriceBSM))
 callPriceCOS = COS_expansion_utils.callOptionPriceCOS(S0,strike,T,r,q,sigmaBSM,quantile,numGrid=N1,showDuration=True)
 print("call price:", callPriceCOS)
 print("absolute error:", np.abs(callPriceCOS-callPriceBSM))
+print("***************************************************************************")
+print("calculate put option price using CFS method:")
+print("N1:",N1)
+putPriceCFS = CFS_expansion_utils.putOptionPriceCFS(S0,strike,T,r,q,sigmaBSM,quantile,numGrid=N1,showDuration=True)
+print("put price:", putPriceCFS)
+print("absolute error:", np.abs(putPriceCFS-putPriceBSM))
 print("***************************************************************************")
 print("calculate put option price using IV expansion method:")
 print("N1:",N1,"N2:",N2)
