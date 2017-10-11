@@ -1,54 +1,27 @@
 ***************************************************************************
-Hyperparameters:
-S0: 100 r 0.05 q 0 sigmaBSM 0.2 quantile 10
-N1: 16
-N2 16
-***************************************************************************
-Derivative parameters:
-a and b (truncated interval): (-0.62945553203367599, 0.635455532033676)
-***************************************************************************
-Other parameters:
-m: 0.634455532034
-Vk put:
-[ 12.83389739  20.46984378   9.4580729    1.1779719   -0.74488332
-   0.58687608   1.08795612   0.27507004  -0.18709974   0.16122894
-   0.39233627   0.12233594  -0.08287745   0.07076281   0.19998231
-   0.07032341]
-***************************************************************************
 calculate put option price using Black-Scholes formula:
 consuming time for put option using BSM: 0.0
-put price: 2.27388511804
+put price: 2.27490206569
 calculate call option price using Black-Scholes formula:
 consuming time for call option using BSM: 0.0
-call price: 2.77263719877
+call price: 2.77365414642
 ***************************************************************************
 calculate put option price using COS method:
-N1: 16
+N1: 32
 error caused by integral truncation: 3.55937157829e-22
-error caused by series truncation: 0.194338374842
-error caused by approximating Ak by Fk: 1.91807289895e-22
-priory error estimation: 0.194338374842
-consuming time for put option using COS: 0.09729862213134766
-put price: 2.27951440669
-absolute error: 0.00562928864611
+error caused by series truncation: 0.0485845937106
+error caused by approximating Ak by Fk: 3.8361457979e-22
+priory error estimation: 0.0485845937106
+consuming time for put option using COS: 0.002986431121826172
+put price: 2.27490194892
+absolute error: 1.16771482706e-07
 consuming time for call option using COS: 0.0
-call price: 2.77826648742
-absolute error: 0.00562928864613
+call price: 2.77365402965
+absolute error: 1.16771481373e-07
 ***************************************************************************
-calculate put option price using IV expansion method:
-N1: 16 N2: 16
-consuming time for call option using BSM: 0.0020012855529785156
-put price: 2.27951439961
-absolute error: 0.493122799168
+calculate put option price using CFS method:
+N1: 32
+consuming time for call option using CFS: 0.0
+put price: 2.27490206569
+absolute error: 1.7763568394e-15
 ***************************************************************************
-same volatility:
-w 0.00399801256896
-T*sigmaBSM**2 0.004000000000000001
-absolute error: -0.000496857759899
-***************************************************************************
-different volatility:
-fixed volatility for expansion: 0.2
-target(true) implied volatility: 0.3
-consuming time for calculating implied volatility: 0.0020041465759277344
-target implied volatility estimation: 0.296922218523
-absolute error: 0.00307778147707

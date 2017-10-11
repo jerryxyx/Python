@@ -60,7 +60,7 @@ def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, quantile, numGrid,truncationOrder
     putPrice = np.exp(-r * T) * polyval(T * sigmaBSM ** 2, coeffs)
     tack = time.time()
     if (showDuration == True):
-        print("consuming time for call option using BSM:", tack - tick)
+        print("consuming time for call option using IV:", tack - tick)
     return putPrice
 
 
@@ -72,6 +72,7 @@ def calculateImpliedVolatilityByPutOptionPrice(S0, strike, T, r, q, price, quant
     inverseCoeffs = inverseSeries(coeffs)
     y = price * np.exp(r * T) - coeffs[0]
     omega = polyval(y, inverseCoeffs)
+    # print(omega,T)
     volEstimation = np.sqrt(omega/T)
     tack = time.time()
     if(showDuration==True):
