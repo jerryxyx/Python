@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.stats import norm
-
+import math
 def generateTruncatedInterval_empirical(S0,strike,T,r,q,sigmaBSM,model="BSM"):
     # S0 and strike can be a integer or an array.
     # Example:
@@ -49,6 +49,19 @@ def calculateNumGrid(T,sigmaBSM,quantile):
 
 def calculateConstantTerm(S0,strike,T,r,q,a):
     return np.log(S0/strike) + (r-q)*T - a
+
+def calculateNumGrid2(numGrid1,T,sigma,a,b):
+    N1 = numGrid1
+    ck = 2*math.pi*(N1-1)/(b-a)
+    z = ck**2/2*sigma**2*T
+    N2 = math.e*z*math.exp(1/math.e)
+    v1=math.pow(math.exp(z),1/N2)
+    v2=math.pow(2*math.pi,1/(2*N2))
+    v3=math.pow(N2,1/(2*N2))
+    # print("calculate N2:",N2,v1,v2,v3)
+    N2 = int(N2+1)
+    return N2
+
 # todo: estimate
 def calculateErrorUpperBound(S0,strike,r,q,T,sigmaBSM,N,quantile,showDetails=False):
     mean = (r-q-sigmaBSM**2/2)*T + np.log(S0/strike)
