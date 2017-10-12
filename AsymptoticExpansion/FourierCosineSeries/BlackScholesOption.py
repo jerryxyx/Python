@@ -1,6 +1,7 @@
 import numpy as np
 # from scipy.stats import norm
 from math import erf, sqrt
+from decimal import Decimal
 import time
 
 def d(S0,strike,T,r,q,sigmaBSM):

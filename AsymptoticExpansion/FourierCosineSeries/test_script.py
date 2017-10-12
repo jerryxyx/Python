@@ -13,17 +13,23 @@ import CFS_expansion_utils
 # Hyperparameters:
 S0 = 100
 strike = 100
-T = 1
+T = 0.1
 r = 0.05
 q = 0
 sigmaBSM = 0.2
+
+N1 = 10
+# todo:quantile setting for convergency
 quantile = 10
-N1 = 16
-N2 = 8 #that is we want to obtain (convergent rapidly)
+# quantile = (np.pi*(N1-1))**2/2+1
 # numStrikes = 10
 #############################
 # Derivative parameters:
 (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
+N2 = preprocessing.calculateNumGrid2(N1,T,sigmaBSM,a,b)# that is we want to obtain (convergent rapidly)
+
+# N2 = 30  #  >12 since we use the reversion =10
+
 #############################
 print("***************************************************************************")
 print("Hyperparameters:")
@@ -49,6 +55,8 @@ print("put price:", putPriceBSM)
 print("calculate call option price using Black-Scholes formula:")
 callPriceBSM = BlackScholesOption.callOptionPriceBSM(S0,strike,T,r,q,sigmaBSM,showDuration=True)
 print("call price:", callPriceBSM)
+putPriceBSM = float(putPriceBSM)
+callPriceBSM = float(callPriceBSM)
 print("***************************************************************************")
 print("calculate put option price using COS method:")
 print("N1:",N1)
@@ -72,6 +80,7 @@ inverseCoeffsCFS = series_reversion.inverseSeries(coeffsCFS)
 yCFS = putPriceBSM*np.exp(r*T) - coeffsCFS[0]
 wCFS = polyval(yCFS,inverseCoeffsCFS)
 print("w",wCFS)
+print("absolute error for implied volatility:",np.abs(wCFS-sigmaBSM))
 print("***************************************************************************")
 print("calculate put option price using IV expansion method:")
 print("N1:",N1,"N2:",N2)
@@ -82,7 +91,11 @@ print("*************************************************************************
 print("same volatility:")
 coeffs = IV_expansion_utils.calculateCoefficientList(strike,m,a,b,numGrid=N1,truncationOrder=N2)
 print("coeff for COS:",coeffs)
+inverseCoeffs_old = series_reversion.inverseSeries_old(coeffs)
 inverseCoeffs = series_reversion.inverseSeries(coeffs)
+print("new",inverseCoeffs)
+print("old",inverseCoeffs_old)
+
 # print(inverseCoeffs)
 y = putPriceIV*np.exp(r*T) - coeffs[0]
 w = polyval(y,inverseCoeffs)
@@ -91,12 +104,23 @@ print("T*sigmaBSM**2",sigmaBSM**2*T)
 print("absolute error:", (w-sigmaBSM**2*T))
 print("***************************************************************************")
 print("different volatility:")
-targetVol = 0.3
+targetVol = 0.15
 print("fixed volatility for expansion:",sigmaBSM)
 print("target(true) implied volatility:", targetVol)
-putPriceBSM_2 = BlackScholesOption.putOptionPriceBSM(S0,strike,T,r,q,targetVol)
+putPriceBSM_2 = float(BlackScholesOption.putOptionPriceBSM(S0,strike,T,r,q,targetVol))
 targetVolEstimation = IV_expansion_utils.calculateImpliedVolatilityByPutOptionPrice(S0,
                 strike, T, r, q, putPriceBSM_2, quantile, N1,N2,fixPoint=0.20,showDuration=True)
 print("target implied volatility estimation:", targetVolEstimation)
 print("absolute error:", np.abs(targetVolEstimation-targetVol))
+print("***************************************************************************")
+print("Testify chf:")
+chfk=CFS_expansion_utils.calculate_chfk_BSM_CFS(S0,strike,T,r,q,sigmaBSM,a,b,N1)
 
+chfkIV_CFS = CFS_expansion_utils.calculateChfkIV_CFS(S0,strike,T,r,q,sigmaBSM,a,b,N1,N2)
+print("original chfk:",chfk)
+print("IV CFS chfk:",chfkIV_CFS)
+
+CFS_expansion_utils.testifyExchangeSumOrder(S0,strike,T,r,q,sigmaBSM,a,b,N1,N2,quantile)
+print([series_reversion.testifyExponentSeries(1./(i+1)) for i in range(20)])
+
+N2=preprocessing.calculateNumGrid2(N1,T,sigmaBSM,a,b)
