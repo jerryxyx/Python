@@ -57,7 +57,10 @@ def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, quantile, numGrid,truncationOrder
     (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
     m = preprocessing.calculateConstantTerm(S0,strike,T,r,q,a)
     coeffs = calculateCoefficientList(strike, m, a, b, numGrid, truncationOrder)
-    putPrice = np.exp(-r * T) * polyval(T * sigmaBSM ** 2, coeffs)
+    w = T*sigmaBSM**2
+    wList = np.array([w**l for l in range(len(coeffs))])
+    # putPrice = np.exp(-r * T) * polyval(T * sigmaBSM ** 2, coeffs)
+    putPrice = np.exp(-r*T)*np.dot(wList,coeffs)
     tack = time.time()
     if (showDuration == True):
         print("consuming time for call option using IV:", tack - tick)
@@ -68,12 +71,29 @@ def calculateImpliedVolatilityByPutOptionPrice(S0, strike, T, r, q, price, quant
     (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,fixPoint,quantile)
     m = preprocessing.calculateConstantTerm(S0, strike, T, r, q, a)
     tick = time.time()
+
+
+    # coeffs = calculateCoefficientList(strike, m, a, b, numGrid=N1, truncationOrder=N2)
+    # inverseCoeffs = inverseSeries(coeffs)
+    # y = price * np.exp(r * T) - coeffs[0]
+    # omega = polyval(y, inverseCoeffs)
+    # # print(omega,T)
+    # volEstimation = np.sqrt(omega/T)
     coeffs = calculateCoefficientList(strike, m, a, b, numGrid=N1, truncationOrder=N2)
+    # print("coeff for COS:", coeffs)
+    # inverseCoeffs_old = inverseSeries_old(coeffs)
     inverseCoeffs = inverseSeries(coeffs)
+    print("new", inverseCoeffs)
+    # print("old", inverseCoeffs_old)
+
+    # print(inverseCoeffs)
     y = price * np.exp(r * T) - coeffs[0]
-    omega = polyval(y, inverseCoeffs)
-    # print(omega,T)
-    volEstimation = np.sqrt(omega/T)
+    w = polyval(y, inverseCoeffs)
+    print("w", w)
+    # print("T*sigmaBSM**2", sigmaBSM ** 2 * T)
+    # print("absolute error:", (w - sigmaBSM ** 2 * T))
+    volEstimation = np.sqrt(w/T)
+
     tack = time.time()
     if(showDuration==True):
         print("consuming time for calculating implied volatility:",tack-tick)
