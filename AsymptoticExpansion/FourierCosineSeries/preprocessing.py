@@ -41,6 +41,9 @@ def calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile):
     std = np.sqrt(variance)
     a = mean - quantile*std
     b = mean + quantile*std
+    # a=-12
+    # b=12
+
     return (a,b)
 
 def calculateNumGrid(T,sigmaBSM,quantile):

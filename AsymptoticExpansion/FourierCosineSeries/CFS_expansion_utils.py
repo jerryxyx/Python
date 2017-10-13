@@ -73,20 +73,23 @@ def testifyExchangeSumOrder(S0,strike,T,r,q,sigma,a,b,N1,N2,quantile):
     coeffs = calculateIVCoefficientArray(S0,strike,T,r,q,sigma,N1,N2,quantile)
     Vk = calculate_Vk_put_CFS(a,b,N1,strike)
     print("Vk",Vk)
+    print("coeffs",coeffs)
     V0 = BlackScholesOption.putOptionPriceBSM(S0,strike,T,r,q,sigma)
     V1 = np.exp(-r*T)*np.dot(chfk,Vk)
     V2 = np.exp(-r*T)*np.dot(chfk_IV,Vk)
     wl = [(sigma**2*T)**l for l in range(N2)]
     V3 = np.exp(-r*T)*np.dot(coeffs,wl)
     print("Black Scholes Value:",V0)
-    print("CFS value:",V1)
-    print("CFS+IV value:",V2)
-    print("CFS+IV+changeOrder:",V3)
+    print("put price using original chf in CFS method:",V1)
+    print("chf represented as a w power series:",V2)
+    print("exchange summation order, and let V represented as a w power series:",V3)
     inverse_coeffs = series_reversion.inverseSeries(coeffs)
+    print("inverse coeffs:",inverse_coeffs)
     w = sigma**2*T
     y = V0*np.exp(r*T)-coeffs[0]
     yl = [y**l for l in range(11)]
-    print("compare",np.dot(inverse_coeffs,yl),w)
+    w_est = np.dot(inverse_coeffs, yl)
+    print("compare",w_est,w)
 
 
     return
