@@ -41,10 +41,14 @@ def calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile):
     std = np.sqrt(variance)
     a = mean - quantile*std
     b = mean + quantile*std
-    # a=-12
-    # b=12
-
+    # a=-5
+    # b=5
     return (a,b)
+
+# def calculateToleranceIntervalWithoutSigma(S0,strike,T,r,q,quantile):
+#     a = np.log(S0/strike)+(r-q-.5)*T - quantile
+#     b = np.log(S0/strike)+(r-q)*T + quantile
+#     return (a,b)
 
 def calculateNumGrid(T,sigmaBSM,quantile):
     numGrid = int(10*quantile*sigmaBSM*np.sqrt(T))
@@ -69,6 +73,7 @@ def calculateNumGrid2(numGrid1,T,sigma,a,b):
 def calculateErrorUpperBound(S0,strike,r,q,T,sigmaBSM,N,quantile,showDetails=False):
     mean = (r-q-sigmaBSM**2/2)*T + np.log(S0/strike)
     (a,b) = calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
+    # (a, b) = calculateToleranceIntervalWithoutSigma(S0, strike, T, r, q, quantile)
     # error introduced by integral truncation
     error1 = strike*max(1-np.exp(a),0)*norm.cdf(-quantile)
 
