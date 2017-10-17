@@ -26,8 +26,10 @@ quantile = 10
 #############################
 # Derivative parameters:
 (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
-N2 = preprocessing.calculateNumGrid2(N1,T,sigmaBSM,a,b)# that is we want to obtain (convergent rapidly)
 
+# (a,b) = preprocessing.calculateToleranceIntervalWithoutSigma(S0,strike,T,r,q,quantile)
+# N2 = preprocessing.calculateNumGrid2(N1,T,sigmaBSM,a,b)# that is we want to obtain (convergent rapidly)
+N2=32
 # N2 = 32  #  >12 since we use the reversion =10
 
 #############################
@@ -96,7 +98,7 @@ coeffs = IV_expansion_utils.calculateCoefficientList(strike,m,a,b,numGrid=N1,tru
 print("coeff for COS:",coeffs)
 # inverseCoeffs_old = series_reversion.inverseSeries_old(coeffs)
 inverseCoeffs = series_reversion.inverseSeries(coeffs)
-print("new",inverseCoeffs)
+print("inverse coeff for COS",inverseCoeffs)
 # print("old",inverseCoeffs_old)
 
 # print(inverseCoeffs)
@@ -122,38 +124,8 @@ print("*************************************************************************
 # chfkIV_CFS = CFS_expansion_utils.calculateChfkIV_CFS(S0,strike,T,r,q,sigmaBSM,a,b,N1,N2)
 # print("original chfk:",chfk)
 # print("IV CFS chfk:",chfkIV_CFS)
-for strike_i in np.linspace(80,120,3):
-    print("strike=",strike_i)
-    CFS_expansion_utils.testifyExchangeSumOrder(S0,strike_i,T,r,q,sigmaBSM,a,b,N1,N2,quantile)
-print([series_reversion.testifyExponentSeries(1./(i+1)) for i in range(20)])
-
-N2=preprocessing.calculateNumGrid2(N1,T,sigmaBSM,a,b)
-def testify_IV(S0,strike,T,r,q,N1,N2,quantile,fixVol):
-    import matplotlib.pyplot as plt
-    sigmaList = np.array([(i+1)*0.1 for i in range(10)])
-    sigmaEstimation = np.zeros(10)
-    wEstimation = np.zeros(10)
-    (a,b)=preprocessing.calculateToleranceInterval(S0,strike,T,r,q,fixVol,quantile)
-    m = preprocessing.calculateConstantTerm(S0,strike,T,r,q,a)
-    for i in range(10):
-        sigma = sigmaList[i]
-        putPrice = BlackScholesOption.putOptionPriceBSM(S0,strike,T,r,q,sigma)
-        coeffs = IV_expansion_utils.calculateCoefficientList(strike,m,a,b,N1,N2)
-        inverseCoeffs = series_reversion.inverseSeries(coeffs)
-        y = putPrice * np.exp(r * T) - coeffs[0]
-        yList = [y**l for l in range(len(inverseCoeffs))]
-        # todo: cann't use len(coeffs)
-        w = np.dot(yList,inverseCoeffs)
-        sigmaEstimation[i]=np.sqrt(w/T)
-        wEstimation[i] = w
-    # print(sigmaEstimation-sigmaList)
-    print(wEstimation)
-    print(wEstimation-sigmaList**2*T)
-    # plt.plot(-sigmaList+sigmaEstimation)
-    plt.plot(wEstimation-sigmaList**2*T)
-
-    # plt.plot((-sigmaList+sigmaEstimation)/sigmaList)
-    plt.show()
-    return
-
-testify_IV(100,100,1,r,q,N1,N2,quantile=20,fixVol=0.2)
+# for strike_i in np.linspace(80,120,3):
+#     print("strike=",strike_i)
+#     CFS_expansion_utils.testifyExchangeSumOrder(S0,strike_i,T,r,q,sigmaBSM,a,b,N1,N2,quantile)
+# print([series_reversion.testifyExponentSeries(1./(i+1)) for i in range(20)])
+# IV_expansion_utils.testify_IV(S0,strike,T,r,q,16,32,10,0.3)

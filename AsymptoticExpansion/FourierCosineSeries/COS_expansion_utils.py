@@ -28,6 +28,7 @@ def calculateRk_chf(S0,strike,T,r,q,sigmaBSM,a,b,numGrid):
 def putOptionPriceCOS(S0,strike,T,r,q,sigmaBSM,quantile,numGrid,showDuration=False):
     tick = time.time()
     (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
+    # (a, b) = preprocessing.calculateToleranceIntervalWithoutSigma(S0, strike, T, r, q, quantile)
     m = preprocessing.calculateConstantTerm(S0,strike,T,r,q,a)
     Vk = calculateVkPut(strike,a,b,numGrid)
     # Rk = calculateRk(m,T,sigmaBSM,a,b,numGrid)

@@ -52,6 +52,14 @@ def calculateCoefficientList(strike,m,a,b,numGrid,truncationOrder=None):
     coefficientList = np.dot(Vk,Dkl)
     return coefficientList
 
+def calculateCoefficientList(strike,m,a,b,numGrid,truncationOrder=None):
+    if(truncationOrder==None):
+        truncationOrder=5*numGrid**2
+    ckList = [k*np.pi/(b-a) for k in range(numGrid)]
+    Vk = calculateVkPut(strike,a,b,numGrid)
+    Dkl = calculateHybridSeries2d(ckList,m,truncationOrder)
+    coefficientList = np.dot(Vk,Dkl)
+    return coefficientList
 def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, quantile, numGrid,truncationOrder,showDuration=False):
     tick = time.time()
     (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
@@ -67,7 +75,7 @@ def putOptionPriceIV(S0,strike,T,r,q,sigmaBSM, quantile, numGrid,truncationOrder
     return putPrice
 
 
-def calculateImpliedVolatilityByPutOptionPrice(S0, strike, T, r, q, price, quantile, N1,N2,fixPoint=0.20,showDuration=False):
+def calculateImpliedVolatilityByPutOptionPrice(S0, strike, T, r, q, price, quantile, N1,N2,fixPoint,showDuration=False):
     (a,b) = preprocessing.calculateToleranceInterval(S0,strike,T,r,q,fixPoint,quantile)
     m = preprocessing.calculateConstantTerm(S0, strike, T, r, q, a)
     tick = time.time()
@@ -102,3 +110,42 @@ def calculateImpliedVolatilityByPutOptionPrice(S0, strike, T, r, q, price, quant
 # print(calculateTrigonometricSeries(10,1,10))
 # print(calculateExponentialSeries(np.sqrt(2),10))
 # print(calculateHybridSeries(1,1,10))
+def testify_IV(S0,strike,T,r,q,a,b,N1,N2,quantile,fixVol):
+    # import matplotlib.pyplot as plt
+
+    sigmaList = np.array([(i+1)*0.1 for i in range(10)])
+    varEstimation = np.zeros(10)
+    # wEstimation = np.zeros(10)
+    # (a,b)=preprocessing.calculateToleranceInterval(S0,strike,T,r,q,fixVol,quantile)
+    # (a,b)=(-5,5)
+    m = preprocessing.calculateConstantTerm(S0,strike,T,r,q,a)
+    coeffs = calculateCoefficientList(strike, m, a, b, N1, N2)
+    inverseCoeffs = inverseSeries(coeffs)
+    putPriceTrue =[]
+    putPriceIV = []
+    for i in range(10):
+        sigma = sigmaList[i]
+        putPrice = BlackScholesOption.putOptionPriceBSM(S0,strike,T,r,q,sigma)
+        putPriceTrue.append(putPrice)
+        w = [(sigma**2*T)**l for l in range(len(coeffs))]
+        putPriceIV.append(np.dot(coeffs,w)*np.exp(-r*T))
+        y = putPrice * np.exp(r * T) - coeffs[0]
+        yList = [y**l for l in range(len(inverseCoeffs))]
+        # todo: cann't use len(coeffs)
+        w = np.dot(yList,inverseCoeffs)
+        varEstimation[i]=w/T
+        # wEstimation[i] = w
+    # print(sigmaEstimation-sigmaList)
+    print("COS: fixVol",fixVol)
+    print("COS: sigma list",sigmaList)
+    print("COS: target price",putPriceTrue)
+    print("COS: price estimations",putPriceIV)
+    print("COS: target vars",sigmaList**2)
+    print("COS: var estimations",varEstimation)
+
+    # plt.plot(-sigmaList+sigmaEstimation)
+    # plt.plot(wEstimation-sigmaList**2*T)
+
+    # plt.plot((-sigmaList+sigmaEstimation)/sigmaList)
+    # plt.show()
+    return
