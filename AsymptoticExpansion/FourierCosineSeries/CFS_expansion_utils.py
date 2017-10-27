@@ -41,9 +41,9 @@ def calculateIVCoefficientArray(S0,strike,T,r,q,sigmaBSM,N1,N2,quantile):
     for l in range(N2):
         # coeff1 = np.exp(-complex(0,ckArray*m))
         coeff1 = np.exp(-complexCkArray*m)
-        print("coeff1[",l,"]",coeff1)
+        # print("coeff1[",l,"]",coeff1)
         coeff2 = ((complexCkArray+complexCkArray**2)/2)**l /factorial(l)
-        print("coeff2[", l, "]", coeff2)
+        # print("coeff2[", l, "]", coeff2)
         coeffArray[l] = np.sum(coeff1*coeff2*VkArray)
         # coeff2 = np.array([(complex(-ck**2,ck)/2)**l / factorial(l) for ck in ckArray])
         # coeffArray[l] = np.sum(coeff1*coeff2*VkArray)
