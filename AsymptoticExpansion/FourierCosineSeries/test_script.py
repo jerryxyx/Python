@@ -18,7 +18,7 @@ r = 0.05
 q = 0
 sigmaBSM = 0.2
 quantile = 10
-N1 = 16
+N1 = 32
 N2 = 8 #that is we want to obtain (convergent rapidly)
 # numStrikes = 10
 #############################
