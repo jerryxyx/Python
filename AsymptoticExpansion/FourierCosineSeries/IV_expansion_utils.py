@@ -149,3 +149,66 @@ def testify_IV(S0,strike,T,r,q,a,b,N1,N2,quantile,fixVol):
     # plt.plot((-sigmaList+sigmaEstimation)/sigmaList)
     # plt.show()
     return
+
+
+def testify_IV_iteration(S0,strike,T,r,q,quantile,N1,N2,fixVol,n_iter,testSigma):
+    # import matplotlib.pyplot as plt
+    # sigma=fixVol
+    len_coeffs = 2*(N2//2)
+    sigmaList = np.array(testSigma)
+    varEstimation = np.zeros(10)
+    sigmaEstimation = np.zeros(len(testSigma))
+    # wEstimation = np.zeros(10)
+
+    # m = preprocessing.calculateConstantTerm(S0,strike,T,r,q,a)
+    # coeffs = calculateCoefficientList(strike, m, a, b, N1, N2)
+    # inverseCoeffs = inverseSeries(coeffs)
+    putPriceTrue =[]
+    putPriceIV = []
+    for i in range(len(sigmaList)):
+        sigma=fixVol
+        putPriceEstimation = 0
+        target_sigma = sigmaList[i]
+        putPrice = BlackScholesOption.putOptionPriceBSM(S0, strike, T, r, q, target_sigma)
+        putPriceTrue.append(putPrice)
+        targit_w = [(target_sigma ** 2 * T) ** l for l in range(len_coeffs)]
+        for j in range(n_iter):
+            (a, b) = preprocessing.calculateToleranceInterval(S0, strike, T, r, q, sigmaBSM=sigma, quantile=quantile)
+            # print("a,b",a,b)
+            m = preprocessing.calculateConstantTerm(S0, strike, T, r, q, a)
+            coeffs = calculateCoefficientList(strike, m, a, b, N1, N2)
+            inverseCoeffs = inverseSeries(coeffs)
+
+
+            w = [(target_sigma**2*T)**l for l in range(len(coeffs))]
+
+            y = putPrice * np.exp(r * T) - coeffs[0]
+            yList = [y**l for l in range(len(inverseCoeffs))]
+            # todo: cann't use len(coeffs)
+            w2 = np.dot(yList,inverseCoeffs)
+
+            # if w2<0:
+            #     w2=-w2
+
+            sigma=np.sqrt(w2/T)
+            # print("n_iter:", j, "var:", w2,"sigma",sigma)
+            putPriceEstimation=np.dot(coeffs, w) * np.exp(-r * T)
+
+        putPriceIV.append(putPriceEstimation)
+        sigmaEstimation[i] = sigma
+        varEstimation[i] = sigma**2
+        # wEstimation[i] = w
+    # print(sigmaEstimation-sigmaList)
+    print("COS_it: fixVol",fixVol)
+    print("COS_it: sigma list",sigmaList)
+    print("COS_it: target price",putPriceTrue)
+    print("COS_it: price estimations",putPriceIV)
+    print("COS_it: target sigmas",sigmaList)
+    print("COS_it: sigma estimations",sigmaEstimation)
+
+    # plt.plot(-sigmaList+sigmaEstimation)
+    # plt.plot(wEstimation-sigmaList**2*T)
+
+    # plt.plot((-sigmaList+sigmaEstimation)/sigmaList)
+    # plt.show()
+    return

@@ -16,10 +16,10 @@ r = 0.0319
 q = 0
 # mu = r-q
 T = 1
-N1 = 16
+N1 = 100
 param = heston.HestonParam(lm=kappa, mu=theta, eta=volOfVar, rho=rho, sigma=V0)
 hestonInstance = heston.Heston(param=param, riskfree=r, maturity=T)
-a,b = hestonInstance.cos_restriction(10)
+a,b = hestonInstance.cos_restriction(100)
 # print(hestonInstance.charfun(3))
 # print(HestonModel.chf(3,T,r,q,kappa,theta,volOfVar,rho,S0,V0))
 
