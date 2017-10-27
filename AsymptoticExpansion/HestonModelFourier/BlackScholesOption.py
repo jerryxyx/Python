@@ -36,3 +36,7 @@ def callOptionPriceBSM(S0,strike,T,r,q,sigmaBSM,showDuration=False):
     if (showDuration == True):
         print("consuming time for call option using BSM:", tack - tick)
     return C
+
+def chf(u,r,q,T,sigma):
+    chfBSM = np.exp(1.j*u*((r-q-0.5*sigma**2)*T) - u**2*sigma**2*T/2)
+    return chfBSM
