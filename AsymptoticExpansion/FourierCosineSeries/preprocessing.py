@@ -36,15 +36,34 @@ def generateTruncatedInterval_empirical(S0,strike,T,r,q,sigmaBSM,model="BSM"):
 
 
 def calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile):
+
     mean = np.log(S0/strike)+(r-q-.5*sigmaBSM**2)*T
     variance = sigmaBSM**2*T
     std = np.sqrt(variance)
     a = mean - quantile*std
     b = mean + quantile*std
+
+    std_approxy = 0.4 * np.sqrt(T)
+    a_approxy = mean - quantile*std_approxy
+    b_approxy = mean + quantile*std_approxy
+    # a=-5
+    # b=5
+    return (a_approxy,b_approxy)
+def calculateToleranceInterval_v2(S0,strike,T,r,q,sigmaBSM,quantile):
+    if sigmaBSM<0:
+        sigmaBSM==0.1
+    mean = np.log(S0/strike)+(r-q-.5*sigmaBSM**2)*T
+    variance = sigmaBSM**2*T
+    std = np.sqrt(variance)
+    a = mean - quantile*std
+    b = mean + quantile*std
+
+    std_approxy = 0.2 * np.sqrt(T)
+    a_approxy = mean - quantile*std_approxy
+    b_approxy = mean + quantile*std_approxy
     # a=-5
     # b=5
     return (a,b)
-
 # def calculateToleranceIntervalWithoutSigma(S0,strike,T,r,q,quantile):
 #     a = np.log(S0/strike)+(r-q-.5)*T - quantile
 #     b = np.log(S0/strike)+(r-q)*T + quantile
