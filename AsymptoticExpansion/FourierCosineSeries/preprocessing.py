@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.stats import norm
-
+import math
 def generateTruncatedInterval_empirical(S0,strike,T,r,q,sigmaBSM,model="BSM"):
     # S0 and strike can be a integer or an array.
     # Example:
@@ -36,12 +36,38 @@ def generateTruncatedInterval_empirical(S0,strike,T,r,q,sigmaBSM,model="BSM"):
 
 
 def calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile):
+
     mean = np.log(S0/strike)+(r-q-.5*sigmaBSM**2)*T
     variance = sigmaBSM**2*T
     std = np.sqrt(variance)
     a = mean - quantile*std
     b = mean + quantile*std
+
+    std_approxy = 0.4 * np.sqrt(T)
+    a_approxy = mean - quantile*std_approxy
+    b_approxy = mean + quantile*std_approxy
+    # a=-5
+    # b=5
+    return (a_approxy,b_approxy)
+def calculateToleranceInterval_v2(S0,strike,T,r,q,sigmaBSM,quantile):
+    if sigmaBSM<0:
+        sigmaBSM==0.1
+    mean = np.log(S0/strike)+(r-q-.5*sigmaBSM**2)*T
+    variance = sigmaBSM**2*T
+    std = np.sqrt(variance)
+    a = mean - quantile*std
+    b = mean + quantile*std
+
+    std_approxy = 0.2 * np.sqrt(T)
+    a_approxy = mean - quantile*std_approxy
+    b_approxy = mean + quantile*std_approxy
+    # a=-5
+    # b=5
     return (a,b)
+# def calculateToleranceIntervalWithoutSigma(S0,strike,T,r,q,quantile):
+#     a = np.log(S0/strike)+(r-q-.5)*T - quantile
+#     b = np.log(S0/strike)+(r-q)*T + quantile
+#     return (a,b)
 
 def calculateNumGrid(T,sigmaBSM,quantile):
     numGrid = int(10*quantile*sigmaBSM*np.sqrt(T))
@@ -49,10 +75,24 @@ def calculateNumGrid(T,sigmaBSM,quantile):
 
 def calculateConstantTerm(S0,strike,T,r,q,a):
     return np.log(S0/strike) + (r-q)*T - a
+
+def calculateNumGrid2(numGrid1,T,sigma,a,b):
+    N1 = numGrid1
+    ck = 2*math.pi*(N1-1)/(b-a)
+    z = ck**2/2*sigma**2*T
+    N2 = math.e*z*math.exp(1/math.e)
+    v1=math.pow(math.exp(z),1/N2)
+    v2=math.pow(2*math.pi,1/(2*N2))
+    v3=math.pow(N2,1/(2*N2))
+    # print("calculate N2:",N2,v1,v2,v3)
+    N2 = int(N2+1)
+    return N2
+
 # todo: estimate
 def calculateErrorUpperBound(S0,strike,r,q,T,sigmaBSM,N,quantile,showDetails=False):
     mean = (r-q-sigmaBSM**2/2)*T + np.log(S0/strike)
     (a,b) = calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile)
+    # (a, b) = calculateToleranceIntervalWithoutSigma(S0, strike, T, r, q, quantile)
     # error introduced by integral truncation
     error1 = strike*max(1-np.exp(a),0)*norm.cdf(-quantile)
 
