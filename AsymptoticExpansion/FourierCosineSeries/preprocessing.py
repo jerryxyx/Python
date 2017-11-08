@@ -48,7 +48,7 @@ def calculateToleranceInterval(S0,strike,T,r,q,sigmaBSM,quantile):
     b_approxy = mean + quantile*std_approxy
     # a=-5
     # b=5
-    return (a_approxy,b_approxy)
+    return (a,b)
 def calculateToleranceInterval_v2(S0,strike,T,r,q,sigmaBSM,quantile):
     if sigmaBSM<0:
         sigmaBSM==0.1

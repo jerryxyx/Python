@@ -36,7 +36,7 @@ for strike in [90,100,110]:
         # sensitivityAnalysis(S0 = S0, T=T, strike = strike, r = 0.05,
         #             q = 0.0, fixVol = 0.25, N1 = 16,quantile = 10)
         sensitivityAnalysis(S0 = S0, T=T, strike = strike, r = 0.05,
-                    q = 0.0, fixVol = 0.0, N1 = 32,quantile = 10)
+                    q = 0.0, fixVol = 0.25, N1 = 32,quantile = 10)
 print("*******************************************************")
 print("CONCLUSION:")
 print("Only in the market case with COS method with relatively low volatility(vol<0.6 or var<0.36), the result doesn't go crazy. But still far from acceptible")
