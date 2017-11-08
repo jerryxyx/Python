@@ -10,7 +10,7 @@ def sensitivityAnalysis(S0,T,strike,r,q,fixVol,N1,quantile):
     print("S0",S0,"strike",strike,"T",T,"r",r,"q",q,"fixvol",fixVol,"N1",N1,"N2",N2,"a",a,"b",b,"quantile",quantile)
     IV_expansion_utils.testify_IV_iteration(S0, strike, T, r, q, quantile, N1, N2, fixVol,n_iter=1,testSigma=[0.1,0.15,0.2,0.25,0.3])
     print("********************************** n_iter=20 **************************")
-    IV_expansion_utils.testify_IV_iteration(S0, strike, T, r, q, quantile, N1, N2, fixVol, n_iter=20,testSigma=[0.1, 0.2, 0.3])
+    IV_expansion_utils.testify_IV_iteration(S0, strike, T, r, q, quantile, N1, N2, fixVol, n_iter=40,testSigma=[0.1, 0.2, 0.3])
     # IV_expansion_utils.testify_IV(S0,strike,T,r,q,a,b,N1,N2,quantile,fixVol)
     # CFS_expansion_utils.testify_CFS_IV(S0=S0,strike=strike,T=T,r=r,q=q,
     #                                fixVol=fixVol,N1=N1,N2=N2,quantile=quantile)
@@ -36,7 +36,11 @@ for strike in [90,100,110]:
         # sensitivityAnalysis(S0 = S0, T=T, strike = strike, r = 0.05,
         #             q = 0.0, fixVol = 0.25, N1 = 16,quantile = 10)
         sensitivityAnalysis(S0 = S0, T=T, strike = strike, r = 0.05,
+<<<<<<< HEAD
                     q = 0.0, fixVol = 0.25, N1 = 32,quantile = 10)
+=======
+                    q = 0.0, fixVol = 0.1, N1 = 32,quantile = 10)
+>>>>>>> 85748e26a7d8a5276d18134d31dd562c345e1116
 print("*******************************************************")
 print("CONCLUSION:")
 print("Only in the market case with COS method with relatively low volatility(vol<0.6 or var<0.36), the result doesn't go crazy. But still far from acceptible")
