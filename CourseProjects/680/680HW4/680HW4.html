@@ -12273,9 +12273,15 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Similar to problem 1, only difference is here, we have our payment interval not annually but semiannually, so we should introduce time interval fraction denoted as $\alpha$</p>
+<<<<<<< HEAD
 <h3 id="Assumption-about-default-dates">Assumption about default dates<a class="anchor-link" href="#Assumption-about-default-dates">&#182;</a></h3><p><span style="color:red">Assume the defaults only occur semiannually</span>, say, [0.25,0.75,1.25,1.75]</p>
 <p>denote discounted factor of each payment date([0.5,1,1.5,2]) as DF,</p>
 <p>denote discounted factor of each half year([0.5,1,1.5,2]) as $DF^*$,</p>
+=======
+<h3 id="Assumption-about-default-dates-(*please-check-this*)">Assumption about default dates (<span style="color:red">*please check this*</span>)<a class="anchor-link" href="#Assumption-about-default-dates-(*please-check-this*)">&#182;</a></h3><p><span style="color:red">Assume the defaults only occur semiannually</span>, say, [0,0.5,1,1.5]</p>
+<p>denote discounted factor of each payment date([0.25,0.75,1.25,1.75]) as DF,</p>
+<p>denote discounted factor of each half year([0,0.5,1,1.5]) as $DF^*$,</p>
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 <p>survival probability as SP,</p>
 <p>default probability as DP,</p>
 <p>CDS spread as s.</p>
@@ -12359,7 +12365,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_default</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.015</span><span class="p">,</span><span class="mf">0.015</span><span class="p">]</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">p_default</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.15</span><span class="p">,</span><span class="mf">0.15</span><span class="p">]</span>
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 <span class="n">p_survival</span> <span class="o">=</span> <span class="n">P_survival_v2</span><span class="p">(</span><span class="n">p_default</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">p_survival</span><span class="p">)</span>
 </pre></div>
@@ -12374,7 +12384,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
+<<<<<<< HEAD
 <pre>[ 0.99   0.98   0.965  0.95 ]
+=======
+<pre>[ 0.99  0.98  0.83  0.68]
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 </pre>
 </div>
 </div>
@@ -12423,7 +12437,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">rf</span> <span class="o">=</span> <span class="mf">0.06</span>
 <span class="n">times1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.75</span><span class="p">,</span><span class="mf">1.25</span><span class="p">,</span><span class="mf">1.75</span><span class="p">]</span>
+<<<<<<< HEAD
 <span class="n">times2</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+=======
+<span class="n">times2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mf">1.5</span><span class="p">]</span>
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 <span class="n">df1</span><span class="o">=</span><span class="n">Discounted_factor_v2</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span><span class="n">times1</span><span class="p">)</span>
 <span class="n">df2</span><span class="o">=</span><span class="n">Discounted_factor_v2</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span><span class="n">times2</span><span class="p">)</span>
 </pre></div>
@@ -12451,7 +12469,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
+<<<<<<< HEAD
 <pre>[ 0.98511194  0.95599748  0.92774349  0.90032452] [ 0.97044553  0.94176453  0.91393119  0.88692044]
+=======
+<pre>[ 0.98511194  0.95599748  0.92774349  0.90032452] [ 1.          0.97044553  0.94176453  0.91393119]
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 </pre>
 </div>
 </div>
@@ -12466,9 +12488,15 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">Calculate_CDS_spread</span><span class="p">(</span><span class="n">rf</span><span class="p">,</span><span class="n">df1</span><span class="p">,</span><span class="n">df2</span><span class="p">,</span><span class="n">p_default</span><span class="p">,</span><span class="n">p_survival</span><span class="p">,</span><span class="n">recovery_rate</span><span class="p">,</span><span class="n">alphas</span><span class="p">):</span>
+<<<<<<< HEAD
     <span class="n">obj_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">PV_expected_payment_v2</span><span class="p">(</span><span class="n">DF</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span><span class="n">P_survival</span><span class="o">=</span><span class="n">p_survival</span><span class="p">,</span><span class="n">spread</span><span class="o">=</span><span class="n">s</span><span class="p">,</span><span class="n">time_intervals</span><span class="o">=</span><span class="n">alphas</span><span class="p">)</span>\
     <span class="o">+</span> <span class="n">PV_accrued_payment_v2</span><span class="p">(</span><span class="n">DF</span><span class="o">=</span><span class="n">df1</span><span class="p">,</span><span class="n">P_default</span><span class="o">=</span><span class="n">p_default</span><span class="p">,</span><span class="n">spread</span><span class="o">=</span><span class="n">s</span><span class="p">,</span><span class="n">time_intervals</span><span class="o">=</span><span class="n">alphas</span><span class="p">)</span>\
     <span class="o">-</span> <span class="n">PV_expected_payoff</span><span class="p">(</span><span class="n">DF</span><span class="o">=</span><span class="n">df1</span><span class="p">,</span><span class="n">P_default</span><span class="o">=</span><span class="n">p_default</span><span class="p">,</span><span class="n">recovery_rate</span><span class="o">=</span><span class="n">recovery_rate</span><span class="p">)</span>
+=======
+    <span class="n">obj_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">PV_expected_payment_v2</span><span class="p">(</span><span class="n">DF</span><span class="o">=</span><span class="n">df1</span><span class="p">,</span><span class="n">P_survival</span><span class="o">=</span><span class="n">p_survival</span><span class="p">,</span><span class="n">spread</span><span class="o">=</span><span class="n">s</span><span class="p">,</span><span class="n">time_intervals</span><span class="o">=</span><span class="n">alphas</span><span class="p">)</span>\
+    <span class="o">+</span> <span class="n">PV_accrued_payment_v2</span><span class="p">(</span><span class="n">DF</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span><span class="n">P_default</span><span class="o">=</span><span class="n">p_default</span><span class="p">,</span><span class="n">spread</span><span class="o">=</span><span class="n">s</span><span class="p">,</span><span class="n">time_intervals</span><span class="o">=</span><span class="n">alphas</span><span class="p">)</span>\
+    <span class="o">-</span> <span class="n">PV_expected_payoff</span><span class="p">(</span><span class="n">DF</span><span class="o">=</span><span class="n">df2</span><span class="p">,</span><span class="n">P_default</span><span class="o">=</span><span class="n">p_default</span><span class="p">,</span><span class="n">recovery_rate</span><span class="o">=</span><span class="n">recovery_rate</span><span class="p">)</span>
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
     <span class="n">spread</span> <span class="o">=</span> <span class="n">brentq</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">spread</span>
 </pre></div>
@@ -12483,7 +12511,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
+<<<<<<< HEAD
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">alphas</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]</span>
+=======
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">alphas</span><span class="o">=</span><span class="p">[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]</span>
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 <span class="n">regular_CDS_spread</span> <span class="o">=</span> <span class="n">Calculate_CDS_spread</span><span class="p">(</span><span class="mf">0.06</span><span class="p">,</span><span class="n">df1</span><span class="p">,</span><span class="n">df2</span><span class="p">,</span><span class="n">p_default</span><span class="p">,</span><span class="n">p_survival</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="n">alphas</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">regular_CDS_spread</span><span class="p">)</span>
 </pre></div>
@@ -12498,7 +12530,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
+<<<<<<< HEAD
 <pre>0.020633134827634916
+=======
+<pre>0.16147919419385157
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 </pre>
 </div>
 </div>
@@ -12535,7 +12571,11 @@ iYsCQ0RE4qLAEBGRuPx/UNQMHY5aNgIAAAAASUVORK5CYII=
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
+<<<<<<< HEAD
 <pre>0.025791418534543645
+=======
+<pre>0.20184899274231444
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
 </pre>
 </div>
 </div>
@@ -12865,6 +12905,7 @@ YII=
 </div>
 
 </div>
+<<<<<<< HEAD
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
@@ -12878,6 +12919,8 @@ YII=
 </div>
 
 </div>
+=======
+>>>>>>> a48c164db0ae9acc4f91c563e6080c42d0b939da
     </div>
   </div>
 </body>
