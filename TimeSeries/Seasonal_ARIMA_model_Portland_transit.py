@@ -32,8 +32,8 @@ plt.show()
 from statsmodels.tsa.stattools import adfuller
 def test_stationary(time_series):
     # determine rolling statics
-    rolmean = pd.rolling_mean(time_series,window=12)
-    rolstd = pd.rolling_std(time_series,window=12)
+    rolmean = time_series.rolling(window=12).mean()
+    rolstd = time_series.rolling(window=12).std()
     # rolstd = pd.rolling(window=12).std()
     # plot rolling statistics
     fig = plt.figure(figsize=(12,8))
