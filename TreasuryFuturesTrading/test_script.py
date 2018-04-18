@@ -36,11 +36,16 @@ backTesting.set_maxPoistions(maxPositions)
 backTesting.set_rollDate(rollDate)
 backTesting.set_triggerS(triggerS)
 backTesting.set_triggerT(triggerT)
+backTesting.set_exitUpLevel(exitUpLevel)
+backTesting.set_exitDownLevel(exitDownLevel)
 # History Data
 backTesting.input_data(dfPrices,dfDurations,dfOptWeights,dfRollingStats)
 
 # pre-processing
 df2 = backTesting.preprocessing()
 print(df2.head())
+
+# strategy's cumulative positions
+portCumPositions = backTesting.calculateCumPositions()
 
 

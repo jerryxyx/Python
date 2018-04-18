@@ -16,6 +16,48 @@ import numpy as np
 from datetime import datetime
 import pandas as pd
 
+
+class Positions:
+    def __init__(self, positions, startIdx, endIdx):
+        self.positions = np.array(positions)
+        self.startIdx = startIdx
+        self.endIdx = endIdx
+
+    def duration(self):
+        return self.endIdx - self.startIdx
+
+
+class PortPositions:
+    def __init__(self, timeSize, numEquities):
+        # print(timeSize)
+        self.startIdx = 0
+        self.endIdx = timeSize - 1
+        self.cumPositions = np.zeros((timeSize, numEquities))
+        self.numPositions = np.zeros(timeSize)
+
+    # todo: i in range number to number
+    # i in df.index[]
+    def addPositions(self, positionsChange):
+        for i in range(positionsChange.startIdx, positionsChange.endIdx):
+            #             print("##################################################")
+            #             print(type(positionsChange.positions))
+            #             print(type(self.cumPositions[i,:]))
+            self.cumPositions[i, :] = self.cumPositions[i, :] + positionsChange.positions
+            self.numPositions[i] = self.numPositions[i] + 1
+
+    def maxPosJudge(self, positionsChange, maxPos):
+        startIdx = positionsChange.startIdx
+        # print(startIdx)
+        # print(self.numPositions[startIdx])
+        return self.numPositions[startIdx] < maxPos
+
+    def get_cumPositions():
+        return self.cumPositions
+
+    def get_numPositions():
+        return self.numPositions
+
+
 class BackTestingSystem:
 
 
@@ -74,6 +116,12 @@ class BackTestingSystem:
     def set_maxPositions(self, maxPositions):
         self.maxPositions = maxPositions
 
+    def set_exitUpLevel(self, exitUpLevel):
+        self.exitUpLevel = exitUpLevel
+
+    def set_exitDownLevel(self, exitDownLevel):
+        self.exitDownLevel = exitDownLevel
+
     def input_data(self, dfPrices, dfDurations, dfOptWeights, dfRollingStats):
         self.dfPrices = dfPrices
         self.dfDurations = dfDurations
@@ -95,7 +143,6 @@ class BackTestingSystem:
 
     def preprocessing(self):
 
-        # todo: preprocessing
         print("****************************************************************")
         print("Start preprocessing...")
         # basic setting
@@ -129,7 +176,6 @@ class BackTestingSystem:
         self.portNotional.rename("PortNotional", inplace=True)
 
         # positions
-        # todo: uncouple columns name
         positionsColumns = ["dfPosition" + dur_str[8:] for dur_str in self.dfDurations.columns]
         self.dfPositions = pd.DataFrame(index=self.df.index, columns=positionsColumns)
         for index, row in self.dfOptWeights.iterrows():
@@ -166,3 +212,44 @@ class BackTestingSystem:
         print("Preprocessing finished!")
         print("****************************************************************")
         return self.df
+
+    def _enterSignal(self, time):
+        return self.ZScore[time] <= -self.triggerS and self.TScore[time] <= -self.triggerT and time < self.rollDate
+
+    def _exitTime(self, startTime):
+        positions = self.dfPositions.loc[startTime, :]
+        p0 = np.sum(positions.values * self.dfPrices.loc[startTime, :].values * self.pointPrices)
+        exitUp = self.exitUpLevel * self.portTickSize[startTime]
+        exitDown = self.exitDownLevel * self.portTickSize[startTime]
+        startIdx = self.df.index.get_loc(startTime)
+        for time in self.df.index[startIdx:]:
+            price = np.sum(positions.values * self.dfPrices.loc[time, :].values * self.pointPrices)
+            #             print(price)
+            #             print(p0)
+            if (price - p0 >= exitUp):
+                break
+            if (price - p0 <= -exitDown):
+                break
+            #         print(time)
+        return time
+
+    # todo: change misleading name upwards, "port" is the term for portfolio, if not execute, call "df"
+    def calculateCumPositions(self):
+        print("**************************************************")
+        print("start calculate strategy positions")
+        self.portPositions = PortPositions(len(self.df.index), self.numEquities)
+        for idx, time in enumerate(self.df.index):
+            positions = self.dfPositions.iloc[idx, :]
+            endTimeIdx = self.df.index.get_loc(self._exitTime(time))
+            positionsChange = Positions(positions, idx, endTimeIdx)
+            #             print("positionsChange.positions",positionsChange.positions)
+            if (self._enterSignal(time) and self.portPositions.maxPosJudge(positionsChange, self.maxPositions)):
+                self.portPositions.addPositions(positionsChange)
+                print("add positions:", positionsChange.positions)
+                print("time:",time)
+                print("number of positions:",self.portPositions.numPositions[idx])
+        print("complete calculation")
+        print("**************************************************")
+        return self.portPositions
+
+
