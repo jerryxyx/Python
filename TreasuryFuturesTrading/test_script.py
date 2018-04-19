@@ -47,5 +47,6 @@ print(df2.head())
 
 # strategy's cumulative positions
 portCumPositions = backTesting.calculateCumPositions()
+print(portCumPositions.cumPositions[-10:])
 
 
