@@ -50,12 +50,5 @@ df2 = backTesting.preprocessing()
 print(df2.head())
 
 # strategy's cumulative positions
-portCumPositions = backTesting.calculateCumPositions()
-portInitMargin = backTesting.calculateInitMargin()
-portDailyPnL = backTesting.calculateDailyPnL()
-portTransactionCost = backTesting.calculateTransactionCost()
-portDailyNetPnL = backTesting.calculateDailyNetPnL()
-portCumNetPnL = backTesting.calculateCumNetPnL()
-
-plt.plot(portCumNetPnL)
-plt.show()
+output_data = backTesting.output_data()
+output_data.to_csv("~/Downloads/output.csv")
