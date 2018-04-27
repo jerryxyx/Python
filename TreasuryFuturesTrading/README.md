@@ -159,20 +159,23 @@ At time t,
 
 ### Outputs Files
 
-* tmp20xx.csv
+* output.csv
 
-    The first output files are tmp20xx.csv. Each file stores the performance of our portfolio in one calendar year (e.g. 2017-01-01 to 2017-12-31). Specifically, the 1st column is the date time, the 2nd column is the dollar value of our portfolio at each time point, and the third column is the cumulative trading cost at each time point.
+  This file stores the performance of our portfolio in one calendar year (e.g. 2017-01-01 to 2017-12-31). Specifically, the 1st column is the date time, the 2nd to 6rd columns are the quoted price for different treasury futures. The 7th to 11th columns are the optimal weights we obtained using step 1 constraints. The 12th column is the portfolio total notional. The 13th to 17th column are portfolio positions on different futures. The 18th column is the portfolio price. The 19th column is the initial margin we should put in exchange. The 20th column is the daily PnL. The 21th column is the cumulative net PnL removing the transaction cost.
 
-* TradeResult20xxMOnth.csv
-    
-	The second output files are TradeResult20xxMOnth.csv. Each file contains the more detailed information of our portfolio during a 3-month period. column A is the date time; column B-F are our holding positions in each futures contract at this historical time point in our back testing; column G-K are the historical futures price at each time point; column L-P are the historical futures corresponding bond's duration at each time point; column Q-U are the optimized weights on different futures contract at each time point; column V,W,X are the cumulative cost, portfolio value and cumulative profit respectively; column Y-AC store our indicators by applying moving averages strategy.
 
 ### Code
-Code files needed: BacktestMain.m, Backtest.m, fraction1.m, hourlyDTN1.m, calduration.m, optimizeSharpe.m. 
+Code files needed: BacktestMain.m, Backtest.m, fraction1.m, hourlyDTN1.m, calduration.m, optimizeSharpe.m. For this project, MATLAB output is the input of our backtesting and algorithm trading system.
 
-To get results, run BacktestMain.m with parameters as next section, and it calls other functions in running process.
+Utils.py: Some in-hands functions
 
-Our programs and input data should be in the same folder under this working dire
+BackTesting.py: Defined the class of Positions to handle position changes and closes. Defined the class BackTestingSystem to get the results
+
+test_script: run test_script.py with parameters as next section, and it calls other functions(utils) in running process.
+
+BackTestingScript.ipython: An interactive python(ipython) file can be opened by jupyter notebook.
+
+Input data can be obtained by the following MATLAB files which defined in Methodology section (todo: replicate all of them into Python with SciPy)
 
 * hourlyDTN.m: 
 
@@ -188,12 +191,4 @@ Our programs and input data should be in the same folder under this working dire
 
 * optimizeSharpe.m: 
     
-	to get the optimized W_0 and r_0 in Methodology step 1.
-
-* Backtest.m: 
-    
-	to do backtest for 3- month data. Get portfolio performance.
-
-* BacktestMain.m: 
-
-    to do backtest for whatever period we want. 
+	to get the optimized W_0 and r_0 in Methodology step 
