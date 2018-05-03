@@ -2,6 +2,29 @@
 ###################
 cn_*.csv
 
+# Spesific directors #
+# #################
+.idea/
+.ipython_checkpoints/
+__pycache__/
+
+# Backup #
+###################
+*.pyo
+*.pyc
+*~
+*.bak
+*.swp
+*#
+
+# Images #
+###################
+*.jpg
+*.gif
+*.png
+*.svg
+*.ico
+
 # Compiled source #
 ###################
 *.com
