@@ -2,12 +2,12 @@
     class: BackTestingSystem
     author: Jerry Xia
     email: xyxjerry@gmail.com
-    date: 16/Apr/2017
+    date: 20/Apr/2017
     modules:
      - data input
      - preprocessing
-     - strategy
-     - fitting
+     - PnL relative computing
+     - data output
 """
 
 
@@ -38,6 +38,8 @@ class PortPositions:
     # todo: i in range number to number
     # i in df.index[]
     def addPositions(self, positionsChange):
+        if (positionsChange.startIdx >= positionsChange.endIdx):
+            return
         for i in range(positionsChange.startIdx, positionsChange.endIdx):
             #             print("##################################################")
             #             print(type(positionsChange.positions))
@@ -60,8 +62,7 @@ class PortPositions:
 
 class BackTestingSystem:
 
-
-    def __init__(self, numEquities, pointPrices, tickSizePrices, margins):
+    def __init__(self, numEquities, pointPrices, tickSizePrices, margins, transactionCostCoeff):
         self.numEquities = numEquities
         if (len(pointPrices) == numEquities):
             self.pointPrices = np.array(pointPrices)
@@ -75,6 +76,12 @@ class BackTestingSystem:
             self.margins = np.array(margins)
         else:
             print("number of equities unmatch: margins")
+
+        self.transactionCostCoeff = transactionCostCoeff
+        # others
+        self.PnL = None
+        self.transactionCost = None
+        self.netPnL = None
 
     def set_rollDate(self, rollDate):
         self.rollDate = rollDate
@@ -216,7 +223,8 @@ class BackTestingSystem:
     def _enterSignal(self, time):
         return self.ZScore[time] <= -self.triggerS and self.TScore[time] <= -self.triggerT and time < self.rollDate
 
-    def _exitTime(self, startTime):
+    def _exitTime(self, startTime, rollTime=None):
+        #         print("rollTimehere",rollTime)
         positions = self.dfPositions.loc[startTime, :]
         p0 = np.sum(positions.values * self.dfPrices.loc[startTime, :].values * self.pointPrices)
         exitUp = self.exitUpLevel * self.portTickSize[startTime]
@@ -231,6 +239,15 @@ class BackTestingSystem:
             if (price - p0 <= -exitDown):
                 break
             #         print(time)
+
+        if (rollTime and time > rollTime):
+            #             print("############$$$$$$$$$$$$$$$$$$$$#################")
+            #             print("time",time)
+            #             print("rolltime",rollTime)
+            time = rollTime
+        #             print("after changing, time",time)
+        #             print("############$$$$$$$$$$$$$$$$$$$$#################")
+
         return time
 
     # todo: change misleading name upwards, "port" is the term for portfolio, if not execute, call "df"
@@ -240,16 +257,72 @@ class BackTestingSystem:
         self.portPositions = PortPositions(len(self.df.index), self.numEquities)
         for idx, time in enumerate(self.df.index):
             positions = self.dfPositions.iloc[idx, :]
-            endTimeIdx = self.df.index.get_loc(self._exitTime(time))
+            #             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            #             print("endtime",self._exitTime(time,self.rollDate))
+            #             print("rolltime",self.rollDate)
+            #             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            endTimeIdx = self.df.index.get_loc(self._exitTime(time, self.rollDate))
+
+            #             print("roll date",self.rollDate)
             positionsChange = Positions(positions, idx, endTimeIdx)
             #             print("positionsChange.positions",positionsChange.positions)
-            if (self._enterSignal(time) and self.portPositions.maxPosJudge(positionsChange, self.maxPositions)):
+            if (self._enterSignal(time) and time < self.rollDate
+                    and self.portPositions.maxPosJudge(positionsChange,
+                                                                                                    self.maxPositions)):
                 self.portPositions.addPositions(positionsChange)
+                print("##########################################")
                 print("add positions:", positionsChange.positions)
-                print("time:",time)
-                print("number of positions:",self.portPositions.numPositions[idx])
+                print("time:", time)
+                print("number of positions:", self.portPositions.numPositions[idx])
+                print("startTime:", self.df.index[positionsChange.startIdx])
+                print("endTime:", self.df.index[positionsChange.endIdx])
+                print("cumPositions:", self.portPositions.cumPositions[idx])
+                print("##########################################")
         print("complete calculation")
         print("**************************************************")
         return self.portPositions
 
+    def calculateInitMargin(self):
+        portInitMargin = np.inner(np.abs(self.portPositions.cumPositions), self.margins)
+        self.portInitMargin = pd.Series(index=self.df.index, data=portInitMargin, name="InitMargin")
+        return self.portInitMargin
 
+    def calculateDailyPnL(self):
+        self.dailyPnL = pd.Series(index=self.df.index, name="DailyPnL")
+        self.dailyPnL[0] = 0
+        for idx, time in enumerate(self.df.index[1:]):
+            self.dailyPnL[time] = np.sum(self.pointPrices * self.portPositions.cumPositions[idx]
+                                         * (self.dfPrices.iloc[idx + 1] - self.dfPrices.iloc[idx]))
+        return self.dailyPnL
+
+    def calculateTransactionCost(self):
+        self.transactionCost = pd.Series(index=self.df.index, name="TransactionCost")
+        self.transactionCost[0] = 0
+        for idx, time in enumerate(self.df.index[1:]):
+            self.transactionCost[time] = (np.inner(
+                np.abs(self.portPositions.cumPositions[idx + 1] - self.portPositions.cumPositions[idx]),
+                self.tickSizes) * self.transactionCostCoeff)
+        return self.transactionCost
+
+    def calculateDailyNetPnL(self):
+        self.netDailyPnL = self.dailyPnL - self.transactionCost
+        self.netDailyPnL.name = "DailyNetPnL"
+        return self.netDailyPnL
+
+    def calculateCumNetPnL(self):
+        self.cumNetPnL = pd.Series(data=np.cumsum(self.netDailyPnL), index=self.df.index, name="CumNetPnL")
+        return self.cumNetPnL
+
+    def output_data(self):
+        self.preprocessing()
+        self.calculateCumPositions()
+        self.calculateInitMargin()
+        self.calculateDailyPnL()
+        self.calculateTransactionCost()
+        self.calculateDailyNetPnL()
+        self.calculateCumNetPnL()
+        dfOutput = pd.concat([self.dfPrices, self.dfOptWeights, self.portNotional,
+                              self.dfPositions, self.portPrice, self.portInitMargin,
+                              self.dailyPnL, self.cumNetPnL],
+                             axis=1)
+        return dfOutput
