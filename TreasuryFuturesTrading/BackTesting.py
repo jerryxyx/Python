@@ -326,5 +326,3 @@ class BackTestingSystem:
                               self.dailyPnL, self.cumNetPnL],
                              axis=1)
         return dfOutput
-
-
