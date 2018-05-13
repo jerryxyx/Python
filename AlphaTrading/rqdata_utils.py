@@ -1,6 +1,7 @@
 import pandas as pd
 import alphalens as al
 import matplotlib.pyplot as plt
+import numpy as np
 
 def price_reader(price_path):
     price_df = pd.read_csv(price_path)
@@ -24,6 +25,12 @@ def equity_reader(equity_path):
     cn_df.set_index(['date','order_book_id'],drop=True,inplace=True)
     cn_df.drop(["Unnamed: 0"],axis=1,inplace=True)
     return cn_df
+
+def benchmark_reader(benchmark_path):
+    benchmark_df = pd.read_csv(benchmark_path,names=['date','value'])
+    benchmark_df = benchmark_df.set_index('date',drop=True)
+    benchmark_df['return'] = np.log(benchmark_df.shift(1)/benchmark_df).fillna(0)
+    return benchmark_df
 
 def equity_add_instrumentInfo(cn_df,instrument_df,instrument_column):
     instrumentInfoSeries = instrument_df[instrument_column]
