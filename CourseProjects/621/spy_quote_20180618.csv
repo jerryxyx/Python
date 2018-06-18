@@ -1,9 +1,9 @@
-ask,0.0
-askSize,10
-averageDailyVolume10Day,76936685
+ask,276.13
+askSize,12
+averageDailyVolume10Day,77597900
 averageDailyVolume3Month,86874682
-bid,0.0
-bidSize,18
+bid,276.12
+bidSize,29
 currency,USD
 esgPopulated,False
 exchange,PCX
@@ -11,14 +11,14 @@ exchangeDataDelayedBy,0
 exchangeTimezoneName,America/New_York
 exchangeTimezoneShortName,EDT
 fiftyDayAverage,272.17618
-fiftyDayAverageChange,4.853821
-fiftyDayAverageChangePercent,0.017833378
+fiftyDayAverageChange,4.0388184
+fiftyDayAverageChangePercent,0.014838985
 fiftyTwoWeekHigh,286.58
-fiftyTwoWeekHighChange,-9.549988
-fiftyTwoWeekHighChangePercent,-0.03332399
+fiftyTwoWeekHighChange,-10.36499
+fiftyTwoWeekHighChangePercent,-0.03616788
 fiftyTwoWeekLow,239.96
-fiftyTwoWeekLowChange,37.069992
-fiftyTwoWeekLowChangePercent,0.15448405
+fiftyTwoWeekLowChange,36.25499
+fiftyTwoWeekLowChangePercent,0.15108763
 fiftyTwoWeekRange,239.96 - 286.58
 financialCurrency,USD
 fullExchangeName,NYSEArca
@@ -26,26 +26,22 @@ gmtOffSetMilliseconds,-14400000
 language,en-US
 longName,SPDRÂ S&amp;P 500 ETF
 market,us_market
-marketCap,270514798592
-marketState,CLOSED
+marketCap,269718962176
+marketState,REGULAR
 messageBoardId,finmb_6160262
-postMarketChange,-0.58999634
-postMarketChangePercent,-0.21289515
-postMarketPrice,276.54
-postMarketTime,1529107196
 priceHint,2
 quoteSourceName,Nasdaq Real Time Price
 quoteType,ETF
-regularMarketChange,-0.45440674
-regularMarketChangePercent,-0.16375938
-regularMarketDayHigh,277.51
-regularMarketDayLow,275.35
-regularMarketDayRange,275.35 - 277.51
-regularMarketOpen,276.6
-regularMarketPreviousClose,277.4844
-regularMarketPrice,277.03
-regularMarketTime,1529092804
-regularMarketVolume,120045562
+regularMarketChange,-0.91500854
+regularMarketChangePercent,-0.33017305
+regularMarketDayHigh,276.36
+regularMarketDayLow,274.95
+regularMarketDayRange,274.95 - 276.36
+regularMarketOpen,275.49
+regularMarketPreviousClose,277.13
+regularMarketPrice,276.215
+regularMarketTime,1529334066
+regularMarketVolume,17594757
 sharesOutstanding,976481984
 shortName,SPDR S&P 500
 sourceInterval,15
@@ -53,7 +49,7 @@ symbol,SPY
 tradeable,True
 trailingThreeMonthNavReturns,0.16
 trailingThreeMonthReturns,0.14
-twoHundredDayAverage,270.44666
-twoHundredDayAverageChange,6.5833435
-twoHundredDayAverageChangePercent,0.024342485
+twoHundredDayAverage,270.50354
+twoHundredDayAverageChange,5.7114563
+twoHundredDayAverageChangePercent,0.021114165
 ytdReturn,1.98
