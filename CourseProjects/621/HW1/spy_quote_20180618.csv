@@ -1,0 +1,55 @@
+ask,275.45
+askSize,32
+averageDailyVolume10Day,76490066
+averageDailyVolume3Month,86540589
+bid,275.44
+bidSize,9
+currency,USD
+esgPopulated,False
+exchange,PCX
+exchangeDataDelayedBy,0
+exchangeTimezoneName,America/New_York
+exchangeTimezoneShortName,EDT
+fiftyDayAverage,272.30142
+fiftyDayAverageChange,3.14859
+fiftyDayAverageChangePercent,0.011562885
+fiftyTwoWeekHigh,286.58
+fiftyTwoWeekHighChange,-11.129974
+fiftyTwoWeekHighChangePercent,-0.038837235
+fiftyTwoWeekLow,239.96
+fiftyTwoWeekLowChange,35.490005
+fiftyTwoWeekLowChangePercent,0.14789967
+fiftyTwoWeekRange,239.96 - 286.58
+financialCurrency,USD
+fullExchangeName,NYSEArca
+gmtOffSetMilliseconds,-14400000
+language,en-US
+longName,SPDRÂ S&amp;P 500 ETF
+market,us_market
+marketCap,268971966464
+marketState,REGULAR
+messageBoardId,finmb_6160262
+priceHint,2
+quoteSourceName,Nasdaq Real Time Price
+quoteType,ETF
+regularMarketChange,-1.1099854
+regularMarketChangePercent,-0.40135425
+regularMarketDayHigh,275.5
+regularMarketDayLow,273.53
+regularMarketDayRange,273.53 - 275.5
+regularMarketOpen,274.0
+regularMarketPreviousClose,276.56
+regularMarketPrice,275.45
+regularMarketTime,1529433701
+regularMarketVolume,56542178
+sharesOutstanding,976481984
+shortName,SPDR S&P 500
+sourceInterval,15
+symbol,SPY
+tradeable,True
+trailingThreeMonthNavReturns,0.16
+trailingThreeMonthReturns,0.14
+twoHundredDayAverage,270.58847
+twoHundredDayAverageChange,4.8615417
+twoHundredDayAverageChangePercent,0.017966552
+ytdReturn,1.98
