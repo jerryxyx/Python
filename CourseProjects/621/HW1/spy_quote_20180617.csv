@@ -1,9 +1,9 @@
-ask,276.13
-askSize,12
+ask,276.66
+askSize,30
 averageDailyVolume10Day,77597900
 averageDailyVolume3Month,86874682
-bid,276.12
-bidSize,29
+bid,276.65
+bidSize,31
 currency,USD
 esgPopulated,False
 exchange,PCX
@@ -11,14 +11,14 @@ exchangeDataDelayedBy,0
 exchangeTimezoneName,America/New_York
 exchangeTimezoneShortName,EDT
 fiftyDayAverage,272.17618
-fiftyDayAverageChange,4.0388184
-fiftyDayAverageChangePercent,0.014838985
+fiftyDayAverageChange,4.4138184
+fiftyDayAverageChangePercent,0.01621677
 fiftyTwoWeekHigh,286.58
-fiftyTwoWeekHighChange,-10.36499
-fiftyTwoWeekHighChangePercent,-0.03616788
+fiftyTwoWeekHighChange,-9.98999
+fiftyTwoWeekHighChangePercent,-0.034859344
 fiftyTwoWeekLow,239.96
-fiftyTwoWeekLowChange,36.25499
-fiftyTwoWeekLowChangePercent,0.15108763
+fiftyTwoWeekLowChange,36.62999
+fiftyTwoWeekLowChangePercent,0.1526504
 fiftyTwoWeekRange,239.96 - 286.58
 financialCurrency,USD
 fullExchangeName,NYSEArca
@@ -26,22 +26,26 @@ gmtOffSetMilliseconds,-14400000
 language,en-US
 longName,SPDRÂ S&amp;P 500 ETF
 market,us_market
-marketCap,269718962176
-marketState,REGULAR
+marketCap,270085144576
+marketState,POST
 messageBoardId,finmb_6160262
+postMarketChange,0.16000366
+postMarketChangePercent,0.057854954
+postMarketPrice,276.72
+postMarketTime,1529355999
 priceHint,2
 quoteSourceName,Nasdaq Real Time Price
 quoteType,ETF
-regularMarketChange,-0.91500854
-regularMarketChangePercent,-0.33017305
-regularMarketDayHigh,276.36
+regularMarketChange,-0.54000854
+regularMarketChangePercent,-0.19485748
+regularMarketDayHigh,276.7
 regularMarketDayLow,274.95
-regularMarketDayRange,274.95 - 276.36
+regularMarketDayRange,274.95 - 276.7
 regularMarketOpen,275.49
 regularMarketPreviousClose,277.13
-regularMarketPrice,276.215
-regularMarketTime,1529334066
-regularMarketVolume,17594757
+regularMarketPrice,276.59
+regularMarketTime,1529352001
+regularMarketVolume,47331357
 sharesOutstanding,976481984
 shortName,SPDR S&P 500
 sourceInterval,15
@@ -50,6 +54,6 @@ tradeable,True
 trailingThreeMonthNavReturns,0.16
 trailingThreeMonthReturns,0.14
 twoHundredDayAverage,270.50354
-twoHundredDayAverageChange,5.7114563
-twoHundredDayAverageChangePercent,0.021114165
+twoHundredDayAverageChange,6.0864563
+twoHundredDayAverageChangePercent,0.022500468
 ytdReturn,1.98
