@@ -1,0 +1,299 @@
+---
+title: "FE621 assignment3 Problem 4"
+author: "Yuxuan Xia"
+date: '2018-07-29'
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Question 1
+We consider 5 stochasitic differential models as follow to fit each columns of 'sample_data.csv' file.
+
+```{r}
+sample.data = read.csv("sample_data.csv")
+data1 = ts(sample.data[,1],frequency = 365)
+data2 = ts(sample.data[,2],frequency = 365)
+data3 = ts(sample.data[,3],frequency = 365)
+data4 = ts(sample.data[,4],frequency = 365)
+data5 = ts(sample.data[,5],frequency = 365)
+# Here we read the .csv file to get five cols data
+# note here we let frequency = 365, so that dt = 1/365 
+
+fx1 = expression(theta[1]*x)
+gx1 = expression(theta[2]*x^(theta[3]))
+
+fx2 = expression(theta[1]+theta[2]*x)
+gx2 = expression(theta[3]*x^(theta[4]))
+
+fx3 = expression(theta[1]+theta[2]*x)
+gx3 = expression(theta[3]*sqrt(x))
+
+fx4 = expression(theta[1])
+gx4 = expression(theta[2]*x^(theta[3]))
+
+fx5 = expression(theta[1]*x)
+gx5 = expression(theta[2]+theta[3]*x^(theta[4]))
+# we input the expressions of five models
+```
+
+## (1) 
+In this part, we will use AIC criterion to find out the best model fitting each column data.
+
+### Data 1 (Column 1)
+```{r,warning=FALSE,message=FALSE}
+library(Sim.DiffProc)
+
+# initial value for all parameters are one
+mod1.data1 = fitsde(data = data1,drift = fx1, diffusion = gx1, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod2.data1 = fitsde(data = data1,drift = fx2, diffusion = gx2, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+mod3.data1 = fitsde(data = data1,drift = fx3, diffusion = gx3, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod4.data1 = fitsde(data = data1,drift = fx4, diffusion = gx4, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod5.data1 = fitsde(data = data1,drift = fx5, diffusion = gx5, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+
+aic.data1 = c(AIC(mod1.data1),AIC(mod2.data1),AIC(mod3.data1),AIC(mod4.data1),AIC(mod5.data1))
+aic.data1
+# check the AIC criteria
+bestmod.data1 = which(aic.data1==min(aic.data1),arr.ind = TRUE)
+bestmod.data1
+# shows model 1 fit the data best
+
+```
+
+### Data 2
+```{r,warning=FALSE}
+mod1.data2 = fitsde(data = data2,drift = fx1, diffusion = gx1, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod2.data2 = fitsde(data = data2,drift = fx2, diffusion = gx2, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+mod3.data2 = fitsde(data = data2,drift = fx3, diffusion = gx3, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod4.data2 = fitsde(data = data2,drift = fx4, diffusion = gx4, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod5.data2 = fitsde(data = data2,drift = fx5, diffusion = gx5, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+
+aic.data2 = c(AIC(mod1.data2),AIC(mod2.data2),AIC(mod3.data2),AIC(mod4.data2),AIC(mod5.data2))
+aic.data2
+# check the AIC criteria
+bestmod.data2 = which(aic.data2==min(aic.data2),arr.ind = TRUE)
+bestmod.data2
+# shows model 1 fit the data best
+```
+
+### Data 3 
+
+```{r,warning=FALSE}
+mod1.data3 = fitsde(data = data3,drift = fx1, diffusion = gx1, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod2.data3 = fitsde(data = data3,drift = fx2, diffusion = gx2, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+mod3.data3 = fitsde(data = data3,drift = fx3, diffusion = gx3, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod4.data3 = fitsde(data = data3,drift = fx4, diffusion = gx4, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod5.data3 = fitsde(data = data3,drift = fx5, diffusion = gx5, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+aic.data3 = c(AIC(mod1.data3),AIC(mod2.data3),AIC(mod3.data3),AIC(mod4.data3),AIC(mod5.data3))
+aic.data3
+# check the AIC criteria
+bestmod.data3 = which(aic.data3==min(aic.data3),arr.ind = TRUE)
+bestmod.data3
+```
+
+### Comments
+Based on the AIC values, we can find there are three models (model 1,3,4) with the same least aic value. In this situation, we will consider model 1 as the best model fitting data3.
+
+### Data 4 
+```{r,warning=FALSE}
+mod1.data4 = fitsde(data = data4,drift = fx1, diffusion = gx1, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod2.data4 = fitsde(data = data4,drift = fx2, diffusion = gx2, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+mod3.data4 = fitsde(data = data4,drift = fx3, diffusion = gx3, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod4.data4 = fitsde(data = data4,drift = fx4, diffusion = gx4, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod5.data4 = fitsde(data = data4,drift = fx5, diffusion = gx5, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+
+aic.data4 = c(AIC(mod1.data4),AIC(mod2.data4),AIC(mod3.data4),AIC(mod4.data4),AIC(mod5.data4))
+aic.data4
+# check the AIC criteria
+bestmod.data4 = which(aic.data4==min(aic.data4),arr.ind = TRUE)
+bestmod.data4
+# shows model 5 fit the data best
+```
+
+### Data 5
+```{r,warning=FALSE}
+mod1.data5 = fitsde(data = data5,drift = fx1, diffusion = gx1, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod2.data5 = fitsde(data = data5,drift = fx2, diffusion = gx2, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+mod3.data5 = fitsde(data = data5,drift = fx3, diffusion = gx3, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod4.data5 = fitsde(data = data5,drift = fx4, diffusion = gx4, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1),pmle = 'euler')
+mod5.data5 = fitsde(data = data5,drift = fx5, diffusion = gx5, 
+                    start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1),pmle = 'euler')
+
+aic.data5 = c(AIC(mod1.data5),AIC(mod2.data5),AIC(mod3.data5),AIC(mod4.data5),AIC(mod5.data5))
+aic.data5
+# check the AIC criteria
+bestmod.data5 = which(aic.data5==min(aic.data5),arr.ind = TRUE)
+bestmod.data5
+# shows model 1 fit the data best
+```
+
+## (2)
+
+We will implement Euler, Ozaki, Shoji-Ozaki and Kessler method to estimate parameters here.
+
+### Data 1
+
+```{r,warning=FALSE}
+pmle = eval(formals(fitsde.default)$pmle)
+pmle
+# this is the name of Pesudo Maximum likelihood estimator methods
+fitres.data1 = lapply(1:4,function(i) fitsde(data = data1, drift = fx1,diffusion = gx1,pmle = pmle[i],
+                                      start = list(theta1 = 1,theta2 = 1, theta3 = 1)))
+coef.data1 = data.frame(do.call('cbind',lapply(1:4,function(i) coef(fitres.data1[[i]]))))
+info.data1 = data.frame(do.call('rbind',lapply(1:4,function(i) logLik(fitres.data1[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) AIC(fitres.data1[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) BIC(fitres.data1[[i]]))),
+                        row.names = pmle)
+colnames(coef.data1) = pmle
+colnames(info.data1) = c('logLik','AIC','BIC')
+coef.data1
+# coefficient table
+info.data1
+# information criteria table
+best.method.data1 = pmle[which(info.data1$AIC == min(info.data1$AIC),arr.ind = TRUE)]
+best.method.data1
+# shows the best method is 'Euler'
+
+```
+
+### Data 2
+
+```{r,warning=FALSE}
+fitres.data2 = lapply(1:4,function(i) fitsde(data = data2, drift = fx1,diffusion = gx1,pmle = pmle[i],
+                                             start = list(theta1 = 1,theta2 = 1, theta3 = 1)))
+coef.data2 = data.frame(do.call('cbind',lapply(1:4,function(i) coef(fitres.data2[[i]]))))
+info.data2 = data.frame(do.call('rbind',lapply(1:4,function(i) logLik(fitres.data2[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) AIC(fitres.data2[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) BIC(fitres.data2[[i]]))),
+                        row.names = pmle)
+
+colnames(coef.data2) = pmle
+colnames(info.data2) = c('logLik','AIC','BIC')
+coef.data2
+# coefficient table
+info.data2
+# information criteria table
+best.method.data2 = pmle[which(info.data2$AIC == min(info.data2$AIC),arr.ind = TRUE)]
+best.method.data2
+# shows the best method is 'kessler'
+```
+
+### Data 3
+```{r,warning=FALSE}
+fitres.data3 = lapply(1:4,function(i) fitsde(data = data3, drift = fx1,diffusion = gx1,pmle = pmle[i],
+                                             start = list(theta1 = 1,theta2 = 1, theta3 = 1)))
+coef.data3 = data.frame(do.call('cbind',lapply(1:4,function(i) coef(fitres.data3[[i]]))))
+info.data3 = data.frame(do.call('rbind',lapply(1:4,function(i) logLik(fitres.data3[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) AIC(fitres.data3[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) BIC(fitres.data3[[i]]))),
+                        row.names = pmle)
+colnames(coef.data3) = pmle
+colnames(info.data3) = c('logLik','AIC','BIC')
+coef.data3
+# coefficient table
+info.data3
+# information criteria table
+best.method.data3 = pmle[which(info.data3$AIC == min(info.data3$AIC),arr.ind = TRUE)]
+best.method.data3
+# we can find 'euler','kessler' and 'ozaki' are the best
+```
+
+### Data 4
+
+```{r,warning=FALSE}
+fitres.data4 = lapply(1:4,function(i) fitsde(data = data4, drift = fx5,diffusion = gx5,pmle = pmle[i],
+                                             start = list(theta1 = 1,theta2 = 1, theta3 = 1,theta4 = 1)))
+coef.data4 = data.frame(do.call('cbind',lapply(1:4,function(i) coef(fitres.data4[[i]]))))
+info.data4 = data.frame(do.call('rbind',lapply(1:4,function(i) logLik(fitres.data4[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) AIC(fitres.data4[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) BIC(fitres.data4[[i]]))),
+                        row.names = pmle)
+
+colnames(coef.data4) = pmle
+colnames(info.data4) = c('logLik','AIC','BIC')
+coef.data4
+# coefficient table
+info.data4
+# information criteria table
+best.method.data4 = pmle[which(info.data4$AIC == min(info.data4$AIC),arr.ind = TRUE)]
+best.method.data4
+# shows the best method is 'Euler'
+```
+
+
+### Data 5
+
+```{r,warning=FALSE}
+
+fitres.data5 = lapply(1:4,function(i) fitsde(data = data5, drift = fx1,diffusion = gx1,pmle = pmle[i],
+                                             start = list(theta1 = 1,theta2 = 1, theta3 = 1)))
+coef.data5 = data.frame(do.call('cbind',lapply(1:4,function(i) coef(fitres.data5[[i]]))))
+info.data5 = data.frame(do.call('rbind',lapply(1:4,function(i) logLik(fitres.data5[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) AIC(fitres.data5[[i]]))),
+                        do.call('rbind',lapply(1:4,function(i) BIC(fitres.data5[[i]]))),
+                        row.names = pmle)
+
+colnames(coef.data5) = pmle
+colnames(info.data5) = c('logLik','AIC','BIC')
+coef.data5
+# coefficient table
+info.data5
+# information criteria table
+best.method.data5 = pmle[which(info.data5$AIC == min(info.data5$AIC),arr.ind = TRUE)]
+best.method.data5
+coef.data5$euler
+# shows the best method is 'Euler'
+```
+
+### Comments on Result
+
+We will make a table to gather the result of the analysis above.
+```{r}
+compare.table = data.frame()
+compare.table = cbind(c(round(coef.data1$euler,4),NA),c(round(coef.data2$kessler,4),NA),
+                      c(round(coef.data3$euler),NA),c(round(coef.data4$euler,4)),
+                      c(round(coef.data5$euler,4),NA))
+bestmod.col = c(1,1,1,5,1)
+# this is the best model for each col data
+
+best.method.compare = cbind('euler','kessler','euler,kessler and ozaki',
+                            'euler','euler')
+# this is the best method for each col data
+
+compare.table = rbind(bestmod.col,best.method.compare,compare.table)
+colnames(compare.table) = c('data1','data2','data3','data4','data5')
+row.names(compare.table) = c('model','method','theta1','theta2','theta3','theta4')
+compare.table
+
+```
+
+Based on the table above, we can found that Euler method fit most of column of data best(in data 1,3,4 and 5). However, for data 3, we have three method showing the same AIC criteria. Thus, we may not have a good estimation on parameters of data 3.
+

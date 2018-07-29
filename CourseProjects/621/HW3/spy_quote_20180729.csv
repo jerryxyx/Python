@@ -1,0 +1,60 @@
+language,en-US
+region,US
+quoteType,ETF
+quoteSourceName,Delayed Quote
+currency,USD
+regularMarketPrice,281.46
+regularMarketTime,1532721602
+regularMarketChange,-1.8800049
+regularMarketOpen,283.71
+regularMarketDayHigh,283.82
+regularMarketDayLow,280.38
+regularMarketVolume,68736845
+postMarketChangePercent,-0.035536245
+postMarketTime,1532735986
+postMarketPrice,281.32
+postMarketChange,-0.1000061
+regularMarketChangePercent,-0.66351557
+regularMarketDayRange,280.38 - 283.82
+regularMarketPreviousClose,283.34
+bid,0.0
+ask,0.0
+bidSize,0
+askSize,0
+messageBoardId,finmb_6160262
+fullExchangeName,NYSEArca
+longName,SPDR S&amp;P 500 ETF
+financialCurrency,USD
+averageDailyVolume3Month,70022004
+averageDailyVolume10Day,67485057
+fiftyTwoWeekLowChange,39.62999
+fiftyTwoWeekLowChangePercent,0.1638754
+fiftyTwoWeekRange,241.83 - 286.63
+fiftyTwoWeekHighChange,-5.1700134
+fiftyTwoWeekHighChangePercent,-0.018037237
+fiftyTwoWeekLow,241.83
+fiftyTwoWeekHigh,286.63
+exchangeDataDelayedBy,0
+fiftyDayAverageChange,4.4735107
+fiftyDayAverageChangePercent,0.016150646
+twoHundredDayAverage,272.4171
+twoHundredDayAverageChange,9.042877
+twoHundredDayAverageChangePercent,0.033194967
+marketCap,269352157184
+sourceInterval,15
+exchangeTimezoneName,America/New_York
+exchangeTimezoneShortName,EDT
+gmtOffSetMilliseconds,-14400000
+esgPopulated,False
+tradeable,True
+market,us_market
+ytdReturn,2.59
+trailingThreeMonthReturns,3.55
+trailingThreeMonthNavReturns,3.4
+sharesOutstanding,956982016
+fiftyDayAverage,276.98648
+exchange,PCX
+priceHint,2
+shortName,SPDR S&P 500
+marketState,CLOSED
+symbol,SPY

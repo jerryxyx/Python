@@ -1,0 +1,66 @@
+language,en-US
+region,US
+quoteType,EQUITY
+quoteSourceName,Delayed Quote
+currency,USD
+regularMarketPrice,1817.27
+regularMarketTime,1532721601
+regularMarketChange,9.27002
+regularMarketOpen,1876.05
+regularMarketDayHigh,1880.0
+regularMarketDayLow,1806.53
+regularMarketVolume,9491823
+market,us_market
+priceHint,2
+postMarketChangePercent,-0.06988612
+postMarketTime,1532735687
+postMarketPrice,1816.0
+postMarketChange,-1.2700195
+regularMarketChangePercent,0.5127223
+regularMarketDayRange,1806.53 - 1880.0
+regularMarketPreviousClose,1808.0
+bid,1815.44
+ask,1817.0
+bidSize,1
+askSize,1
+messageBoardId,finmb_18749
+fullExchangeName,NasdaqGS
+longName,"Amazon.com, Inc."
+financialCurrency,USD
+averageDailyVolume3Month,3937422
+averageDailyVolume10Day,5723528
+fiftyTwoWeekLowChange,885.52
+fiftyTwoWeekLowChangePercent,0.9503837
+fiftyTwoWeekRange,931.75 - 1880.05
+fiftyTwoWeekHighChange,-62.78003
+fiftyTwoWeekHighChangePercent,-0.033392742
+fiftyTwoWeekLow,931.75
+fiftyTwoWeekHigh,1880.05
+epsTrailingTwelveMonths,7.95
+epsForward,20.06
+exchange,NMS
+earningsTimestamp,1532635200
+earningsTimestampStart,1540411200
+earningsTimestampEnd,1540843200
+trailingPE,228.58743
+exchangeDataDelayedBy,0
+marketState,CLOSED
+shortName,"Amazon.com, Inc."
+sharesOutstanding,485227008
+bookValue,64.872
+fiftyDayAverage,1750.7079
+fiftyDayAverageChange,66.56213
+fiftyDayAverageChangePercent,0.038020127
+twoHundredDayAverage,1561.066
+twoHundredDayAverageChange,256.20398
+twoHundredDayAverageChangePercent,0.16412117
+marketCap,881788518400
+forwardPE,90.59173
+priceToBook,28.013165
+sourceInterval,15
+exchangeTimezoneName,America/New_York
+exchangeTimezoneShortName,EDT
+gmtOffSetMilliseconds,-14400000
+esgPopulated,False
+tradeable,True
+symbol,AMZN

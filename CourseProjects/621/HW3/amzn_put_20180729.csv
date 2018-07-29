@@ -1,0 +1,2 @@
+,ask,bid,change,contractSize,contractSymbol,currency,expiration,impliedVolatility,inTheMoney,lastPrice,lastTradeDate,openInterest,percentChange,strike,volume
+0,484.9,479.9,0.0,REGULAR,AMZN181019P02300000,USD,1539907200,0.2503126727294922,True,463.9,1532728188,0,0.0,2300.0,1
