@@ -15,7 +15,6 @@ Tree methods equations are derived by moment matching for mean and variance. Not
     p_u + p_d = 1\\
     \mu = r-\frac{\sigma^2}{2}
     $$
-    
 
   * Jarrow Rudd tree: $p_u = p_d$
 
@@ -29,6 +28,13 @@ Tree methods equations are derived by moment matching for mean and variance. Not
     p_u + p_d = 1\\
     \mu = r-\frac{\sigma^2}{2}
     $$
+
+
+
+
+
+
+
 
 
 ### Trinomial Trees
@@ -50,7 +56,7 @@ Any $\Delta x$ with this property produces a convergent tree.
 
 More general to the addictive trinomial tree method.
 
-### Comparison
+### Convergence Comparison
 
 | method             | order of convergence                                         | convergence condition                    |
 | :----------------- | ------------------------------------------------------------ | ---------------------------------------- |
@@ -60,8 +66,15 @@ More general to the addictive trinomial tree method.
 | implicit FDM       | $O((\Delta x)^2 + \Delta t)$                                 | stable                                   |
 | Crank-Nicolson FDM | $O((\Delta x)^2 + (\frac{\Delta t}{2})^2)$                   | stable                                   |
 | Monte Carlo        | $O\left(max\left(\Delta t, \frac{\sigma}{\sqrt{N_x}}\right)\right)$ | stable                                   |
-|                    |                                                              |                                          |
-|                    |                                                              |                                          |
+
+
+
+## Variance Reduction
+
+|      method        |              explanation                    |
+| :-----------------:| :-----------------------------------------: |
+| antithetic variates| the payoff of the antithetic pair $(X_1,X_2)$, $f(X_1), f(X_2)$ is negative corelative. A sufficient condition is to make payoff function to be monotone |
+| delta-based control variates |                                                              |
 
 
 
@@ -95,4 +108,4 @@ Then, the discounted stock price $\tilde{S}_t$is a $Q$-martingale.
 
 $$d \tilde{S}_t = \sigma \tilde{S}_t d\tilde{W}_t$$
 
-Note that risk neutral measure is powerful because you don't need to replicate a portfolio in order to be arbitrage-free compared to risk-free bond. Under such measure, expected value(first moment) of securities are equal to rolling it into a deposit account. 
+Note that risk neutral measure is powerful because you don't need to replicate a portfolio in order to be arbitrage-free compared to risk-free bond. Under such measure, expected value(first moment) of securities are equal to rolling it into a deposit account (inflate it to the maturity date at the riskless rate of interest). 
