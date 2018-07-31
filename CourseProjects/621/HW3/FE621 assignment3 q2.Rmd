@@ -1,0 +1,1209 @@
+---
+title: "FE621 assignment3 question2"
+author: "Tengxi Wan"
+date: "2017-03-23"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Qestion 2
+
+## (a) Download Data and Calculate Implied Volatility
+
+In this question, we download the option data from Bloomberg Terminal in .csv files. We will use the bisection method to calculate implied volatility with short term interest rate = 0.75%.
+
+```{r,message=FALSE,warning=FALSE}
+library(quantmod)
+
+# Set risk free interest rate
+r.riskfree = 0.0075
+
+# I download option price data from Bloomberg terminmal on March-01-2017 
+
+GS.1m.call=read.csv('/Users/tony/Desktop/515R/GS 030117 1m call.csv')
+GS.1m.put=read.csv('/Users/tony/Desktop/515R/GS 030117 1m put.csv')
+# one month (17 days)
+
+GS.2m.call=read.csv('/Users/tony/Desktop/515R/GS 030117 2m call.csv')
+GS.2m.put=read.csv('/Users/tony/Desktop/515R/GS 030117 2m put.csv')
+# two month (52 days)
+
+GS.3m.call=read.csv('/Users/tony/Desktop/515R/GS 030117 3m call.csv')
+GS.3m.put=read.csv('/Users/tony/Desktop/515R/GS 030117 3m put.csv')
+# three month (77 days)
+
+# For equity price, we use stock price nearly two month ago as the initial price.
+getSymbols(Symbols = 'GS', src = 'yahoo', from = '2017-01-06',to = '2017-01-06',auto.assign = TRUE)
+GS.stock.price =  as.numeric(GS$GS.Adjusted)
+```
+
+
+We will use the bisection method to calculate implied volatility. Because this part of code is very long, and almost the same as in assignment 1. So we only give the result of implied vol while hiding detailed code on this report.
+
+```{r,include=FALSE}
+option.price=function(S, K, tao, r, div=0,sigma,type=c('call','put')){
+    
+    d_1 = (log(S/K)+(r-div+0.5*(sigma^2))*tao)/(sigma*sqrt(tao))
+    d_2 = d_1-sigma*sqrt(tao)
+    if(type == 'call')
+        temp = 1
+    else if (type == 'put')
+        temp = -1 
+    price = temp*(S*exp(-div*tao)*pnorm(temp*d_1)-K*exp(-r*tao)*pnorm(temp*d_2))
+    
+    return(price)
+}
+
+bisec=function(a,b,f,eposilon){
+    count=0
+    if(f(a)*f(b)>0)
+        result='NO solution in this interval'
+    else if(f(a)==0){
+        result=a 
+    }
+    else if(f(b)==0){
+        result=b 
+    }
+    else{ 
+        while(1){
+            if(abs(b-a)>eposilon){
+                m=(a+b)/2
+                count=count+1
+                if(f(a)*f(m)>0){
+                    a=m
+                }
+                else if(f(a)*f(m)<0){
+                    b=m
+                }
+                else if(f(m)==0){
+                    break 
+                    result=m
+                }
+            }
+            else break  
+        }
+        result=(a+b)/2
+    }
+    result.col=c(result,count)
+    return(result.col)
+}
+
+f.implied.vol.1m.call=function(num,sigma){
+    price.BSM=option.price(S=GS.stock.price,K=GS.1m.call[num,1],div=0,
+                           tao=17/360,r=r.riskfree, sigma = sigma,type = 'call')
+    price.em = mean(c(GS.1m.call[num,3],GS.1m.call[num,4]))
+    result = price.BSM - price.em
+    return(result)
+}
+
+f.implied.vol.1m.put=function(num,sigma){
+    price.BSM=option.price(S=GS.stock.price, K=GS.1m.put[num,1], div=0,
+                           tao=17/360,r=r.riskfree, sigma = sigma,type = 'put')
+    price.em = mean(c(GS.1m.put[num,3],GS.1m.put[num,4]))
+    result = price.BSM - price.em
+    return(result)
+}
+
+f.implied.vol.2m.call=function(num,sigma){
+    price.BSM=option.price(S=GS.stock.price, K=GS.2m.call[num,1], div=0,
+                           tao=52/360, r=r.riskfree, sigma = sigma,type = 'call')
+    price.em = mean(c(GS.2m.call[num,3],GS.2m.call[num,4]))
+    result = price.BSM - price.em
+    return(result)
+}
+
+f.implied.vol.2m.put=function(num,sigma){
+    price.BSM=option.price(S=GS.stock.price, K=GS.2m.put[num,1],div=0,
+                           tao=52/360,r=r.riskfree, sigma = sigma,type = 'put')
+    price.em = mean(c(GS.2m.put[num,3],GS.2m.put[num,4]))
+    result = price.BSM - price.em
+    return(result)
+}
+
+f.implied.vol.3m.call=function(num,sigma){
+    price.BSM=option.price(S=GS.stock.price, K=GS.3m.call[num,1],div=0,
+                           tao=77/360, r=r.riskfree, sigma = sigma,type = 'call')
+    price.em = mean(c(GS.3m.call[num,3],GS.3m.call[num,4]))
+    result = price.BSM - price.em
+    return(result)
+}
+
+f.implied.vol.3m.put=function(num,sigma){
+    price.BSM=option.price(S=GS.stock.price, K=GS.3m.put[num,1],div=0,
+                           tao=77/360,r=r.riskfree, sigma = sigma,type = 'put')
+    price.em = mean(c(GS.3m.put[num,3],GS.3m.put[num,4]))
+    result = price.BSM - price.em
+    return(result)
+}
+
+
+######## implied vol for 1 month call ########
+bisec.vol.1m.call=c()
+bisec.price.1m.call=c()
+market.price.1m.call=c()
+iteration.bisec.1m.call=c()
+time.consumed.bisec.1m.call=c()
+for(i in 1:10){
+    start.time=Sys.time()
+    f.test.1m.call=function(sigma){
+        return(f.implied.vol.1m.call(num=i,sigma))
+    }
+    bisec.vol.1m.call[i]=bisec(a=0,b=2,f=f.test.1m.call,eposilon = 10^(-4))[1]
+    iteration.bisec.1m.call[i]=bisec(a=0,b=2,f=f.test.1m.call,eposilon = 10^(-4))[2]
+    if(bisec.vol.1m.call[i] != 'NO solution in this interval')
+        bisec.price.1m.call[i]=option.price(S=GS.stock.price,K=GS.1m.call[i,1],
+                                            tao=17/360,r=r.riskfree, 
+                                            sigma=as.numeric(bisec.vol.1m.call[i]),type = 'call')
+    else bisec.price.1m.call[i]='NA'
+    
+    market.price.1m.call[i]=mean(c(GS.1m.call$Bid[i] , GS.1m.call$Ask[i]))
+    end.time=Sys.time()
+    time.consumed.bisec.1m.call[i]=end.time-start.time
+}
+
+
+######## implied vol for 1 month put ######## 
+
+bisec.vol.1m.put=c()
+bisec.price.1m.put=c()
+market.price.1m.put=c()
+iteration.bisec.1m.put=c()
+time.consumed.bisec.1m.put=c()
+
+for(i in 1:10){
+    start.time = Sys.time()
+    f.test.1m.put = function(sigma){
+        return(f.implied.vol.1m.put(num=i,sigma))
+    }
+    bisec.vol.1m.put[i]=bisec(a=0,b=2,f=f.test.1m.put, eposilon = 10^(-4))[1]
+    iteration.bisec.1m.put[i]=bisec(a=0,b=2,f=f.test.1m.put, eposilon = 10^(-4))[2]
+    if(bisec.vol.1m.put[i] != 'NO solution in this interval')
+        bisec.price.1m.put[i]=option.price(S=GS.stock.price, K=GS.1m.put[i,1],
+                                           tao=17/360,r=r.riskfree, 
+                                           sigma=as.numeric(bisec.vol.1m.put[i]),type = 'put')
+    else bisec.price.1m.put[i]='NA'
+    market.price.1m.put[i]=mean(c(GS.1m.put$Bid[i],GS.1m.put$Ask[i]))
+    end.time=Sys.time()
+    time.consumed.bisec.1m.put[i]=end.time-start.time
+}
+
+
+######## implied vol for 2 months call ########
+
+bisec.vol.2m.call=c()
+bisec.price.2m.call=c()
+market.price.2m.call=c()
+iteration.bisec.2m.call=c()
+time.consumed.bisec.2m.call=c()
+for(i in 1:10){
+    start.time=Sys.time()
+    f.test.2m.call=function(sigma){
+        return(f.implied.vol.2m.call(num=i,sigma))
+    }
+    bisec.vol.2m.call[i]=bisec(a=0,b=2,f=f.test.2m.call,eposilon = 10^(-4))[1]
+    iteration.bisec.2m.call[i]=bisec(a=0,b=2,f=f.test.2m.call,eposilon = 10^(-4))[2]
+    if(bisec.vol.2m.call[i] != 'NO solution in this interval')
+        bisec.price.2m.call[i]=option.price(S=GS.stock.price,K=GS.2m.call[i,1],
+                                            tao=52/360,r=r.riskfree, 
+                                            sigma=as.numeric(bisec.vol.2m.call[i]),type = 'call')
+    else bisec.price.2m.call[i]='NA'
+    market.price.2m.call[i]=mean(c(GS.2m.call$Bid[i],GS.2m.call$Ask[i]))
+    end.time=Sys.time()
+    time.consumed.bisec.2m.call[i]=end.time-start.time
+}
+
+
+######## implied vol for 2 months put #######
+bisec.vol.2m.put=c()
+bisec.price.2m.put=c()
+market.price.2m.put=c()
+iteration.bisec.2m.put=c()
+time.consumed.bisec.2m.put=c()
+
+for(i in 1:10){
+    start.time = Sys.time()
+    f.test.2m.put = function(sigma){
+        return(f.implied.vol.2m.put(num=i,sigma))
+    }
+    bisec.vol.2m.put[i]=bisec(a=0,b=2,f=f.test.2m.put, eposilon = 10^(-4))[1]
+    iteration.bisec.2m.put[i]=bisec(a=0,b=2,f=f.test.2m.put, eposilon = 10^(-4))[2]
+    if(bisec.vol.2m.put[i] != 'NO solution in this interval')
+        bisec.price.2m.put[i]=option.price(S=GS.stock.price, K=GS.2m.put[i,1],
+                                           tao=52/360,r=r.riskfree, 
+                                           sigma=as.numeric(bisec.vol.2m.put[i]),type = 'put')
+    else bisec.price.2m.put[i]='NA'
+    market.price.2m.put[i]=mean(c(GS.2m.put$Bid[i],GS.2m.put$Ask[i]))
+    end.time=Sys.time()
+    time.consumed.bisec.2m.put[i]=end.time-start.time
+}
+
+
+
+######## implied vol for 3 months call #######
+bisec.vol.3m.call=c()
+bisec.price.3m.call=c()
+market.price.3m.call=c()
+iteration.bisec.3m.call=c()
+time.consumed.bisec.3m.call=c()
+for(i in 1:10){
+    start.time=Sys.time()
+    f.test.3m.call=function(sigma){
+        return(f.implied.vol.3m.call(num=i,sigma))
+    }
+    bisec.vol.3m.call[i]=bisec(a=0,b=2,f=f.test.3m.call,eposilon = 10^(-4))[1]
+    iteration.bisec.3m.call[i]=bisec(a=0,b=2,f=f.test.3m.call,eposilon = 10^(-4))[2]
+    if(bisec.vol.3m.call[i] != 'NO solution in this interval')
+        bisec.price.3m.call[i]=option.price(S=GS.stock.price,K=GS.3m.call[i,1],
+                                            tao=77/360,r=r.riskfree, 
+                                            sigma=as.numeric(bisec.vol.3m.call[i]),type = 'call')
+    else bisec.price.3m.call[i]='NA'
+    market.price.3m.call[i]=mean(c(GS.3m.call$Bid[i],GS.3m.call$Ask[i]))
+    end.time=Sys.time()
+    time.consumed.bisec.3m.call[i]=end.time-start.time
+}
+
+
+######## implied vol for 3 months put #######
+bisec.vol.3m.put=c()
+bisec.price.3m.put=c()
+market.price.3m.put=c()
+iteration.bisec.3m.put=c()
+time.consumed.bisec.3m.put=c()
+
+for(i in 1:10){
+    start.time = Sys.time()
+    f.test.3m.put = function(sigma){
+        return(f.implied.vol.3m.put(num=i,sigma))
+    }
+    bisec.vol.3m.put[i]=bisec(a=0,b=2,f=f.test.3m.put, eposilon = 10^(-4))[1]
+    iteration.bisec.3m.put[i]=bisec(a=0,b=2,f=f.test.3m.put, eposilon = 10^(-4))[2]
+    if(bisec.vol.3m.put[i] != 'NO solution in this interval')
+        bisec.price.3m.put[i]=option.price(S=GS.stock.price, K=GS.3m.put[i,1],
+                                           tao=77/360,r=r.riskfree, 
+                                           sigma=as.numeric(bisec.vol.3m.put[i]),type = 'put')
+    else bisec.price.3m.put[i]='NA'
+    market.price.3m.put[i]=mean(c(GS.3m.put$Bid[i],GS.3m.put$Ask[i]))
+    end.time=Sys.time()
+    time.consumed.bisec.3m.put[i]=end.time-start.time
+}
+
+
+bisec.vol.table = cbind(bisec.vol.1m.call,bisec.vol.1m.put,
+                        bisec.vol.2m.call,bisec.vol.2m.put,
+                        bisec.vol.3m.call,bisec.vol.3m.put)
+colnames(bisec.vol.table)=c('1m call','1m put','2m call','2m put','3m call','3m put')
+
+GS.1m.call.strike = GS.1m.call[1:10,1]
+GS.1m.call.bid = GS.1m.call[1:10,3]
+GS.1m.call.ask = GS.1m.call[1:10,4]
+
+GS.1m.put.strike = GS.1m.put[1:10,1]
+GS.1m.put.bid = GS.1m.put[1:10,3]
+GS.1m.put.ask = GS.1m.put[1:10,4]
+
+GS.2m.call.strike = GS.2m.call[1:10,1]
+GS.2m.call.bid = GS.2m.call[1:10,3]
+GS.2m.call.ask = GS.2m.call[1:10,4]
+
+GS.2m.put.strike = GS.2m.put[1:10,1]
+GS.2m.put.bid = GS.2m.put[1:10,3]
+GS.2m.put.ask = GS.2m.put[1:10,4]
+
+GS.3m.call.strike = GS.3m.call[1:10,1]
+GS.3m.call.bid = GS.3m.call[1:10,3]
+GS.3m.call.ask = GS.3m.call[1:10,4]
+
+GS.3m.put.strike = GS.3m.put[1:10,1]
+GS.3m.put.bid = GS.3m.put[1:10,3]
+GS.3m.put.ask = GS.3m.put[1:10,4]
+
+```
+
+```{r}
+bisec.vol.table
+```
+
+## (b) EFD, IFD and CNFD Pricing European Call and Put 
+In this part we will use 3 finite difference methods to price European call and put option. As we have already biuld the function (explicit.method, implicit method and crank.nicolson.method)
+
+### Convergence Order
+In this part, we will use explicit, implicit and crank-nicolson finite difference method to price European call and put option.The function we have already got in question 1. And we have to decide how many steps to get converge to Black-Scholes price, with error magitude at 0.001. Recall that we have convergence condition for EFD, and the error's order is:
+
+$$O(\Delta x^2 +\Delta t), \quad with \quad \Delta x \geq \sigma \sqrt{3\Delta t}$$
+So that,we have:
+
+$$N \geq (3 \sigma^2+1)\frac{T}{\epsilon}$$
+And for crank-nicolson method, it is more accuracy and converges faster than EFD and IFD. The error order is 
+$$O(\Delta x^2 +(\frac{\Delta t}{2})^2)$$
+
+For implicit and crank-nicolson method, they are unconditional stable and convergence. We may not get an unique steps so that it will converge because it has two variables(dx and dt). However, we can take explicit as freference and set dx smaller than in explicit method and use the same steps to converge as in EFD to make it accurate.
+
+```{r,include=FALSE}
+
+payoff=function(S,K,expect,type1=c('American','Europrean'),type2=c('Call','Put')){
+    
+    temp1=ifelse(type1=='European',0,expect)
+    temp2=ifelse(type2=='Call',1,-1)
+    result=max(temp2*(S-K),temp1)  
+    
+    return(result)
+}
+# Here we define a payoff funcion, 
+# For American option, we need to decide whether to exercise or not
+
+explicit.method = function(S,K,tao,sigma,r,step,dx, first,
+                           div,type1=c('American','European'),type2=c('Call','Put')){
+ 
+    v=r-div-0.5*sigma^2
+    dt=tao/step
+    pu=0.5*dt*(sigma^2/dx^2+v/dx)
+    pm=1-dt*sigma^2/dx^2-r*dt
+    pd=0.5*dt*(sigma^2/dx^2-v/dx)
+    # First we calculate parameters we need
+    
+    firstRow = firstCol = 1
+    nRows = lastRow = 2*step+1
+    middleRow = step+1
+    nCols = lastCol = step+1
+    # Some variables we need to help us understand the position in tree.
+    
+    V.data = S.data = matrix(0, nrow=nRows, ncol=nCols, dimnames=list(
+        paste("NumUps", step:-step, sep="="), paste("T", 0:step, sep="=")))
+    S.data[step+1, 1] = S
+    # Set the data table and initial stock value    
+    
+    for (j in 1:(nCols-1)) {
+        for(i in (nCols-(j-1)):(nCols+(j-1))) {
+            S.data [i-1, j+1] = S.data [i, j]*exp(dx)
+            # up case
+            S.data [i ,  j+1] = S.data [i, j] 
+            # middle case
+            S.data [i+1, j+1] = S.data [i, j]*exp(-dx)
+            # down case
+        }
+    }
+    # Calculating all stock prices.
+    
+    for (i in 1:nRows) {
+        V.data[i, lastCol] = payoff(S=S.data[i,lastCol],K=K,type1 = 'European',type2 = type2)
+    }
+    # Calculating the option price at maturity.
+    
+    for (j in (nCols-1):1) {
+        for(i in (middleRow+(step-1)):(middleRow-(step-1))) {
+            V.data[i, j] = (pu*V.data[i-1,j+1] + pm*V.data[i, j+1] + pd*V.data[i+1,j+1])
+            
+        }
+        # Boundary Condition
+        stockTerm = ifelse(type2=='Call', (S.data[1,lastCol]-S.data[2,lastCol]), 
+                           (S.data[nRows-1,lastCol]-S.data[nRows,lastCol]))
+        V.data[firstRow, j] = V.data[firstRow+1,j] + ifelse(type2=='Call', stockTerm, 0)
+        V.data[lastRow , j] = V.data[lastRow-1, j] + ifelse(type2=='Call', 0, stockTerm)
+        # That is for Call, when stock price is high, dV/dS = 1
+        # when stock price is low, dV/dS = 0
+        # For put, the when stock price is high, dV/dS = 0
+        # when stock price is low, dV/dS = -1
+        
+        # Then we will add up American option case, deciding whether to exercise
+        if(type1=='American') {
+            for(i in lastRow:firstRow){
+            V.data[i, j] = payoff(S=S.data[i,lastCol],K=K,type1 = 'American',type2 = type2,
+                                  expect=V.data[i, j])
+            }
+        }
+    }
+    ## Step backwards through the trinomial tree
+    
+    list(Type = paste(type1,type2), probability=c(pu,pm,pd),
+         Price = V.data[step+1,1],
+         S.first.steps=S.data[(step+1-first):(step+1+first),1:(1+first)],
+         V.first.steps=V.data[(step+1-first):(step+1+first),1:(1+first)]
+         ## output result including Type, Option price, probability
+         ## and first steps of Stock and Opton.
+    )
+}
+
+implicit.method = function(S,K,tao,sigma,r,step,dx, first,
+                           div,type1=c('American','European'),type2=c('Call','Put')){
+    v=r-div-0.5*sigma^2
+    dt=tao/step
+    pu=- 0.5*dt*(sigma^2/dx^2+v/dx)
+    pm=1+dt*sigma^2/dx^2+r*dt
+    pd=- 0.5*dt*(sigma^2/dx^2-v/dx)
+    # First we calculate parameters we need
+    
+    firstRow = firstCol = 1
+    nRows = lastRow = 2*step+1
+    middleRow = step+1
+    nCols = lastCol = step+1
+    # Some variables we need to help us understand the position in tree.
+    
+    V.data = S.data = matrix(NA, nrow=nRows, ncol=nCols, dimnames=list(
+        paste("NumUps", step:-step, sep="="), paste("T", 0:step, sep="=")))
+    S.data[step+1, 1] = S
+    # Set the data table and initial stock value    
+    
+    for (j in 1:(nCols-1)) {
+        for(i in (nCols-(j-1)):(nCols+(j-1))) {
+            S.data [i-1, j+1] = S.data [i, j]*exp(dx)
+            # up case
+            S.data [i ,  j+1] = S.data [i, j] 
+            # middle case
+            S.data [i+1, j+1] = S.data [i, j]*exp(-dx)
+            # down case
+        }
+    }
+    # Calculating all stock prices.
+    
+    for (i in 1:nRows) {
+        V.data[i, lastCol] = payoff(S=S.data[i,lastCol],K=K,type1 = 'European',type2 = type2)
+    }
+    # Calculating the option price at maturity.
+
+    # Derivative Boundary Conditions
+    lambda.up = ifelse(type2=='Call',1 * (S.data[lastRow-1, lastCol] - S.data[lastRow,lastCol]),0)
+    lambda.low = ifelse(type2=='Call',0,-1 * (S.data[lastRow-1, lastCol] - S.data[lastRow,lastCol]))
+    
+    # Then we will use Clewlow's method to solve the tridiagnoal matrix equation efficiently
+    # this is better than just solve(A,b) directly because of the tridiagnoal property 
+    
+    solve.implicit.tridiagnoal=function(V.data,pu,pm,pd,lambda.up,lambda.low,colI){
+        lastRow = nrow(V.data)
+        lastCol = ncol(V.data)
+        p.prime = c()
+        pm.prime = c()
+        # we define p.prime and pm.prime for intermediate steps in the iterations
+        pm.prime[lastRow-1] = pm + pd
+        p.prime[lastRow-1]  = V.data[lastRow-1, lastCol] + pd*lambda.low
+        # wo start from the last row (where the boundary took place)
+        
+        # the middle part is kind of iterations
+        for (j in (lastRow-2):2) {
+            pm.prime[j] = pm - pu*pd/pm.prime[j+1]
+            p.prime[j] = V.data[j, colI+1] - p.prime[j+1]*pd/pm.prime[j+1]
+        }
+        # solve all of the p.prime and pm.price
+        
+        V.data[1, colI] = (p.prime[2] + pm.prime[2]*lambda.up)/(pu + pm.prime[2])
+        V.data[2, colI] = V.data[1,colI] - lambda.up
+        # we get the first two option values
+        
+        # And then go back  the rest of them
+        for(j in 3:lastRow) {
+            V.data[j, colI] =  (p.prime[j] -pu*V.data[j-1, colI])/pm.prime[j]
+        }
+        V.data[lastRow, colI] = V.data[lastRow-1, colI] - lambda.low
+       
+         # Out put the V.data(option table),and p.prime and pm.prime(for latter iterations)
+        
+        list(V.data=V.data)
+    }
+
+    for(j in (nCols-1):1){
+        V.data[, j] = solve.implicit.tridiagnoal(V.data,pu,pm,pd,
+                                                 lambda.up,lambda.low,colI=j)$V.data[,j]
+        if(type1=='American'){
+            for(i in 1:nRows){
+                V.data[i, j] = payoff(S=S.data[i,lastCol],K=K,type1 = 'American',
+                                      type2 = type2, expect=V.data[i, j])
+            }
+            # consider American option can be exercised early
+        }
+    }
+    list(Type = paste(type1,type2), probability=c(pu,pm,pd),
+         Price = V.data[step+1,1],
+         S.first.steps=S.data[(step+1-first):(step+1+first),1:(1+first)],
+         V.first.steps=V.data[(step+1-first):(step+1+first),1:(1+first)]
+         ## output result including Type, Option price, probability
+         ## and first steps of Stock and Opton.
+    )
+}
+
+crank.nicolson.method = function(S,K,tao,sigma,r,step,dx, first,
+                                 div,type1=c('American','European'),type2=c('Call','Put')){
+    v=r-div-0.5*sigma^2
+    dt=tao/step
+    pu=-0.25*dt*(sigma^2/dx^2+v/dx)
+    pm=1+0.5*dt*sigma^2/dx^2+r*dt/2
+    pd=-0.25*dt*(sigma^2/dx^2-v/dx)
+    # First we calculate parameters we need
+    # not the pm,pu,pd is different from implicit method
+    firstRow = firstCol = 1
+    nRows = lastRow = 2*step+1
+    middleRow = step+1
+    nCols = lastCol = step+1
+    # Some variables we need to help us understand the position in tree.
+    
+    V.data = S.data = matrix(0, nrow=nRows, ncol=nCols, dimnames=list(
+        paste("NumUps", step:-step, sep="="), paste("T", 0:step, sep="=")))
+    S.data[step+1, 1] = S
+    # Set the data table and initial stock value   
+    
+    for (j in 1:(nCols-1)) {
+        for(i in (nCols-(j-1)):(nCols+(j-1))) {
+            S.data [i-1, j+1] = S.data [i, j]*exp(dx)
+            # up case
+            S.data [i ,  j+1] = S.data [i, j] 
+            # middle case
+            S.data [i+1, j+1] = S.data [i, j]*exp(-dx)
+            # down case
+        }
+    }
+    # Calculating all stock prices.
+    
+    for (i in 1:nRows) {
+        V.data[i, lastCol] = payoff(S=S.data[i,lastCol],K=K,type1 = 'European',type2 = type2)
+    }
+    # Calculating the option price at maturity.
+    
+    lambda.up = ifelse(type2=='Call',1 * (S.data[1, lastCol] - S.data[2,lastCol]),0)
+    lambda.low = ifelse(type2=='Call',0,-1 * (S.data[lastRow-1, lastCol] - S.data[lastRow,lastCol]))
+    # Boundary condition, same as in implicit method
+    
+    solve.crank.nicolson.tridiagnoal=function(V.data,pu,pm,pd,lambda.up,lambda.low,colI){
+        lastRow = nrow(V.data)
+        lastCol = ncol(V.data)
+        p.prime = c()
+        pm.prime = c()
+        # we define p.prime and pm.prime for intermediate steps in the iterations
+        pm.prime[lastRow-1] = pm + pd
+        p.prime[lastRow-1]  = (-pu*V.data[lastRow-2,lastCol]
+                               -(pm-2)*V.data[lastRow-1,lastCol]
+                               -pd*V.data[lastRow,lastCol]+pd*lambda.low)
+        
+        # wo start from the last row (where the boundary took place)
+        
+        for (j in (lastRow-2):2) {
+            pm.prime[j] = pm - pu*pd/pm.prime[j+1]
+            p.prime[j] = (-pu*V.data[j-1,colI+1]
+                          -(pm-2)*V.data[j,colI+1]
+                          -pd*V.data[j+1,colI+1] 
+                          - p.prime[j+1]*pd/pm.prime[j+1])
+        }
+        # solve all of the p.prime and pm.price
+        
+        V.data[1, colI] = (p.prime[2] + pm.prime[2]*lambda.up)/(pu + pm.prime[2])
+        V.data[2, colI] = V.data[1,colI] - lambda.up
+        # we get the first two option values
+        
+        # And then go back  the rest of them
+        for(j in 3:(lastRow-1)) {
+            V.data[j, colI] =  (p.prime[j] -pu*V.data[j-1, colI])/pm.prime[j]
+        }
+        V.data[lastRow, colI] = V.data[lastRow-1, colI] - lambda.low
+        
+        # Out put the V.data(option table)
+        
+        list(V.data=V.data) 
+    }
+    
+    for(j in (nCols-1):1){
+        V.data[, j] = solve.crank.nicolson.tridiagnoal(V.data,pu,pm,pd,lambda.up,lambda.low,colI=j)$V.data[,j]
+        if(type1=='American'){
+            for(i in 1:nRows){
+                V.data[i, j] = payoff(S=S.data[i,lastCol],K=K,type1 = 'American',type2 = type2,
+                                      expect=V.data[i, j])
+            }
+            # consider American option can be exercised early
+        }
+    }
+    list(Type = paste(type1,type2), probability=c(pu,pm,pd),
+         Price = V.data[step+1,1],
+         S.first.steps=S.data[(step+1-first):(step+1+first),1:(1+first)],
+         V.first.steps=V.data[(step+1-first):(step+1+first),1:(1+first)]
+    )
+         # output result including Type, Option price, probability
+         # and first steps of Stock and Opton.
+}
+```
+
+### Finite Difference Method Pricing 
+Here we use EFD,IFD and CNFD method to price 1m,2m and 3m european call and put option with the parameters we get before. The result we will show in the following full table.
+
+```{r}
+explicit.price.1m.call = c()
+explicit.dx.1m.call=c()
+explicit.N.1m.call = c()
+explicit.dt.1m.call = c()
+# these are to get N(steps),dt and dx and price
+for(i in 1:10){
+    explicit.N.1m.call[i] = ceiling((3*bisec.vol.1m.call[i]^2+1)*1000*(17/360))
+    explicit.dt.1m.call[i] = (17/360)/explicit.N.1m.call[i]
+    explicit.dx.1m.call[i] = bisec.vol.1m.call[i]*sqrt(3*explicit.dt.1m.call[i])
+    explicit.price.1m.call[i] = explicit.method(S = GS.stock.price,K = GS.1m.call.strike[i],tao = 17/360,
+                                 r= r.riskfree,sigma = bisec.vol.1m.call[i],step = explicit.N.1m.call[i],
+                                 div = 0, dx = explicit.dx.1m.call[i],first = 3,type1 = 'European',
+                                 type2 = 'Call')$Price
+}
+
+bisec.vol.1m.put
+explicit.price.1m.put = c()
+explicit.dx.1m.put=c()
+explicit.N.1m.put = c()
+explicit.dt.1m.put = c()
+for(i in 1:10){
+    explicit.N.1m.put[i] = ceiling((3*bisec.vol.1m.put[i]^2+1)*1000*(17/360))
+    explicit.dt.1m.put[i] = (17/360)/explicit.N.1m.put[i]
+    explicit.dx.1m.put[i] = bisec.vol.1m.put[i]*sqrt(3*explicit.dt.1m.put[i])
+    explicit.price.1m.put[i] = explicit.method(S = GS.stock.price,K = GS.1m.put.strike[i],tao = 17/360,
+                               r= r.riskfree,sigma = bisec.vol.1m.put[i],step = explicit.N.1m.put[i],
+                               div = 0, dx = explicit.dx.1m.put[i],first = 3,type1 = 'European',
+                               type2 = 'Put')$Price
+}
+
+explicit.price.2m.call = c()
+explicit.dx.2m.call=c()
+explicit.N.2m.call = c()
+explicit.dt.2m.call = c()
+for(i in 1:10){
+    explicit.N.2m.call[i] = ceiling((3*bisec.vol.2m.call[i]^2+1)*1000*(52/360))
+    explicit.dt.2m.call[i] = (52/360)/explicit.N.2m.call[i]
+    explicit.dx.2m.call[i] = bisec.vol.2m.call[i]*sqrt(3*explicit.dt.2m.call[i])
+    explicit.price.2m.call[i] = explicit.method(S = GS.stock.price,K = GS.2m.call.strike[i],tao = 52/360,
+                                r= r.riskfree,sigma = bisec.vol.2m.call[i],step = explicit.N.2m.call[i],
+                                div = 0,dx = explicit.dx.2m.call[i],first = 3,type1 = 'European',
+                                type2 = 'Call')$Price
+}
+
+explicit.price.2m.put = c()
+explicit.dx.2m.put=c()
+explicit.N.2m.put = c()
+explicit.dt.2m.put = c()
+for(i in 1:10){
+    explicit.N.2m.put[i] = ceiling((3*bisec.vol.2m.put[i]^2+1)*1000*(52/360))
+    explicit.dt.2m.put[i] = (52/360)/explicit.N.2m.put[i]
+    explicit.dx.2m.put[i] = bisec.vol.2m.put[i]*sqrt(3*explicit.dt.2m.put[i])
+    explicit.price.2m.put[i] = explicit.method(S = GS.stock.price,K = GS.2m.put.strike[i],tao = 52/360,
+                               r= r.riskfree,sigma = bisec.vol.2m.put[i],step = explicit.N.2m.put[i], 
+                               div = 0,dx = explicit.dx.2m.put[i],first = 3,type1 = 'European',
+                               type2 = 'Put')$Price
+}
+
+explicit.price.3m.call = c()
+explicit.dx.3m.call=c()
+explicit.N.3m.call = c()
+explicit.dt.3m.call = c()
+for(i in 1:10){
+    explicit.N.3m.call[i] = ceiling((3*bisec.vol.3m.call[i]^2+1)*1000*(77/360))
+    explicit.dt.3m.call[i] = (77/360)/explicit.N.3m.call[i]
+    explicit.dx.3m.call[i] = bisec.vol.3m.call[i]*sqrt(3*explicit.dt.3m.call[i])
+    explicit.price.3m.call[i] = explicit.method(S = GS.stock.price,K = GS.3m.call.strike[i],tao = 77/360,
+                                r= r.riskfree,sigma = bisec.vol.3m.call[i],step = explicit.N.3m.call[i],
+                                div = 0,dx = explicit.dx.3m.call[i],first = 3,type1 = 'European',
+                                type2 = 'Call')$Price
+}
+
+
+explicit.price.3m.put = c()
+explicit.dx.3m.put=c()
+explicit.N.3m.put = c()
+explicit.dt.3m.put = c()
+for(i in 1:10){
+    explicit.N.3m.put[i] = ceiling((3*bisec.vol.3m.put[i]^2+1)*1000*(77/360))
+    explicit.dt.3m.put[i] = (77/360)/explicit.N.3m.put[i]
+    explicit.dx.3m.put[i] = bisec.vol.3m.put[i]*sqrt(3*explicit.dt.1m.put[i])
+    explicit.price.3m.put[i] = explicit.method(S = GS.stock.price,K = GS.3m.put.strike[i],tao = 77/360,
+                               r= r.riskfree,sigma = bisec.vol.3m.put[i],step = explicit.N.3m.put[i], 
+                               div = 0,dx = explicit.dx.3m.put[i],first = 3,type1 = 'European',
+                               type2 = 'Put')$Price
+}
+
+implicit.price.1m.call = c()
+implicit.dx.1m.call=c()
+implicit.dt.1m.call = c()
+for(i in 1:10){
+    implicit.dt.1m.call[i] = (17/360)/explicit.N.1m.call[i]
+    # Note implicit has same converge order, we can use explicit method steps here
+    implicit.price.1m.call[i] = implicit.method(S = GS.stock.price,K = GS.1m.call.strike[i],tao = 17/360,
+                                r= r.riskfree,sigma = bisec.vol.1m.call[i], step = explicit.N.1m.call[i], 
+                                div = 0, dx = 0.02,first = 3,type1 = 'European',type2 = 'Call')$Price
+}
+# Note that we use explicit steps and smaller dx = 0.02
+
+implicit.price.1m.put = c()
+implicit.dx.1m.put=c()
+implicit.dt.1m.put = c()
+for(i in 1:10){
+    implicit.dt.1m.put[i] = (17/360)/explicit.N.1m.put[i]
+    implicit.price.1m.put[i] = implicit.method(S = GS.stock.price,K = GS.1m.put.strike[i],tao = 17/360,
+                               r= r.riskfree,sigma = bisec.vol.1m.put[i],step = explicit.N.1m.put[i], 
+                               div = 0, dx = 0.02,first = 3,type1 = 'European',type2 = 'Put')$Price
+}
+
+implicit.price.2m.call = c()
+implicit.dx.2m.call=c()
+implicit.dt.2m.call = c()
+for(i in 1:10){
+    implicit.dt.2m.call[i] = (52/360)/explicit.N.2m.call[i]
+    implicit.price.2m.call[i] = implicit.method(S = GS.stock.price,K = GS.2m.call.strike[i],tao = 52/360,
+                                r= r.riskfree,sigma = bisec.vol.2m.call[i],step =explicit.N.2m.call[i], 
+                                div = 0,dx = 0.02,first = 3,type1 = 'European',type2 = 'Call')$Price
+}
+
+implicit.price.2m.put = c()
+implicit.dx.2m.put=c()
+implicit.dt.2m.put = c()
+for(i in 1:10){
+    implicit.dt.2m.put[i] = (52/360)/explicit.N.2m.put[i]
+    implicit.price.2m.put[i] = implicit.method(S = GS.stock.price,K = GS.2m.put.strike[i],tao = 52/360,
+                               r= r.riskfree,sigma = bisec.vol.2m.put[i],step = explicit.N.2m.put[i], 
+                               div = 0, dx = 0.02,first = 3,type1 = 'European',type2 = 'Put')$Price
+}
+
+implicit.price.3m.call = c()
+implicit.dx.3m.call=c()
+implicit.dt.3m.call = c()
+for(i in 1:10){
+    implicit.dt.3m.call[i] = (77/360)/explicit.N.3m.call[i]
+    implicit.price.3m.call[i] = implicit.method(S = GS.stock.price,K = GS.3m.call.strike[i],tao = 77/360,
+                               r= r.riskfree,sigma = bisec.vol.3m.call[i],step = explicit.N.3m.call[i], 
+                               div = 0, dx = 0.02,first = 3,type1 = 'European',type2 = 'Call')$Price
+}
+
+
+implicit.price.3m.put = c()
+implicit.dx.3m.put=c()
+implicit.dt.3m.put = c()
+for(i in 1:10){
+    implicit.dt.3m.put[i] = (77/360)/explicit.N.3m.put[i]
+    implicit.price.3m.put[i] = implicit.method(S = GS.stock.price,K = GS.3m.put.strike[i],tao = 77/360,
+                               r= r.riskfree,sigma = bisec.vol.3m.put[i],step = explicit.N.3m.put[i], 
+                               div = 0,dx = 0.02,first = 3,type1 = 'European',type2 = 'Put')$Price
+}
+
+crank.nicolson.price.1m.call = c()
+crank.nicolson.dx.1m.call=c()
+crank.nicolson.dt.1m.call = c()
+for(i in 1:10){
+    crank.nicolson.dt.1m.call[i] = (17/360)/explicit.N.1m.call[i]
+    # Note crank nicolson has better converge order, so we can use the exxplicit method steps
+    crank.nicolson.price.1m.call[i] = crank.nicolson.method(S = GS.stock.price,K = GS.1m.call.strike[i],
+                                      tao = 17/360,r= r.riskfree,sigma = bisec.vol.1m.call[i],
+                                     step = explicit.N.1m.call[i], div = 0,dx = 0.02,first = 1,
+                                     type1 = 'European',type2 = 'Call')$Price
+}
+
+crank.nicolson.price.1m.put = c()
+crank.nicolson.dx.1m.put=c()
+crank.nicolson.dt.1m.put = c()
+for(i in 1:10){
+    crank.nicolson.dt.1m.put[i] = (17/360)/explicit.N.1m.put[i]
+    crank.nicolson.price.1m.put[i] = crank.nicolson.method(S = GS.stock.price,K = GS.1m.put.strike[i],
+                                     tao = 17/360,r= r.riskfree,sigma = bisec.vol.1m.put[i],
+                                     step = explicit.N.1m.put[i], div = 0, dx = 0.02,first = 1,
+                                     type1 = 'European',type2 = 'Put')$Price
+}
+
+crank.nicolson.price.2m.call = c()
+crank.nicolson.dx.2m.call=c()
+crank.nicolson.dt.2m.call = c()
+for(i in 1:10){
+    crank.nicolson.dt.2m.call[i] = (52/360)/explicit.N.2m.call[i]
+    crank.nicolson.price.2m.call[i] = crank.nicolson.method(S = GS.stock.price,K = GS.2m.call.strike[i],
+                                     tao=52/360,r= r.riskfree,sigma = bisec.vol.2m.call[i],
+                                     step = explicit.N.2m.call[i], div = 0,dx = 0.02,first = 1,
+                                     type1 = 'European',type2 = 'Call')$Price
+}
+
+crank.nicolson.price.2m.put = c()
+crank.nicolson.dx.2m.put=c()
+crank.nicolson.dt.2m.put = c()
+for(i in 1:10){
+    crank.nicolson.dt.2m.put[i] = (52/360)/explicit.N.2m.put[i]
+    crank.nicolson.price.2m.put[i] = crank.nicolson.method(S = GS.stock.price,K = GS.2m.put.strike[i],
+                                    tao=52/360,r= r.riskfree,sigma = bisec.vol.2m.put[i],
+                                    step = explicit.N.2m.put[i], div = 0,dx = 0.02,first = 1,
+                                    type1 = 'European',type2 = 'Put')$Price
+}
+
+crank.nicolson.price.3m.call = c()
+crank.nicolson.dx.3m.call=c()
+crank.nicolson.dt.3m.call = c()
+for(i in 1:10){
+    crank.nicolson.dt.3m.call[i] = (77/360)/explicit.N.3m.call[i]
+    crank.nicolson.price.3m.call[i] = crank.nicolson.method(S = GS.stock.price,K = GS.3m.call.strike[i],
+                                      tao=77/360,r= r.riskfree,sigma = bisec.vol.3m.call[i],
+                                      step = explicit.N.3m.call[i], div = 0,dx = 0.02,first = 1,
+                                      type1 = 'European',type2 = 'Call')$Price
+}
+
+crank.nicolson.price.3m.put = c()
+crank.nicolson.dx.3m.put=c()
+crank.nicolson.dt.3m.put = c()
+for(i in 1:10){
+    crank.nicolson.dt.3m.put[i] = (77/360)/explicit.N.3m.put[i]
+    crank.nicolson.price.3m.put[i] = crank.nicolson.method(S = GS.stock.price,K = GS.3m.put.strike[i],
+                                    tao=77/360,r= r.riskfree,sigma = bisec.vol.3m.put[i],
+                                    step = explicit.N.3m.put[i], div = 0,dx = 0.02,first = 1,
+                                     type1 = 'European',type2 = 'Put')$Price
+}
+
+```
+
+## (c) Greeks by Explicit Method
+
+### Greeks 1 month call
+
+```{r}
+explicit.delta.1m.call = c()
+explicit.gamma.1m.call = c()
+explicit.vega.1m.call =c()
+explicit.theta.1m.call = c()
+for(i in 1:10){
+    explicit.method.1m.call = explicit.method(S=GS.stock.price,K=GS.1m.call.strike[i],tao=17/360,
+                                           r=r.riskfree,sigma=bisec.vol.1m.call[i],
+                                           div=0,step=explicit.N.1m.call[i],dx=explicit.dx.1m.call[i],
+                                           first=3, type1='Eourpean',type2='Call')
+    explicit.method.1m.call.first.v = as.numeric(explicit.method.1m.call$V.first.steps[,1])
+    explicit.method.1m.call.first.v.plus = as.numeric(explicit.method.1m.call$V.first.steps[,2])
+    explicit.method.1m.call.first.s = as.numeric(explicit.method.1m.call$S.first.steps[,4])
+    explicit.delta.1m.call[i] = ((explicit.method.1m.call.first.v[3]-explicit.method.1m.call.first.v[5])/
+                              (explicit.method.1m.call.first.s[3]-explicit.method.1m.call.first.s[5]))
+ 
+    explicit.gamma.1m.call[i]= ((explicit.method.1m.call.first.v[3]-explicit.method.1m.call.first.v[4])-
+                                 (explicit.method.1m.call.first.v[4]-explicit.method.1m.call.first.v[5]))/
+                                (explicit.method.1m.call.first.s[3]-explicit.method.1m.call.first.s[5])/2
+    
+    price.1m.call.sigma = explicit.method(S=GS.stock.price,K=GS.1m.call.strike[i],tao=17/360,
+                                          r=r.riskfree,sigma=(bisec.vol.1m.call[i]+0.001),
+                                          div=0,step=explicit.N.1m.call[i],dx=explicit.dx.1m.call[i],
+                                          first=3, type1='Eourpean',type2='Call')$Price
+    price.1m.call.sigma.plus = explicit.method(S=GS.stock.price,K=GS.1m.call.strike[i],tao=17/360,
+                                               r=r.riskfree,sigma=(bisec.vol.1m.call[i]-0.001),
+                                               div=0,step=explicit.N.1m.call[i],dx=explicit.dx.1m.call[i],
+                                               first=3, type1='Eourpean',type2='Call')$Price
+    explicit.vega.1m.call[i] = (price.1m.call.sigma.plus-price.1m.call.sigma)/(2*0.001)
+    
+    explicit.theta.1m.call[i] = (explicit.method.1m.call.first.v.plus[4]-explicit.method.1m.call.first.v[4])/(1/1188)
+}
+
+greeks.1m.call = cbind(GS.1m.call.strike,explicit.delta.1m.call,explicit.gamma.1m.call,
+                       explicit.vega.1m.call,explicit.theta.1m.call)
+colnames(greeks.1m.call) = c('Strike','Delta','Gamma','Vega','Theta')
+greeks.1m.call
+# This is the greeks table for 1 month call option
+```
+
+
+### Greeks 1 month put 
+
+```{r}
+explicit.delta.1m.put = c()
+explicit.gamma.1m.put = c()
+explicit.vega.1m.put =c()
+explicit.theta.1m.put = c()
+for(i in 1:10){
+    explicit.method.1m.put = explicit.method(S=GS.stock.price,K=GS.1m.put.strike[i],tao=17/360,
+                                             r=r.riskfree,sigma=bisec.vol.1m.put[i],
+                                             div=0,step=explicit.N.1m.put[i],dx=explicit.dx.1m.put[i],
+                                             first=3, type1='Eourpean',type2='Put')
+    explicit.method.1m.put.first.v = as.numeric(explicit.method.1m.put$V.first.steps[,1])
+    explicit.method.1m.put.first.v.plus = as.numeric(explicit.method.1m.put$V.first.steps[,2])
+    explicit.method.1m.put.first.s = as.numeric(explicit.method.1m.put$S.first.steps[,4])
+    explicit.delta.1m.put[i] = ((explicit.method.1m.put.first.v[3]-explicit.method.1m.put.first.v[5])/
+                                    (explicit.method.1m.put.first.s[3]-explicit.method.1m.put.first.s[5]))
+    
+    explicit.gamma.1m.put[i]= ((explicit.method.1m.put.first.v[3]-explicit.method.1m.put.first.v[4])-
+                                   (explicit.method.1m.put.first.v[4]-explicit.method.1m.put.first.v[5]))/
+        (explicit.method.1m.put.first.s[3]-explicit.method.1m.put.first.s[5])/2
+    
+    price.1m.put.sigma = explicit.method(S=GS.stock.price,K=GS.1m.put.strike[i],tao=17/360,
+                                         r=r.riskfree,sigma=(bisec.vol.1m.put[i]+0.001),
+                                         div=0,step=explicit.N.1m.put[i],dx=explicit.dx.1m.put[i],
+                                         first=3, type1='Eourpean',type2='put')$Price
+    price.1m.put.sigma.plus = explicit.method(S=GS.stock.price,K=GS.1m.put.strike[i],tao=17/360,
+                                              r=r.riskfree,sigma=(bisec.vol.1m.put[i]-0.001),
+                                              div=0,step=explicit.N.1m.put[i],dx=explicit.dx.1m.put[i],
+                                              first=3, type1='Eourpean',type2='put')$Price
+    explicit.vega.1m.put[i] = (price.1m.put.sigma.plus-price.1m.put.sigma)/(2*0.001)
+    
+    explicit.theta.1m.put[i] = (explicit.method.1m.put.first.v.plus[4]-explicit.method.1m.put.first.v[4])/(1/1188)
+}
+
+greeks.1m.put = cbind(GS.1m.put.strike,explicit.delta.1m.put,explicit.gamma.1m.put,
+                       explicit.vega.1m.put,explicit.theta.1m.put)
+colnames(greeks.1m.put) = c('Strike','Delta','Gamma','Vega','Theta')
+greeks.1m.put
+# This is the greeks table for 1 month put option
+```
+
+### Greeks 2 months call
+
+```{r}
+explicit.delta.2m.call = c()
+explicit.gamma.2m.call = c()
+explicit.vega.2m.call =c()
+explicit.theta.2m.call = c()
+for(i in 1:10){
+    explicit.method.2m.call = explicit.method(S=GS.stock.price,K=GS.2m.call.strike[i],tao=52/360,
+                                              r=r.riskfree,sigma=bisec.vol.2m.call[i],
+                                              div=0,step=explicit.N.2m.call[i],dx=explicit.dx.2m.call[i],
+                                              first=3, type1='Eourpean',type2='Call')
+    explicit.method.2m.call.first.v = as.numeric(explicit.method.2m.call$V.first.steps[,1])
+    explicit.method.2m.call.first.v.plus = as.numeric(explicit.method.2m.call$V.first.steps[,2])
+    explicit.method.2m.call.first.s = as.numeric(explicit.method.2m.call$S.first.steps[,4])
+    explicit.delta.2m.call[i] = ((explicit.method.2m.call.first.v[3]-explicit.method.2m.call.first.v[5])/
+                                     (explicit.method.2m.call.first.s[3]-explicit.method.2m.call.first.s[5]))
+    
+    explicit.gamma.2m.call[i]= ((explicit.method.2m.call.first.v[3]-explicit.method.2m.call.first.v[4])-
+                                    (explicit.method.2m.call.first.v[4]-explicit.method.2m.call.first.v[5]))/
+        (explicit.method.2m.call.first.s[3]-explicit.method.2m.call.first.s[5])/2
+    
+    price.2m.call.sigma = explicit.method(S=GS.stock.price,K=GS.2m.call.strike[i],tao=52/360,
+                                          r=r.riskfree,sigma=(bisec.vol.2m.call[i]+0.001),
+                                          div=0,step=explicit.N.2m.call[i],dx=explicit.dx.2m.call[i],
+                                          first=3, type1='Eourpean',type2='Call')$Price
+    price.2m.call.sigma.plus = explicit.method(S=GS.stock.price,K=GS.2m.call.strike[i],tao=52/360,
+                                               r=r.riskfree,sigma=(bisec.vol.2m.call[i]-0.001),
+                                               div=0,step=explicit.N.2m.call[i],dx=explicit.dx.2m.call[i],
+                                               first=3, type1='Eourpean',type2='Call')$Price
+    explicit.vega.2m.call[i] = (price.2m.call.sigma.plus-price.2m.call.sigma)/(2*0.001)
+    
+    explicit.theta.2m.call[i] =(explicit.method.2m.call.first.v.plus[4]-
+                                    explicit.method.2m.call.first.v[4])/(1/1188)
+}
+greeks.2m.call = cbind(GS.2m.call.strike,explicit.delta.2m.call,explicit.gamma.2m.call,
+                       explicit.vega.2m.call,explicit.theta.2m.call)
+colnames(greeks.2m.call) = c('Strike','Delta','Gamma','Vega','Theta')
+greeks.2m.call
+# This is the greeks table for 2 months call option
+```
+
+### Greeks 2 months put
+
+```{r}
+explicit.delta.2m.put = c()
+explicit.gamma.2m.put = c()
+explicit.vega.2m.put =c()
+explicit.theta.2m.put = c()
+for(i in 1:10){
+    explicit.method.2m.put = explicit.method(S=GS.stock.price,K=GS.2m.put.strike[i],tao=52/360,
+                                             r=r.riskfree,sigma=bisec.vol.2m.put[i],
+                                             div=0,step=explicit.N.2m.put[i],dx=explicit.dx.2m.put[i],
+                                             first=3, type1='Eourpean',type2='Put')
+    explicit.method.2m.put.first.v = as.numeric(explicit.method.2m.put$V.first.steps[,1])
+    explicit.method.2m.put.first.v.plus = as.numeric(explicit.method.2m.put$V.first.steps[,2])
+    explicit.method.2m.put.first.s = as.numeric(explicit.method.2m.put$S.first.steps[,4])
+    explicit.delta.2m.put[i] = ((explicit.method.2m.put.first.v[3]-explicit.method.2m.put.first.v[5])/
+                                    (explicit.method.2m.put.first.s[3]-explicit.method.2m.put.first.s[5]))
+    
+    explicit.gamma.2m.put[i]= ((explicit.method.2m.put.first.v[3]-explicit.method.2m.put.first.v[4])-
+                                   (explicit.method.2m.put.first.v[4]-explicit.method.2m.put.first.v[5]))/
+        (explicit.method.2m.put.first.s[3]-explicit.method.2m.put.first.s[5])/2
+    
+    price.2m.put.sigma = explicit.method(S=GS.stock.price,K=GS.2m.put.strike[i],tao=52/360,
+                                         r=r.riskfree,sigma=(bisec.vol.2m.put[i]+0.001),
+                                         div=0,step=explicit.N.2m.put[i],dx=explicit.dx.2m.put[i],
+                                         first=3, type1='Eourpean',type2='Put')$Price
+    price.2m.put.sigma.plus = explicit.method(S=GS.stock.price,K=GS.2m.put.strike[i],tao=52/360,
+                                              r=r.riskfree,sigma=(bisec.vol.2m.put[i]-0.001),
+                                              div=0,step=explicit.N.2m.put[i],dx=explicit.dx.2m.put[i],
+                                              first=3, type1='Eourpean',type2='Put')$Price
+    explicit.vega.2m.put[i] = (price.2m.put.sigma.plus-price.2m.put.sigma)/(2*0.001)
+    
+    explicit.theta.2m.put[i] = (explicit.method.2m.put.first.v.plus[4]-explicit.method.2m.put.first.v[4])/(1/1188)
+}
+
+greeks.2m.put = cbind(GS.2m.put.strike,explicit.delta.2m.put,explicit.gamma.2m.put,
+                       explicit.vega.2m.put,explicit.theta.2m.put)
+colnames(greeks.2m.put) = c('Strike','Delta','Gamma','Vega','Theta')
+greeks.2m.put
+# This is the greeks table for 2 months put option
+```
+
+### Greeks 3 months call
+
+```{r}
+explicit.delta.3m.call = c()
+explicit.gamma.3m.call = c()
+explicit.vega.3m.call =c()
+explicit.theta.3m.call = c()
+for(i in 1:10){
+    explicit.method.3m.call = explicit.method(S=GS.stock.price,K=GS.3m.call.strike[i],tao=77/360,
+                                              r=r.riskfree,sigma=bisec.vol.3m.call[i],
+                                              div=0,step=explicit.N.3m.call[i],dx=explicit.dx.3m.call[i],
+                                              first=3, type1='Eourpean',type2='Call')
+    explicit.method.3m.call.first.v = as.numeric(explicit.method.3m.call$V.first.steps[,1])
+    explicit.method.3m.call.first.v.plus = as.numeric(explicit.method.3m.call$V.first.steps[,2])
+    explicit.method.3m.call.first.s = as.numeric(explicit.method.3m.call$S.first.steps[,4])
+    explicit.delta.3m.call[i] = ((explicit.method.3m.call.first.v[3]-explicit.method.3m.call.first.v[5])/
+                                     (explicit.method.3m.call.first.s[3]-explicit.method.3m.call.first.s[5]))
+    
+    explicit.gamma.3m.call[i]= ((explicit.method.3m.call.first.v[3]-explicit.method.3m.call.first.v[4])-
+                                    (explicit.method.3m.call.first.v[4]-explicit.method.3m.call.first.v[5]))/
+        (explicit.method.3m.call.first.s[3]-explicit.method.3m.call.first.s[5])/2
+    
+    price.3m.call.sigma = explicit.method(S=GS.stock.price,K=GS.3m.call.strike[i],tao=77/360,
+                                          r=r.riskfree,sigma=(bisec.vol.3m.call[i]+0.001),
+                                          div=0,step=explicit.N.3m.call[i],dx=explicit.dx.3m.call[i],
+                                          first=3, type1='Eourpean',type2='Call')$Price
+    price.3m.call.sigma.plus = explicit.method(S=GS.stock.price,K=GS.3m.call.strike[i],tao=77/360,
+                                               r=r.riskfree,sigma=(bisec.vol.3m.call[i]-0.001),
+                                               div=0,step=explicit.N.3m.call[i],dx=explicit.dx.3m.call[i],
+                                               first=3, type1='Eourpean',type2='Call')$Price
+    explicit.vega.3m.call[i] = (price.3m.call.sigma.plus-price.3m.call.sigma)/(2*0.001)
+    
+    explicit.theta.3m.call[i] = (explicit.method.3m.call.first.v.plus[4]-
+                                     explicit.method.3m.call.first.v[4])/(1/1188)
+}
+
+greeks.3m.call = cbind(GS.3m.call.strike,explicit.delta.3m.call,explicit.gamma.3m.call,
+                       explicit.vega.3m.call,explicit.theta.3m.call)
+colnames(greeks.3m.call) = c('Strike','Delta','Gamma','Vega','Theta')
+greeks.3m.call
+# This is the greeks table for 3 months call option
+```
+
+### Greeks 3 months put
+
+```{r}
+explicit.delta.3m.put = c()
+explicit.gamma.3m.put = c()
+explicit.vega.3m.put =c()
+explicit.theta.3m.put = c()
+for(i in 1:10){
+    explicit.method.3m.put = explicit.method(S=GS.stock.price,K=GS.3m.put.strike[i],tao=77/360,
+                                             r=r.riskfree,sigma=bisec.vol.3m.put[i],
+                                             div=0,step=explicit.N.3m.put[i],dx=explicit.dx.3m.put[i],
+                                             first=3, type1='Eourpean',type2='Put')
+    explicit.method.3m.put.first.v = as.numeric(explicit.method.3m.put$V.first.steps[,1])
+    explicit.method.3m.put.first.v.plus = as.numeric(explicit.method.3m.put$V.first.steps[,2])
+    explicit.method.3m.put.first.s = as.numeric(explicit.method.3m.put$S.first.steps[,4])
+    explicit.delta.3m.put[i] = ((explicit.method.3m.put.first.v[3]-explicit.method.3m.put.first.v[5])/
+                                    (explicit.method.3m.put.first.s[3]-explicit.method.3m.put.first.s[5]))
+    
+    explicit.gamma.3m.put[i]= ((explicit.method.3m.put.first.v[3]-explicit.method.3m.put.first.v[4])-
+                                   (explicit.method.3m.put.first.v[4]-explicit.method.3m.put.first.v[5]))/
+        (explicit.method.3m.put.first.s[3]-explicit.method.3m.put.first.s[5])/2
+    
+    price.3m.put.sigma = explicit.method(S=GS.stock.price,K=GS.3m.put.strike[i],tao=77/360,
+                                         r=r.riskfree,sigma=(bisec.vol.3m.put[i]+0.001),
+                                         div=0,step=explicit.N.3m.put[i],dx=explicit.dx.3m.put[i],
+                                         first=3, type1='Eourpean',type2='Put')$Price
+    price.3m.put.sigma.plus = explicit.method(S=GS.stock.price,K=GS.3m.put.strike[i],tao=77/360,
+                                              r=r.riskfree,sigma=(bisec.vol.3m.put[i]-0.001),
+                                              div=0,step=explicit.N.3m.put[i],dx=explicit.dx.3m.put[i],
+                                              first=3, type1='Eourpean',type2='Put')$Price
+    explicit.vega.3m.put[i] = (price.3m.put.sigma.plus-price.3m.put.sigma)/(2*0.001)
+    
+    explicit.theta.3m.put[i] = (explicit.method.3m.put.first.v.plus[4]-explicit.method.3m.put.first.v[4])/(1/1188)
+}
+
+greeks.3m.put = cbind(GS.3m.put.strike,explicit.delta.3m.put,explicit.gamma.3m.put,
+                       explicit.vega.3m.put,explicit.theta.3m.put)
+colnames(greeks.3m.put) = c('Strike','Delta','Gamma','Vega','Theta')
+head(greeks.3m.put)
+# This is the greeks table for 3 months put option
+```
+
+## (d) Table and Plot
+
+### The Detailed Table
+```{r}
+maturity.1m = rep(17,10)
+maturity.2m = rep(52,10)
+maturity.3m = rep(77,10)
+type.1m.call = type.2m.call = type.3m.call = rep('Call',10)
+type.1m.put = type.2m.put = type.3m.put = rep('Put',10)
+detailed.table.1m.call = cbind(maturity.1m,type.1m.call,GS.1m.call.strike,round(GS.1m.call.bid,3),
+                               round(GS.1m.call.ask,3),round(market.price.1m.call,3),
+                               round(explicit.price.1m.call,3),round(implicit.price.1m.call,3),
+                               round(crank.nicolson.price.1m.call,3),round(bisec.vol.1m.call,3))
+detailed.table.1m.put = cbind(maturity.1m,type.1m.put,GS.1m.put.strike,round(GS.1m.put.bid,3),
+                               round(GS.1m.put.ask,3),round(market.price.1m.put,3),
+                               round(explicit.price.1m.put,3),round(implicit.price.1m.put,3),
+                               round(crank.nicolson.price.1m.put,3),round(bisec.vol.1m.put,3))
+detailed.table.2m.call = cbind(maturity.2m,type.2m.call,GS.2m.call.strike,round(GS.2m.call.bid,3),
+                               round(GS.2m.call.ask,3),round(market.price.2m.call,3),
+                               round(explicit.price.2m.call,3),round(implicit.price.2m.call,3),
+                               round(crank.nicolson.price.2m.call,3),round(bisec.vol.2m.call,3))
+detailed.table.2m.put = cbind(maturity.2m,type.2m.put,GS.2m.put.strike,round(GS.2m.put.bid,3),
+                               round(GS.2m.put.ask,3),round(market.price.2m.put,3),
+                               round(explicit.price.2m.put,3),round(implicit.price.2m.put,3),
+                               round(crank.nicolson.price.2m.put,3),round(bisec.vol.2m.put,3))
+detailed.table.3m.call = cbind(maturity.3m,type.3m.call,GS.3m.call.strike,round(GS.3m.call.bid,3),
+                               round(GS.3m.call.ask,3),round(market.price.3m.call,3),
+                               round(explicit.price.3m.call,3),round(implicit.price.3m.call,3),
+                               round(crank.nicolson.price.3m.call,3),round(bisec.vol.3m.call,3))
+detailed.table.3m.put = cbind(maturity.3m,type.3m.put,GS.3m.put.strike,round(GS.3m.put.bid,3),
+                               round(GS.3m.put.ask,3),round(market.price.3m.put,3),
+                               round(explicit.price.3m.put,3),round(implicit.price.3m.put,3),
+                               round(crank.nicolson.price.3m.put,3),round(bisec.vol.3m.put,3))
+
+full.table = rbind(detailed.table.1m.call,detailed.table.1m.put,detailed.table.2m.call,
+                   detailed.table.2m.put,detailed.table.3m.call,detailed.table.3m.put)
+colnames(full.table) = c('t(days)','Type','Strike','Bid','Ask','Market','EFD',
+                         'IFD','CNFD','Implied Vol')
+data.frame.full.table=as.data.frame(full.table)
+data.frame.full.table
+```
+
+### Plot of all Call Option Pice vs Maturity and Strike
+In this part, we will use a 3D plot to plot call option price vs maturity and strike.
+
+```{r}
+library(scatterplot3d)
+full.call.table = rbind(full.table[1:10,],full.table[21:30,],full.table[41:50,])
+maturity.1m.year = maturity.1m/360
+coordinate.1m.call = cbind(GS.1m.call.strike,GS.1m.call.bid,maturity.1m)
+
+call.3d = scatterplot3d(x=as.numeric(full.call.table[1:10,3]),y = as.numeric(full.call.table[1:10,1])/360,
+              z = as.numeric(full.call.table[1:10,4]),type = 'l',
+              xlim = c(185,245),ylim = c(0,1/4),zlim = c(0,70),color = 'red',
+              main = 'Call Option Pirce vs K and Maturity',xlab = 'Strike',
+              ylab = 'Maturty', zlab = 'Option Price')
+call.3d$points3d(as.numeric(full.call.table[1:10,3]),as.numeric(full.call.table[1:10,1])/360,
+                 as.numeric(full.call.table[1:10,5]),type = 'l',col = 'blue')
+call.3d$points3d(as.numeric(full.call.table[1:10,3]),as.numeric(full.call.table[1:10,1])/360,
+                 as.numeric(full.call.table[1:10,6]),type = 'l',col = 'black')
+call.3d$points3d(as.numeric(full.call.table[1:10,3]),as.numeric(full.call.table[1:10,1])/360,
+                 as.numeric(full.call.table[1:10,7]),pch = 21,
+                 type = 'p',col = 'dodgerblue')
+call.3d$points3d(as.numeric(full.call.table[1:10,3]),as.numeric(full.call.table[1:10,1])/360,
+                 as.numeric(full.call.table[1:10,8]),pch = 19,type = 'p',col = 'deeppink',cex = 0.5)
+call.3d$points3d(as.numeric(full.call.table[1:10,3]),as.numeric(full.call.table[1:10,1])/360,
+                 as.numeric(full.call.table[1:10,9]),pch = 3,type = 'p',col = 'gold',cex = 1.5)
+
+call.3d$points3d(as.numeric(full.call.table[11:20,3]),as.numeric(full.call.table[11:20,1])/360,
+                 as.numeric(full.call.table[11:20,4]),type = 'l',col = 'red')
+call.3d$points3d(as.numeric(full.call.table[11:20,3]),as.numeric(full.call.table[11:20,1])/360,
+                 as.numeric(full.call.table[11:20,5]),type = 'l',col = 'blue')
+call.3d$points3d(as.numeric(full.call.table[11:20,3]),as.numeric(full.call.table[11:20,1])/360,
+                 as.numeric(full.call.table[11:20,6]),type = 'l',col = 'black')
+call.3d$points3d(as.numeric(full.call.table[11:20,3]),as.numeric(full.call.table[11:20,1])/360,
+                 as.numeric(full.call.table[11:20,7]),pch = 21,
+                 type = 'p',col = 'dodgerblue')
+call.3d$points3d(as.numeric(full.call.table[11:20,3]),as.numeric(full.call.table[11:20,1])/360,
+                 as.numeric(full.call.table[11:20,8]),pch = 19,type = 'p',col = 'deeppink',cex = 0.5)
+call.3d$points3d(as.numeric(full.call.table[11:20,3]),as.numeric(full.call.table[11:20,1])/360,
+                 as.numeric(full.call.table[11:20,9]),pch = 3,type = 'p',col = 'gold',cex = 1.5)
+
+call.3d$points3d(as.numeric(full.call.table[21:30,3]),as.numeric(full.call.table[21:30,1])/360,
+                 as.numeric(full.call.table[21:30,4]),type = 'l',col = 'red')
+call.3d$points3d(as.numeric(full.call.table[21:30,3]),as.numeric(full.call.table[21:30,1])/360,
+                 as.numeric(full.call.table[21:30,5]),type = 'l',col = 'blue')
+call.3d$points3d(as.numeric(full.call.table[21:30,3]),as.numeric(full.call.table[21:30,1])/360,
+                 as.numeric(full.call.table[21:30,6]),type = 'l',col = 'black')
+call.3d$points3d(as.numeric(full.call.table[21:30,3]),as.numeric(full.call.table[21:30,1])/360,
+                 as.numeric(full.call.table[21:30,7]),pch = 21,
+                 type = 'p',col = 'dodgerblue')
+call.3d$points3d(as.numeric(full.call.table[21:30,3]),as.numeric(full.call.table[21:30,1])/360,
+                 as.numeric(full.call.table[21:30,8]),pch = 19,type = 'p',col = 'deeppink',cex = 0.5)
+call.3d$points3d(as.numeric(full.call.table[21:30,3]),as.numeric(full.call.table[21:30,1])/360,
+                 as.numeric(full.call.table[21:30,9]),pch = 3,type = 'p',col = 'gold',cex = 1.5)
+
+legend('right',c('Bid','Ask','Market','EFD','IFD','CNFD'),bty = 'n',
+               col = c('red','blue','black','dodgerblue','deeppink','gold'),lty = c(1,1,1,NA,NA,NA),
+               pch = c(NA,NA,NA,21,19,3),ncol = 2,cex = 0.5,inset = -0.1, xpd = TRUE, horiz = FALSE)
+```
+
+### Comments on Table and Plot
+
+Based on the table and plot, we can find that for all of the explicit, implicit and crank-nicolson finite difference methods, the result price is very close to the market pirce. And therefore, the points will stay in between bid and ask line.    
+   
+And when strike increase, the option value will decrease because it is call option. When time goes by, time to maturity decrease, the option value will decrease. It is because stock has less time so that it has less opptunity to volatility. It also follows that theta of call option is negative.
+
+
