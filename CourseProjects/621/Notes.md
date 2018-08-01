@@ -37,6 +37,7 @@ Tree methods equations are derived by moment matching for mean and variance. Not
 
 
 
+
 ### Trinomial Trees
 
 $$
@@ -58,7 +59,7 @@ More general to the addictive trinomial tree method.
 
 ### Convergence Comparison
 
-| method             | order of convergence                                         | convergence condition                    |
+| method             | rate of convergence                                          | convergence condition                    |
 | :----------------- | ------------------------------------------------------------ | ---------------------------------------- |
 | binomial tree      | $O((\Delta x)^2 + \Delta t)$                                 | NA                                       |
 | trinomial tree     | $O((\Delta x)^2 + \Delta t)$                                 | $\Delta x \geq \sigma \sqrt{3 \Delta t}$ |
@@ -73,7 +74,7 @@ More general to the addictive trinomial tree method.
 
 |      method        |              explanation                    |
 | :-----------------:| :-----------------------------------------: |
-| antithetic variates| the payoff of the antithetic pair $(X_1,X_2)$, $f(X_1), f(X_2)$ is negative corelative. A sufficient condition is to make payoff function to be monotone |
+| antithetic variates| the payoff of the antithetic pair $(X_1,X_2)$, $f(X_1), f(X_2)$ is negative correlated. A sufficient condition is to make payoff function monotone |
 | delta-based control variates |                                                              |
 
 
